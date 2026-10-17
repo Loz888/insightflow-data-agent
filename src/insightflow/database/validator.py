@@ -74,12 +74,15 @@ class SQLValidator:
             if isinstance(node, exp.Literal) and len(str(node.this)) > 1024:
                 reject("SQL 常量过大。")
             if isinstance(node, exp.Cast):
-                if node.to.this.value not in TYPES:
+                if getattr(node.to.this, "value", None) not in TYPES:
                     reject("类型转换不在允许列表中。")
             if isinstance(node, exp.Join) and (
                 not node.args.get("on") or node.args.get("method") or node.args.get("kind") == "CROSS"
             ):
                 reject("禁止无条件连接或不受控连接语法。")
+            if isinstance(node, exp.Join) and node.args.get("on") is not None:
+                if not list(node.args["on"].find_all(exp.Column)):
+                    reject("JOIN 条件必须引用受检字段。")
             if isinstance(node, exp.Table) and (node.catalog or node.args.get("pivots")):
                 reject("禁止跨数据库和动态表语法。")
         if len(list(tree.find_all(exp.Join))) > 6:
