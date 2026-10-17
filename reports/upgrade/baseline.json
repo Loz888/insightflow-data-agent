@@ -1,0 +1,26 @@
+{
+  "commit": "01dda29c7f593fc3f73793c5f3e5aa61f2d722b1",
+  "original_ground_truth": {
+    "evaldata/questions.json": "9e6090d1f7bffae65a7f8f1ede2480429c199f4ee178b9b72c5870f0e8384380",
+    "evaldata/expected_results.json": "2c4ac5bc5fc9e68d25957b70a2f077509c27b0362669892ca9f945a3d6b9a178"
+  },
+  "original_tests": [
+    "test_ablation_context.py",
+    "test_api.py",
+    "test_chat_api.py",
+    "test_context.py",
+    "test_database.py",
+    "test_deepseek.py",
+    "test_evaluation.py",
+    "test_graph.py",
+    "test_metrics.py",
+    "test_model_hardening.py",
+    "test_observability_performance.py",
+    "test_reliability.py",
+    "test_repository_scan.py",
+    "test_retrieval.py",
+    "test_sql_security.py",
+    "test_workflow.py"
+  ],
+  "live": "BLOCKED_NO_KEY"
+}
