@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 source scripts/lib_env.sh
-unset DEEPSEEK_API_KEY
+unset DEEPSEEK_API_KEY INSIGHTFLOW_ENABLE_PAID_EVAL
 # Python owns a previously absent child directory under a fresh external container.
 umask 077
 base_dir="${INSIGHTFLOW_REPORT_BASE:-${XDG_STATE_HOME:-$HOME/.local/state}/insightflow/acceptance}"

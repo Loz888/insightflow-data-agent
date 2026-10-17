@@ -12,8 +12,13 @@ def save_report(output, records, summary):
     rows = [
         "# InsightFlow Evaluation",
         "",
-        "实际 Mock + PostgreSQL 运行记录。30 案例含 10 基础、10 JOIN/聚合、5 复杂指标、5 多轮。",
-        "此结果不代表真实 DeepSeek 能力。Token 未知保留 null；延迟为本机小样本。",
+        f"实际 {summary['model_type']} + PostgreSQL 运行记录。案例数量见汇总。",
+        (
+            "Mock 结果不代表真实 DeepSeek 能力。"
+            if summary["model_type"] == "mock"
+            else "真实授权小样本，不能推广为通用能力。"
+        )
+        + "Token 未知保留 null；延迟为本机小样本。",
         "",
         "| Metric | Value |",
         "| --- | ---: |",

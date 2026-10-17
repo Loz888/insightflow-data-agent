@@ -47,12 +47,14 @@ class AgentService:
                 {"recursion_limit": 30},
             )
             result["usage"] = dict(self.provider.usage())
-            for key in ("input_tokens", "output_tokens"):
+            for key in ("input_tokens", "output_tokens", "total_tokens"):
                 if result["usage"].get(key) is not None and before_usage.get(key) is not None:
                     result["usage"][key] -= before_usage[key]
             result["model_calls"] = sum(
                 name in ("UnderstandQuestion", "GenerateSQL") for name in result["trace"]
             )
+            if "api_calls" in result["usage"]:
+                result["model_calls"] = result["usage"]["api_calls"] - before_usage["api_calls"]
             self.sessions.record(session, question, result)
             return result
 

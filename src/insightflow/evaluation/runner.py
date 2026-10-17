@@ -9,6 +9,7 @@ from insightflow.agent.service import AgentService
 from insightflow.config import Settings
 from insightflow.evaluation.scorer import equivalent, exact_sql, grounded, summarize
 from insightflow.evaluation.report import save_report
+from insightflow.evaluation.failure import failure_category
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -70,6 +71,27 @@ def run_evaluation(service, cases):
                 "generated_sql": result.get("generated_sql", ""),
                 "observed_result": result.get("query_result"),
                 "expected_result": case["expected_result"],
+                "selected_tables": result.get("selected_tables", []),
+                "resolved_plan": result.get("plan", {}),
+                "context_size_estimate": result.get("context_budget", {}).get("estimated_tokens"),
+                "failure_category": failure_category(
+                    error,
+                    metric_correct=metric,
+                    context_correct=inherited,
+                    grounded=answer_grounded,
+                    has_history=bool(case.get("history")),
+                )
+                if not success
+                else None,
+                "failure_evidence": {
+                    "stage_trace": result.get("trace", []),
+                    "error": result.get("error"),
+                    "expected_metric": case["expected_metric"],
+                    "observed_metric": result.get("plan", {}).get("metric"),
+                    "expected_constraints": case.get("expected_constraints", {}),
+                }
+                if not success
+                else None,
             }
         )
     return records, summarize(records)

@@ -1,0 +1,19 @@
+{
+  "source": "../questions.json",
+  "source_sha256": "9e6090d1f7bffae65a7f8f1ede2480429c199f4ee178b9b72c5870f0e8384380",
+  "case_ids": [
+    "q01",
+    "q04",
+    "q07",
+    "q10",
+    "q12",
+    "q14",
+    "q15",
+    "q16",
+    "q21",
+    "q23",
+    "q26",
+    "q28"
+  ],
+  "note": "12 independently referenced cases; no live runs without explicit paid gate."
+}

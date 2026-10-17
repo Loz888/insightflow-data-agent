@@ -8,6 +8,7 @@ from insightflow.database.errors import AgentError
 @pytest.fixture
 def live_config(monkeypatch):
     monkeypatch.setenv("INSIGHTFLOW_ENABLE_LIVE", "true")
+    monkeypatch.setenv("INSIGHTFLOW_ENABLE_PAID_EVAL", "1")
     monkeypatch.setenv("INSIGHTFLOW_INPUT_PRICE_PER_MILLION", "1")
     monkeypatch.setenv("INSIGHTFLOW_OUTPUT_PRICE_PER_MILLION", "1")
     monkeypatch.setenv("INSIGHTFLOW_MAX_MODEL_CALLS", "2")
@@ -67,7 +68,7 @@ def test_invalid_json_timeout_and_budget(live_config):
             provider.understand("订单", {})
     with pytest.raises(AgentError) as exc:
         provider.understand("订单", {})
-    assert exc.value.kind.value == "BUDGET_EXHAUSTED"
+    assert exc.value.kind.value == "MODEL_BUDGET_EXHAUSTED"
 
     def timeout(req):
         raise httpx.ReadTimeout("secret data")

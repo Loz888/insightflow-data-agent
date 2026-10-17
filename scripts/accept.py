@@ -20,6 +20,7 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     env = os.environ.copy()
     env.pop("DEEPSEEK_API_KEY", None)
+    env.pop("INSIGHTFLOW_ENABLE_PAID_EVAL", None)
     env["INSIGHTFLOW_MODE"] = "mock"
     env["INSIGHTFLOW_ENABLE_LIVE"] = "false"
     env["LANGSMITH_TRACING"] = "false"

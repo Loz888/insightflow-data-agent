@@ -92,7 +92,11 @@ class Nodes:
 
     def classify(self, s):
         count = s.get("retry_count", 0)
-        if s.get("retryable") and count < self.settings.max_sql_retries:
+        sql_retry = s.get("retryable") and s.get("error", {}).get("kind") in (
+            "SQL_SYNTAX_ERROR",
+            "SCHEMA_NOT_FOUND",
+        )
+        if sql_retry and count < self.settings.max_sql_retries:
             return {
                 "retry_count": count + 1,
                 "feedback": s["error"]["message"],
@@ -100,7 +104,7 @@ class Nodes:
                 "retryable": False,
                 "trace": s["trace"] + ["ClassifyFailure"],
             }
-        if s.get("retryable"):
+        if sql_retry:
             return {
                 "error": {"kind": ErrorKind.BUDGET_EXHAUSTED.value, "message": "SQL 修正次数已耗尽。"},
                 "retryable": False,
