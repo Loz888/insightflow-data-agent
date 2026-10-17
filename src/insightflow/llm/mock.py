@@ -57,6 +57,10 @@ def parse_question(question: str, previous: dict) -> Plan:
     match = re.search(r"2026\s*年\s*(\d{1,2})\s*月", question)
     if match:
         data["month"] = f"2026-{int(match[1]):02}"
+    if "全部地区" in question:
+        data["region"] = None
+    if "所有月份" in question:
+        data["month"] = None
     regions = [name for name in ("华东", "华南", "华北", "西部") if name in question]
     if len(regions) > 1:
         raise AgentError(ErrorKind.CLARIFICATION_REQUIRED, "请明确单个地区，或询问各地区比较。")
@@ -144,11 +148,21 @@ def build_sql(plan: Plan) -> str:
             raise AgentError(ErrorKind.CLARIFICATION_REQUIRED, "暂只支持按商品类别归属销售收入。")
         return f"SELECT {selectdim}SUM(i.quantity*i.unit_price) AS value FROM business.orders o JOIN business.order_items i ON i.order_id=o.id JOIN business.products p ON p.id=i.product_id{customers}{where}{grouping}{ordering}{limit}"
     # Aggregate one row per order before joining refunds: no item/refund fan-out.
-    cte = """WITH item_totals AS (
-        SELECT order_id,SUM(quantity*unit_price) AS sale FROM business.order_items GROUP BY order_id),
-        refund_totals AS (
-        SELECT order_id,SUM(refund_amount) AS returned FROM business.refunds
-        WHERE status='succeeded' GROUP BY order_id) """
+    needs_items = metric in ("paid_revenue", "gmv", "refund_amount_rate", "average_order_value")
+    needs_refunds = metric in ("refunded_order_rate", "refund_amount", "refund_amount_rate")
+    ctes = []
+    joins = ""
+    if needs_items:
+        ctes.append(
+            "item_totals AS (SELECT order_id,SUM(quantity*unit_price) AS sale FROM business.order_items GROUP BY order_id)"
+        )
+        joins += " JOIN item_totals i ON i.order_id=o.id"
+    if needs_refunds:
+        ctes.append(
+            "refund_totals AS (SELECT order_id,SUM(refund_amount) AS returned FROM business.refunds WHERE status='succeeded' GROUP BY order_id)"
+        )
+        joins += " LEFT JOIN refund_totals r ON r.order_id=o.id"
+    cte = "WITH " + ",".join(ctes) + " "
     expression = {
         "paid_revenue": "COALESCE(SUM(i.sale),0)",
         "gmv": "COALESCE(SUM(i.sale),0)",
@@ -159,7 +173,7 @@ def build_sql(plan: Plan) -> str:
     }[metric]
     return (
         cte
-        + f"SELECT {selectdim}{expression} AS value FROM business.orders o JOIN item_totals i ON i.order_id=o.id LEFT JOIN refund_totals r ON r.order_id=o.id{customers}{where}{grouping}{ordering}{limit}"
+        + f"SELECT {selectdim}{expression} AS value FROM business.orders o{joins}{customers}{where}{grouping}{ordering}{limit}"
     )
 
 

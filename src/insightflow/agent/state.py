@@ -21,3 +21,5 @@ class AgentState(TypedDict, total=False):
     retryable: bool
     feedback: str | None
     usage: dict[str, Any]
+    history: list[dict[str, Any]]
+    context_budget: dict[str, Any]

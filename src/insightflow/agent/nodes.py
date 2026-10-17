@@ -1,5 +1,4 @@
 from insightflow.database.errors import AgentError, ErrorKind
-from insightflow.llm.mock import METRIC_TABLES
 
 
 class Nodes:
@@ -23,40 +22,52 @@ class Nodes:
         return self.call(s, "UnderstandQuestion", run)
 
     def select(self, s):
+        from insightflow.llm.base import Plan
+        from insightflow.retrieval.retriever import SchemaRetriever
+
         def run():
-            names = list(METRIC_TABLES[s["plan"]["metric"]])
-            if s["plan"].get("region") or s["plan"].get("group") in ("region", "customer"):
-                names += ["customers", "orders"]
-            if s["plan"].get("group") in ("category", "product"):
-                names += ["products", "order_items", "orders"] if "orders" in names else ["products"]
-            names = sorted(set(names))
-            schemas = [
+            result = self.tools.measured(
+                s,
+                "SelectSchema",
+                "retrieve_schema",
+                lambda: SchemaRetriever(self.tools.catalog, self.settings.max_schema_items).retrieve(
+                    s["question"], Plan.model_validate(s["plan"])
+                ),
+            )
+            for name in result["retrieved_tables"]:
                 self.tools.measured(
-                    s, "SelectSchema", "get_table_schema", lambda n=n: self.tools.get_table_schema(n)
+                    s, "SelectSchema", "get_table_schema", lambda n=name: self.tools.get_table_schema(n)
                 )
-                for n in names
-            ]
-            definition = self.tools.measured(
+            self.tools.measured(
                 s,
                 "SelectSchema",
                 "get_metric_definition",
                 lambda: self.tools.get_metric_definition(s["plan"]["metric"]),
             )
-            return {"selected_tables": names, "retrieved_context": {"schemas": schemas, "metric": definition}}
+            return {"selected_tables": result["retrieved_tables"], "retrieved_context": result}
 
         return self.call(s, "SelectSchema", run)
 
     def generate(self, s):
         from insightflow.llm.base import Plan
-        import json
+        from insightflow.context.manager import ContextManager
 
         def run():
-            generated = self.provider.generate(
+            context = ContextManager(self.settings).build(
+                s["question"],
                 Plan.model_validate(s["plan"]),
-                json.dumps(s["retrieved_context"], ensure_ascii=False),
+                s["retrieved_context"],
+                s.get("history", []),
                 s.get("feedback"),
             )
-            return {"generated_sql": generated.sql, "model_calls": s.get("model_calls", 0) + 1}
+            generated = self.provider.generate(
+                Plan.model_validate(s["plan"]), context["text"], s.get("feedback")
+            )
+            return {
+                "generated_sql": generated.sql,
+                "model_calls": s.get("model_calls", 0) + 1,
+                "context_budget": context,
+            }
 
         return self.call(s, "GenerateSQL", run)
 

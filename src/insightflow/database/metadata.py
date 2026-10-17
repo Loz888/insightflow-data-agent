@@ -21,12 +21,15 @@ def read_catalog(dsn: str) -> dict[str, TableMetadata]:
                 result.setdefault(
                     table, TableMetadata(table_name=table, columns={}, foreign_keys=[])
                 ).columns[column] = kind
-        relations = [
-            ("orders", "customer_id", "customers", "id"),
-            ("order_items", "order_id", "orders", "id"),
-            ("order_items", "product_id", "products", "id"),
-            ("refunds", "order_id", "orders", "id"),
-        ]
+        relations = conn.execute("""
+            SELECT s.relname,a.attname,t.relname,b.attname
+            FROM pg_constraint c
+            JOIN pg_class s ON s.oid=c.conrelid JOIN pg_namespace n ON n.oid=s.relnamespace
+            JOIN pg_class t ON t.oid=c.confrelid
+            JOIN pg_attribute a ON a.attrelid=s.oid AND a.attnum=c.conkey[1]
+            JOIN pg_attribute b ON b.attrelid=t.oid AND b.attnum=c.confkey[1]
+            WHERE c.contype='f' AND n.nspname='business'
+        """).fetchall()
         for source, column, target, target_column in relations:
             if source in result:
                 result[source].foreign_keys.append(
