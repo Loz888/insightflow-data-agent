@@ -11,7 +11,14 @@ from insightflow.llm.mock import MockLLMProvider
 class AgentService:
     def __init__(self, settings, provider=None):
         self.settings = settings
-        self.provider = provider or MockLLMProvider()
+        if provider is not None:
+            self.provider = provider
+        elif settings.mode == "deepseek":
+            from insightflow.llm.deepseek import DeepSeekLLMProvider
+
+            self.provider = DeepSeekLLMProvider()
+        else:
+            self.provider = MockLLMProvider()
         self.catalog = read_catalog(settings.database_url.get_secret_value())
         self.executor = ReadonlyExecutor(settings, self.catalog)
         self.tools = Tools(self.catalog, self.executor)
@@ -23,6 +30,7 @@ class AgentService:
 
     def run(self, question, session_id="demo", previous=None):
         with self.lock:
+            before_usage = self.provider.usage()
             session = self.sessions.get(session_id)
             result = self.graph.invoke(
                 {
@@ -38,7 +46,13 @@ class AgentService:
                 },
                 {"recursion_limit": 30},
             )
-            result["usage"] = self.provider.usage()
+            result["usage"] = dict(self.provider.usage())
+            for key in ("input_tokens", "output_tokens"):
+                if result["usage"].get(key) is not None and before_usage.get(key) is not None:
+                    result["usage"][key] -= before_usage[key]
+            result["model_calls"] = sum(
+                name in ("UnderstandQuestion", "GenerateSQL") for name in result["trace"]
+            )
             self.sessions.record(session, question, result)
             return result
 

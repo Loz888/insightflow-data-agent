@@ -54,9 +54,24 @@ def parse_question(question: str, previous: dict) -> Plan:
         )
     data = dict(previous) if followup else {}
     data["metric"] = metric
-    match = re.search(r"2026\s*年\s*(\d{1,2})\s*月", question)
+    explicit_year = re.search(r"(\d{4})年", question)
+    unsupported = ("去年", "明年", "季度", "昨天", "今天", "近7天", "美元", "净收入", "净销售收入")
+    if (
+        (explicit_year and explicit_year[1] != "2026")
+        or any(word in question for word in unsupported)
+        or re.search(r"\d+日", question)
+    ):
+        raise AgentError(
+            ErrorKind.CLARIFICATION_REQUIRED,
+            "当前演示仅支持固定参考点的 2026 年整月、CNY 及已定义指标；请澄清范围。",
+        )
+    match = re.search(r"(?:2026年|今年)?\s*(\d{1,2})\s*月", question)
     if match:
         data["month"] = f"2026-{int(match[1]):02}"
+    if "上月" in question:
+        data["month"] = "2026-09"
+    elif "本月" in question:
+        data["month"] = "2026-10"
     if "全部地区" in question:
         data["region"] = None
     if "所有月份" in question:

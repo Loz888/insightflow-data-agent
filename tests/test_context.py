@@ -66,3 +66,35 @@ def test_inmemory_boundaries():
     assert SessionStore().get("one").constraints == {}  # restart loses memory
     with pytest.raises(AgentError):
         store.get("two")
+
+
+@pytest.mark.parametrize(
+    "question,month",
+    [
+        ("9月退款率是多少？", "2026-09"),
+        ("上月退款率是多少？", "2026-09"),
+        ("本月退款率是多少？", "2026-10"),
+        ("今年9月退款率是多少？", "2026-09"),
+    ],
+)
+def test_fixed_reference_relative_month(question, month):
+    from insightflow.llm.mock import parse_question
+
+    assert parse_question(question, {}).month == month
+
+
+@pytest.mark.parametrize(
+    "question",
+    [
+        "2025年9月退款率是多少？",
+        "2026年9月1日退款率是多少？",
+        "第一季度销售收入是多少？",
+        "美元销售收入是多少？",
+    ],
+)
+def test_unsupported_time_currency_requests_clarification(question):
+    from insightflow.llm.mock import parse_question
+
+    with pytest.raises(AgentError) as exc:
+        parse_question(question, {})
+    assert exc.value.kind.value == "CLARIFICATION_REQUIRED"

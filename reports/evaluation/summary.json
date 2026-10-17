@@ -1,0 +1,18 @@
+{
+  "cases": 30,
+  "model_type": "mock",
+  "sql_exact_match_rate": 0.26666666666666666,
+  "sql_execution_rate": 1.0,
+  "sql_result_accuracy": 1.0,
+  "answer_groundedness": 1.0,
+  "success_rate": 1.0,
+  "p50_ms": 13.656,
+  "p95_ms": 26.916,
+  "average_retry_count": 0.0,
+  "model_call_count": 70,
+  "token_usage_known_cases": 0,
+  "input_tokens": null,
+  "output_tokens": null,
+  "error_distribution": {},
+  "real_deepseek": "NOT RUN"
+}

@@ -1,3 +1,4 @@
+from typing import Literal
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -5,7 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="INSIGHTFLOW_", env_file=None, extra="ignore")
     database_url: SecretStr = SecretStr("")
-    mode: str = "mock"
+    mode: Literal["mock", "deepseek"] = "mock"
     statement_timeout_ms: int = Field(1500, ge=1, le=10000)
     lock_timeout_ms: int = Field(200, ge=1, le=1000)
     max_rows: int = Field(100, ge=1, le=1000)

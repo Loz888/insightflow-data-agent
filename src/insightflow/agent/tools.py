@@ -1,20 +1,29 @@
+from insightflow.llm.base import Metric
 import json
 import logging
 import time
 from typing import Callable, TypeVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from insightflow.database.errors import AgentError
 
 log = logging.getLogger("insightflow.tools")
+
 T = TypeVar("T")
 
 
 class SQLInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     sql: str = Field(min_length=1, max_length=8000)
 
 
 class TableInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     table_name: str = Field(pattern=r"^(customers|products|orders|order_items|refunds)$")
+
+
+class MetricInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    metric: Metric
 
 
 class Tools:
@@ -31,7 +40,7 @@ class Tools:
     def get_metric_definition(self, metric):
         from insightflow.retrieval.glossary import METRICS
 
-        return METRICS[metric]
+        return METRICS[MetricInput(metric=metric).metric]
 
     def execute_readonly_sql(self, sql):
         return self.executor.execute(SQLInput(sql=sql).sql)
