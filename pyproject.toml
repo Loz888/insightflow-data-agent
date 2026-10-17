@@ -7,7 +7,7 @@ name = "insightflow-data-agent"
 version = "0.1.0"
 description = "Local enterprise data analysis agent on trusted synthetic data"
 requires-python = ">=3.11"
-dependencies = ["fastapi", "uvicorn", "langgraph", "psycopg[binary,pool]", "sqlglot", "pydantic", "pydantic-settings", "httpx", "openai"]
+dependencies = ["fastapi", "uvicorn", "langgraph", "psycopg[binary,pool]", "sqlglot", "pydantic", "pydantic-settings", "httpx", "openai", "prometheus-client", "opentelemetry-api", "opentelemetry-sdk"]
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]

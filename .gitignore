@@ -13,3 +13,5 @@ outputs/
 *.log
 *.dump
 docs/resume*
+
+reports/upgrade/*.txt

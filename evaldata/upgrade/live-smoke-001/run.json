@@ -1,0 +1,26 @@
+{
+  "run_id": "7b4eea8b-b341-481b-b3ba-c96e8fe38f6f",
+  "status": "failed",
+  "error_code": "TOOL_LOOP",
+  "result": {
+    "usage": {
+      "retries": 0,
+      "model_ids": [
+        "deepseek-flash"
+      ],
+      "usage_known": true,
+      "input_tokens": 9466,
+      "reserved_usd": "0.0215514",
+      "http_attempts": 5,
+      "output_tokens": 476,
+      "unknown_attempts": 0,
+      "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+    }
+  },
+  "model": "deepseek-flash",
+  "prompt_version": "insightflow-agent-v3-20261017",
+  "git_commit": "7604264ef9c7dab5254f9a9072a9b6ac014cbea4",
+  "worktree": "uncommitted upgrade implementation",
+  "data_version": "v1-seed20261020",
+  "at": "2026-10-17T09:45:19.779755+00:00"
+}

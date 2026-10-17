@@ -36,19 +36,23 @@ class DeepSeekLLMProvider:
             self.timeout = float(os.environ.get("INSIGHTFLOW_MODEL_TIMEOUT_SECONDS", "15"))
             self.transport_retries = int(os.environ.get("INSIGHTFLOW_MODEL_RETRIES", "1"))
             self.model_name = os.environ.get("INSIGHTFLOW_DEEPSEEK_MODEL", "deepseek-flash")
-            assert self.model_name in ("deepseek-flash", "deepseek-v4-pro")
-            assert self.input_rate.is_finite() and self.output_rate.is_finite() and self.budget.is_finite()
-            assert (
+            if self.model_name not in ("deepseek-flash", "deepseek-v4-pro"):
+                raise ValueError("unsupported model")
+            if not (self.input_rate.is_finite() and self.output_rate.is_finite() and self.budget.is_finite()):
+                raise ValueError("nonfinite budget")
+            if not (
                 self.input_rate > 0
                 and self.output_rate > 0
                 and 0 < self.budget <= 1
                 and 1 <= self.max_calls <= 100
-            )
-            assert (
+            ):
+                raise ValueError("invalid budget")
+            if not (
                 64 <= self.max_output_tokens <= 4096
                 and 0 < self.timeout <= 30
                 and 0 <= self.transport_retries <= 2
-            )
+            ):
+                raise ValueError("invalid limits")
         except (KeyError, ValueError, ArithmeticError, AssertionError):
             raise AgentError(
                 ErrorKind.MODEL_BUDGET_EXHAUSTED, "模型配置、保守价格或调用/Token/时间预算无效。"
@@ -156,7 +160,7 @@ class DeepSeekLLMProvider:
                 raise error from None
             # Deliberately bounded backoff; every retry reserves a new HTTP call.
             time.sleep(min(0.1 * 2**attempt, 0.4))
-        raise AssertionError("unreachable")
+        raise RuntimeError("request loop exhausted")
 
     def understand(self, question, previous):
         return self._request(

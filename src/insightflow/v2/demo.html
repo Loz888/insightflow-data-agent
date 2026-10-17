@@ -1,0 +1,20 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>InsightFlow 本地演示</title>
+<style>body{max-width:900px;margin:32px auto;padding:0 18px;font:16px system-ui;color:#15324a}input,textarea,button{font:inherit;padding:10px;margin:6px 0}input,textarea{width:95%}pre{white-space:pre-wrap;background:#f0f4f7;padding:16px}button{cursor:pointer}</style>
+<h1>InsightFlow · 数据分析</h1><p>本地演示：CNY / UTC / 合成数据。会话隔离不等于业务数据多租户隔离。</p>
+<label>本机访问令牌（只保存在当前页面内存）<input id="token" type="password" autocomplete="off"></label>
+<label>会话<input id="session" value="demo-session"></label>
+<label>问题<textarea id="question">2026年9月排除华东地区的订单数是多少？</textarea></label>
+<button id="ask">提问</button> <button id="cancel" disabled>取消</button><p id="stage">等待提问</p><pre id="result"></pre>
+<script>
+let current=null; const el=id=>document.getElementById(id);
+const headers=()=>({'Authorization':'Bearer '+el('token').value,'Content-Type':'application/json'});
+el('ask').onclick=async()=>{el('ask').disabled=true;el('result').textContent='';try{
+const res=await fetch('/v2/runs',{method:'POST',headers:headers(),body:JSON.stringify({session_id:el('session').value,question:el('question').value,idempotency_key:crypto.randomUUID()})});
+const row=await res.json();if(!res.ok)throw Error(JSON.stringify(row));current=row.run_id;el('cancel').disabled=false;
+const events=await fetch('/v2/runs/'+current+'/events',{headers:headers()});if(!events.ok)throw Error('无法读取进度');
+const reader=events.body.getReader();const decoder=new TextDecoder();let buffer='';
+while(true){let {done,value}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});let boundary;
+while((boundary=buffer.indexOf('\n\n'))>=0){let block=buffer.slice(0,boundary);buffer=buffer.slice(boundary+2);let data=block.split('\n').find(s=>s.startsWith('data: '));if(data){let obj=JSON.parse(data.slice(6));el('stage').textContent=obj.stage||obj.status;if(obj.result||obj.error_code)el('result').textContent=JSON.stringify(obj,null,2);}}}
+}catch(e){el('result').textContent=e.message;}finally{el('ask').disabled=false;el('cancel').disabled=true;current=null;}};
+el('cancel').onclick=()=>current&&fetch('/v2/runs/'+current+'/cancel',{method:'POST',headers:headers()});
+</script></html>
