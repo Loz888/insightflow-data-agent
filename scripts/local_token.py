@@ -3,7 +3,12 @@
 from dotenv import dotenv_values
 import json
 
-values = dotenv_values(".env")
+import argparse
+
+p = argparse.ArgumentParser()
+p.add_argument("--file", default=".env")
+args = p.parse_args()
+values = dotenv_values(args.file)
 tokens = json.loads(values.get("INSIGHTFLOW_V2_AUTH_TOKENS", "{}"))
 if not tokens:
     raise SystemExit("Run isolated runtime setup first")

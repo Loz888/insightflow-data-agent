@@ -9,7 +9,7 @@
       "order_items": 1001,
       "refunds": 165
     },
-    "new_snapshot": true
+    "new_snapshot": false
   },
   {
     "data_version": "v2-seed202",
@@ -21,6 +21,6 @@
       "order_items": 1001,
       "refunds": 165
     },
-    "new_snapshot": true
+    "new_snapshot": false
   }
 ]

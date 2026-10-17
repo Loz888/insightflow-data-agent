@@ -333,6 +333,9 @@ async def run_cases(settings, output, cases, controlled_fault=False, snapshot_ur
 
         summary = {
             "mode": settings.mode,
+            "retrieval_mode": settings.retrieval_mode,
+            "context_enabled": settings.context_enabled,
+            "feedback_enabled": settings.feedback_enabled,
             "model": settings.model if settings.mode == "deepseek" else "offline-rules",
             "thinking_effort": settings.thinking_effort if settings.mode == "deepseek" else None,
             "at": datetime.now(timezone.utc).isoformat(),
@@ -396,6 +399,7 @@ def main():
     # model_copy bypasses validation, so validate the full config again after overrides.
     s = type(s).model_validate({**s.model_dump(), "mode": args.mode, "live_enabled": args.mode == "deepseek"})
     cases = json.loads((ROOT / "evaldata/v2/cases.json").read_text())
+    cases += json.loads((ROOT / "evaldata/v2/additional_cases.json").read_text())
     if args.mode == "deepseek":
         ids = [
             1,

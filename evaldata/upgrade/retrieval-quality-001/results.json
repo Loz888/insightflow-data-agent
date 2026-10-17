@@ -1,0 +1,577 @@
+{
+  "authorized_tables": [
+    "customers",
+    "order_items",
+    "orders",
+    "products",
+    "refunds",
+    "campaign_daily",
+    "campaigns",
+    "inventory_snapshots",
+    "shipping_events",
+    "supplier_quotes"
+  ],
+  "schema_version": "218d8a5016da427e",
+  "results": [
+    {
+      "mode": "full",
+      "recall": 1.0,
+      "precision": 0.18,
+      "mean_context_bytes": 3900.7,
+      "runs": [
+        {
+          "question": "订单数量",
+          "expected": [
+            "orders"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.1,
+          "context_bytes": 3918,
+          "estimated_token_upper_bound": 4430
+        },
+        {
+          "question": "已支付营业收入",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.2,
+          "context_bytes": 3905,
+          "estimated_token_upper_bound": 4417
+        },
+        {
+          "question": "成功退货金额",
+          "expected": [
+            "orders",
+            "refunds"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.2,
+          "context_bytes": 3877,
+          "estimated_token_upper_bound": 4389
+        },
+        {
+          "question": "退款金额占比",
+          "expected": [
+            "order_items",
+            "orders",
+            "refunds"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.3,
+          "context_bytes": 3897,
+          "estimated_token_upper_bound": 4409
+        },
+        {
+          "question": "平均每单金额",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.2,
+          "context_bytes": 3853,
+          "estimated_token_upper_bound": 4365
+        },
+        {
+          "question": "已送达订单数量",
+          "expected": [
+            "orders",
+            "shipping_events"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.2,
+          "context_bytes": 3975,
+          "estimated_token_upper_bound": 4487
+        },
+        {
+          "question": "配送已送达订单数而非营销曝光",
+          "expected": [
+            "orders",
+            "shipping_events"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.2,
+          "context_bytes": 3973,
+          "estimated_token_upper_bound": 4485
+        },
+        {
+          "question": "商品平均标价而不是供应商成本",
+          "expected": [
+            "products"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.1,
+          "context_bytes": 3867,
+          "estimated_token_upper_bound": 4379
+        },
+        {
+          "question": "顾客数量",
+          "expected": [
+            "customers"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.1,
+          "context_bytes": 3851,
+          "estimated_token_upper_bound": 4363
+        },
+        {
+          "question": "GMV而非营销消耗",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "customers",
+            "inventory_snapshots",
+            "order_items",
+            "orders",
+            "products",
+            "refunds",
+            "shipping_events",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.2,
+          "context_bytes": 3891,
+          "estimated_token_upper_bound": 4403
+        }
+      ]
+    },
+    {
+      "mode": "rules",
+      "recall": 1.0,
+      "precision": 1.0,
+      "mean_context_bytes": 1213.3,
+      "runs": [
+        {
+          "question": "订单数量",
+          "expected": [
+            "orders"
+          ],
+          "selected": [
+            "orders"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 923,
+          "estimated_token_upper_bound": 1435
+        },
+        {
+          "question": "已支付营业收入",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "order_items",
+            "orders"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1340,
+          "estimated_token_upper_bound": 1852
+        },
+        {
+          "question": "成功退货金额",
+          "expected": [
+            "orders",
+            "refunds"
+          ],
+          "selected": [
+            "orders",
+            "refunds"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1238,
+          "estimated_token_upper_bound": 1750
+        },
+        {
+          "question": "退款金额占比",
+          "expected": [
+            "order_items",
+            "orders",
+            "refunds"
+          ],
+          "selected": [
+            "order_items",
+            "orders",
+            "refunds"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1688,
+          "estimated_token_upper_bound": 2200
+        },
+        {
+          "question": "平均每单金额",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "order_items",
+            "orders"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1288,
+          "estimated_token_upper_bound": 1800
+        },
+        {
+          "question": "已送达订单数量",
+          "expected": [
+            "orders",
+            "shipping_events"
+          ],
+          "selected": [
+            "orders",
+            "shipping_events"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1398,
+          "estimated_token_upper_bound": 1910
+        },
+        {
+          "question": "配送已送达订单数而非营销曝光",
+          "expected": [
+            "orders",
+            "shipping_events"
+          ],
+          "selected": [
+            "orders",
+            "shipping_events"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1396,
+          "estimated_token_upper_bound": 1908
+        },
+        {
+          "question": "商品平均标价而不是供应商成本",
+          "expected": [
+            "products"
+          ],
+          "selected": [
+            "products"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 757,
+          "estimated_token_upper_bound": 1269
+        },
+        {
+          "question": "顾客数量",
+          "expected": [
+            "customers"
+          ],
+          "selected": [
+            "customers"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 779,
+          "estimated_token_upper_bound": 1291
+        },
+        {
+          "question": "GMV而非营销消耗",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "order_items",
+            "orders"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1326,
+          "estimated_token_upper_bound": 1838
+        }
+      ]
+    },
+    {
+      "mode": "lexical",
+      "recall": 1.0,
+      "precision": 0.5666666666666667,
+      "mean_context_bytes": 1706.1,
+      "runs": [
+        {
+          "question": "订单数量",
+          "expected": [
+            "orders"
+          ],
+          "selected": [
+            "campaigns",
+            "order_items",
+            "orders"
+          ],
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "context_bytes": 1567,
+          "estimated_token_upper_bound": 2079
+        },
+        {
+          "question": "已支付营业收入",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "order_items",
+            "orders"
+          ],
+          "recall": 1.0,
+          "precision": 0.5,
+          "context_bytes": 1918,
+          "estimated_token_upper_bound": 2430
+        },
+        {
+          "question": "成功退货金额",
+          "expected": [
+            "orders",
+            "refunds"
+          ],
+          "selected": [
+            "orders",
+            "refunds"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1238,
+          "estimated_token_upper_bound": 1750
+        },
+        {
+          "question": "退款金额占比",
+          "expected": [
+            "order_items",
+            "orders",
+            "refunds"
+          ],
+          "selected": [
+            "order_items",
+            "orders",
+            "refunds"
+          ],
+          "recall": 1.0,
+          "precision": 1.0,
+          "context_bytes": 1688,
+          "estimated_token_upper_bound": 2200
+        },
+        {
+          "question": "平均每单金额",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "order_items",
+            "orders",
+            "refunds"
+          ],
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "context_bytes": 1644,
+          "estimated_token_upper_bound": 2156
+        },
+        {
+          "question": "已送达订单数量",
+          "expected": [
+            "orders",
+            "shipping_events"
+          ],
+          "selected": [
+            "campaigns",
+            "order_items",
+            "orders",
+            "shipping_events"
+          ],
+          "recall": 1.0,
+          "precision": 0.5,
+          "context_bytes": 2042,
+          "estimated_token_upper_bound": 2554
+        },
+        {
+          "question": "配送已送达订单数而非营销曝光",
+          "expected": [
+            "orders",
+            "shipping_events"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "orders",
+            "shipping_events"
+          ],
+          "recall": 1.0,
+          "precision": 0.5,
+          "context_bytes": 1974,
+          "estimated_token_upper_bound": 2486
+        },
+        {
+          "question": "商品平均标价而不是供应商成本",
+          "expected": [
+            "products"
+          ],
+          "selected": [
+            "inventory_snapshots",
+            "products",
+            "supplier_quotes"
+          ],
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "context_bytes": 1498,
+          "estimated_token_upper_bound": 2010
+        },
+        {
+          "question": "顾客数量",
+          "expected": [
+            "customers"
+          ],
+          "selected": [
+            "customers",
+            "inventory_snapshots",
+            "order_items"
+          ],
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "context_bytes": 1588,
+          "estimated_token_upper_bound": 2100
+        },
+        {
+          "question": "GMV而非营销消耗",
+          "expected": [
+            "order_items",
+            "orders"
+          ],
+          "selected": [
+            "campaign_daily",
+            "campaigns",
+            "order_items",
+            "orders"
+          ],
+          "recall": 1.0,
+          "precision": 0.5,
+          "context_bytes": 1904,
+          "estimated_token_upper_bound": 2416
+        }
+      ]
+    }
+  ],
+  "limitation": "Retrieval quality only; real-model effect is a separately paired experiment. Token bounds are not usage."
+}

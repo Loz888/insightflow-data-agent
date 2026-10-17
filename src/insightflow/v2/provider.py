@@ -37,11 +37,12 @@ class RequestBudget:
         return seconds
 
     def usage(self):
-        known = self.unknown_attempts == 0
+        known = self.calls > 0 and self.unknown_attempts == 0
         return {
             "http_attempts": self.calls,
             "retries": self.retries,
             "usage_known": known,
+            "usage_status": "NOT_APPLICABLE" if self.calls == 0 else "KNOWN" if known else "UNKNOWN",
             "input_tokens": self.input_tokens if known else None,
             "output_tokens": self.output_tokens if known else None,
             "unknown_attempts": self.unknown_attempts,
@@ -189,7 +190,27 @@ class AsyncDeepSeek:
                 error = Fault("MODEL_TIMEOUT", "模型请求超时。", True)
             except (httpx.TransportError, ConnectionError):
                 error = Fault("MODEL_NETWORK", "模型连接或流中断。", True)
-            except (ValidationError, ValueError, TypeError, KeyError, IndexError, AttributeError):
+            except ValidationError as exc:
+                fields = [
+                    {"path": ".".join(map(str, x["loc"])), "type": x["type"]}
+                    for x in exc.errors(include_input=False, include_url=False)
+                ]
+                budget.decisions.append({"task": task, "invalid_fields": fields})
+                forbidden = any(x["path"] == "name" and x["type"] == "literal_error" for x in fields)
+                error = Fault(
+                    "TOOL_DENIED" if forbidden else "MODEL_INVALID",
+                    "模型结构字段错误；未执行非法内容。",
+                    not forbidden,
+                )
+                messages.append(
+                    {
+                        "role": "system",
+                        "content": "The last JSON did not match the schema at these fields: "
+                        + json.dumps(fields)
+                        + ". Return corrected JSON with all required fields, especially call_id/name/arguments. Registered tools only.",
+                    }
+                )
+            except (ValueError, TypeError, KeyError, IndexError, AttributeError):
                 error = Fault("MODEL_INVALID", "模型返回非法JSON或字段。")
             except Fault as exc:
                 error = exc

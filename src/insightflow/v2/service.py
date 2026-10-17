@@ -88,6 +88,8 @@ class Runtime:
         rid = str(row["run_id"])
         principal = row["principal"]
         heartbeat = None
+        span_scope = self.telemetry.tracer.start_as_current_span("run", attributes={"run.id": rid})
+        run_span = span_scope.__enter__()
         self.telemetry.active.inc()
         started = time.perf_counter()
         session = None
@@ -179,6 +181,11 @@ class Runtime:
                     )
                 except Exception:
                     pass  # expired lease is recovered by reaper, never bypass fencing.
+            if error:
+                from opentelemetry.trace import StatusCode
+
+                run_span.set_status(StatusCode.ERROR, error)
+            span_scope.__exit__(None, None, None)
             self.telemetry.active.dec()
             self.telemetry.requests.labels(status).inc()
             self.telemetry.seconds.labels("run").observe(time.perf_counter() - started)
@@ -210,3 +217,4 @@ class Runtime:
         await self.provider.close()
         await asyncio.to_thread(self.executor.close)
         await asyncio.to_thread(self.store.close)
+        self.telemetry.trace_provider.shutdown()

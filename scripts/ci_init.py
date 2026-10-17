@@ -27,18 +27,21 @@ with psycopg.connect(dsn, autocommit=True, connect_timeout=3) as conn:
     for role, variable in [
         ("insightflow_owner", "INSIGHTFLOW_CI_OWNER_PASSWORD"),
         ("insightflow_reader", "INSIGHTFLOW_CI_READER_PASSWORD"),
+        ("insightflow_runtime", "INSIGHTFLOW_CI_RUNTIME_PASSWORD"),
     ]:
         conn.execute(
             sql.SQL(
                 "CREATE ROLE {} LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOINHERIT PASSWORD {}"
             ).format(sql.Identifier(role), sql.Literal(os.environ[variable]))
         )
-    for name in ("insightflow_dev", "insightflow_test"):
+    for name in ("insightflow_dev", "insightflow_test", "insightflow_v2_seed101", "insightflow_v2_seed202"):
         ident = sql.Identifier(name)
         conn.execute(sql.SQL("CREATE DATABASE {} OWNER insightflow_owner").format(ident))
         conn.execute(sql.SQL("REVOKE ALL ON DATABASE {} FROM PUBLIC").format(ident))
         conn.execute(
-            sql.SQL("GRANT CONNECT ON DATABASE {} TO insightflow_owner,insightflow_reader").format(ident)
+            sql.SQL(
+                "GRANT CONNECT ON DATABASE {} TO insightflow_owner,insightflow_reader,insightflow_runtime"
+            ).format(ident)
         )
         conn.execute(
             sql.SQL(

@@ -18,8 +18,23 @@ def seed(dsn, initialize=False, random_seed=20261020):
         if initialize:
             for p in sorted((ROOT / "migrations").glob("*.sql")):
                 conn.execute(p.read_text())
+        # All FK children must appear in the SAME TRUNCATE; no CASCADE into other schemas.
+        children = []
+        for table in ("shipping_events", "inventory_snapshots", "supplier_quotes"):
+            if conn.execute("SELECT to_regclass(%s)", ("business." + table,)).fetchone()[0]:
+                children.append("business." + table)
         conn.execute(
-            "TRUNCATE business.refunds,business.order_items,business.orders,business.products,business.customers"
+            "TRUNCATE "
+            + ",".join(
+                children
+                + [
+                    "business.refunds",
+                    "business.order_items",
+                    "business.orders",
+                    "business.products",
+                    "business.customers",
+                ]
+            )
         )
         regions = ["华东", "华南", "华北", "西部"]
         for i in range(1, 101):
@@ -65,6 +80,9 @@ def seed(dsn, initialize=False, random_seed=20261020):
                     "INSERT INTO business.refunds VALUES (%s,%s,%s,%s,%s)",
                     (refund_id, i, Decimal("1.00"), date + timedelta(days=3), "failed"),
                 )
+        for migration in sorted((ROOT / "migrations").glob("00[7-8]*.sql")):
+            if conn.execute("SELECT to_regclass('business.shipping_events')").fetchone()[0]:
+                conn.execute(migration.read_text())
         return {"customers": 100, "products": 30, "orders": 500, "order_items": item_id, "refunds": refund_id}
 
 

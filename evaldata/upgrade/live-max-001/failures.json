@@ -1,0 +1,689 @@
+[
+  {
+    "case_id": "v2-026",
+    "question": "2026年9月待支付订单数是多少？",
+    "split": "development",
+    "kind": "e2e",
+    "live": true,
+    "status": "failed",
+    "error_code": "MODEL_INVALID",
+    "expected": "answer",
+    "actual_disposition": null,
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "75ec756c-b4c7-4275-90e1-7cfed3bb8e0f",
+    "duration_ms": 6777.081951000127,
+    "result": {
+      "usage": {
+        "retries": 0,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 5443,
+        "reserved_usd": "0.0366714",
+        "http_attempts": 3,
+        "output_tokens": 759,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "pending_order_count",
+              "windows": [
+                {
+                  "end": "2026-10-01T00:00:00Z",
+                  "start": "2026-09-01T00:00:00Z"
+                }
+              ],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "count",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [],
+              "comparison_window": null
+            },
+            "message": "",
+            "summary": "Query the pending order count for September 2026 using the UTC half-open date range.",
+            "disposition": "query"
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "schema",
+            "call_id": "step_1",
+            "summary": "Inspect order fields needed for pending order count.",
+            "arguments": {
+              "query": "orders: id, ordered_at, status"
+            }
+          }
+        }
+      ]
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          21
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 1121,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 17:56:12.033254+08:00"
+      },
+      {
+        "event_id": 1122,
+        "stage": "running",
+        "payload": {
+          "base_version": 0
+        },
+        "at": "2026-10-17 17:56:12.043902+08:00"
+      },
+      {
+        "event_id": 1123,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 17:56:12.047862+08:00"
+      },
+      {
+        "event_id": 1124,
+        "stage": "retrieval",
+        "payload": {
+          "table_count": 2,
+          "schema_version": "5406f5f9558ff639"
+        },
+        "at": "2026-10-17 17:56:15.339404+08:00"
+      },
+      {
+        "event_id": 1125,
+        "stage": "tool_started",
+        "payload": {
+          "name": "schema",
+          "source": "model",
+          "call_id": "step_1",
+          "input_digest": "542c6e4c9292dc15006d4ddf1da18f04ecf2edc076047c146160efd47a61b239"
+        },
+        "at": "2026-10-17 17:56:17.581193+08:00"
+      },
+      {
+        "event_id": 1126,
+        "stage": "tool_finished",
+        "payload": {
+          "name": "schema",
+          "status": "ok",
+          "call_id": "step_1",
+          "result_ref": "b54c0d7b-8eb0-471f-81b9-de6d81cd61a5"
+        },
+        "at": "2026-10-17 17:56:17.584438+08:00"
+      },
+      {
+        "event_id": 1127,
+        "stage": "failed",
+        "payload": {
+          "code": "MODEL_INVALID"
+        },
+        "at": "2026-10-17 17:56:18.775133+08:00"
+      }
+    ]
+  },
+  {
+    "case_id": "v2-042",
+    "question": "近30天订单数是多少？",
+    "split": "development",
+    "kind": "e2e",
+    "live": true,
+    "status": "failed",
+    "error_code": "MODEL_INVALID",
+    "expected": "answer",
+    "actual_disposition": null,
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "1e272af6-b670-4e12-b7a5-811d75b9ad49",
+    "duration_ms": 5774.215608000077,
+    "result": {
+      "usage": {
+        "retries": 0,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 5451,
+        "reserved_usd": "0.0366888",
+        "http_attempts": 3,
+        "output_tokens": 745,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "order_count",
+              "windows": [
+                {
+                  "end": "2026-10-01T00:00:00Z",
+                  "start": "2026-09-01T00:00:00Z"
+                }
+              ],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "count",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [],
+              "comparison_window": null
+            },
+            "message": "",
+            "summary": "查询近30个完整UTC日的订单总数。",
+            "disposition": "query"
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "schema",
+            "call_id": "step_1",
+            "summary": "Inspect the authorized orders schema before building the order-count query.",
+            "arguments": {
+              "query": "orders table schema for order_count metric, including ordered_at and status"
+            }
+          }
+        }
+      ]
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          123
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 3546,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 17:58:49.820183+08:00"
+      },
+      {
+        "event_id": 3547,
+        "stage": "running",
+        "payload": {
+          "base_version": 0
+        },
+        "at": "2026-10-17 17:58:49.827268+08:00"
+      },
+      {
+        "event_id": 3548,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 17:58:49.830883+08:00"
+      },
+      {
+        "event_id": 3549,
+        "stage": "retrieval",
+        "payload": {
+          "table_count": 2,
+          "schema_version": "5406f5f9558ff639"
+        },
+        "at": "2026-10-17 17:58:52.418302+08:00"
+      },
+      {
+        "event_id": 3550,
+        "stage": "tool_started",
+        "payload": {
+          "name": "schema",
+          "source": "model",
+          "call_id": "step_1",
+          "input_digest": "8a43e1071c08e59ec6fb9508375a1f4b183df60eddaad5a79f85eb89f7550eed"
+        },
+        "at": "2026-10-17 17:58:54.145692+08:00"
+      },
+      {
+        "event_id": 3551,
+        "stage": "tool_finished",
+        "payload": {
+          "name": "schema",
+          "status": "ok",
+          "call_id": "step_1",
+          "result_ref": "58b2a0d1-202f-4c07-8d68-94106e6481cf"
+        },
+        "at": "2026-10-17 17:58:54.181748+08:00"
+      },
+      {
+        "event_id": 3552,
+        "stage": "failed",
+        "payload": {
+          "code": "MODEL_INVALID"
+        },
+        "at": "2026-10-17 17:58:55.550032+08:00"
+      }
+    ]
+  },
+  {
+    "case_id": "v2-046",
+    "question": "那华东地区呢？",
+    "split": "development",
+    "kind": "e2e",
+    "live": true,
+    "status": "failed",
+    "error_code": "MODEL_INVALID",
+    "expected": "answer",
+    "actual_disposition": null,
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "57dd95dc-35bb-4228-9feb-9e4aec899f37",
+    "duration_ms": 16838.479559000007,
+    "result": {
+      "usage": {
+        "retries": 0,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 5473,
+        "reserved_usd": "0.0366825",
+        "http_attempts": 3,
+        "output_tokens": 854,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "order_count",
+              "windows": [
+                {
+                  "end": "2026-10-01T00:00:00Z",
+                  "start": "2026-09-01T00:00:00Z"
+                }
+              ],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "count",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [
+                "华东"
+              ],
+              "comparison_window": null
+            },
+            "message": "查询同一时间段华东地区的订单数。",
+            "summary": "继承上一问的订单数指标、统计窗口和排序，仅将地区范围限定为华东。",
+            "disposition": "query"
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "schema",
+            "call_id": "step_1",
+            "summary": "Inspect schema for orders and customers region filtering",
+            "arguments": {
+              "query": "orders customers region order_count"
+            }
+          }
+        }
+      ]
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          32
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 3577,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 17:59:13.866689+08:00"
+      },
+      {
+        "event_id": 3578,
+        "stage": "running",
+        "payload": {
+          "base_version": 1
+        },
+        "at": "2026-10-17 17:59:13.875201+08:00"
+      },
+      {
+        "event_id": 3579,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 17:59:13.878652+08:00"
+      },
+      {
+        "event_id": 3580,
+        "stage": "retrieval",
+        "payload": {
+          "table_count": 2,
+          "schema_version": "5406f5f9558ff639"
+        },
+        "at": "2026-10-17 17:59:17.234448+08:00"
+      },
+      {
+        "event_id": 3581,
+        "stage": "tool_started",
+        "payload": {
+          "name": "schema",
+          "source": "model",
+          "call_id": "step_1",
+          "input_digest": "db79d969feaa65a2632acff24d5480e41a3376856563fe13c53bb9939c466dbf"
+        },
+        "at": "2026-10-17 17:59:19.324706+08:00"
+      },
+      {
+        "event_id": 3582,
+        "stage": "tool_finished",
+        "payload": {
+          "name": "schema",
+          "status": "ok",
+          "call_id": "step_1",
+          "result_ref": "1682a6a5-5caa-45b6-98cb-e7ebe1751494"
+        },
+        "at": "2026-10-17 17:59:19.328166+08:00"
+      },
+      {
+        "event_id": 3583,
+        "stage": "failed",
+        "payload": {
+          "code": "MODEL_INVALID"
+        },
+        "at": "2026-10-17 17:59:20.593243+08:00"
+      }
+    ]
+  },
+  {
+    "case_id": "v2-048",
+    "question": "那华北地区的销售额呢？",
+    "split": "frozen_seen",
+    "kind": "e2e",
+    "live": true,
+    "status": "failed",
+    "error_code": "MODEL_INVALID",
+    "expected": "answer",
+    "actual_disposition": null,
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "a288ba30-735b-45e9-8984-95b91fc5a3ce",
+    "duration_ms": 17328.254197999966,
+    "result": {
+      "usage": {
+        "retries": 0,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 5765,
+        "reserved_usd": "0.0370203",
+        "http_attempts": 3,
+        "output_tokens": 880,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "paid_revenue",
+              "windows": [
+                {
+                  "end": "2026-10-01T00:00:00Z",
+                  "start": "2026-09-01T00:00:00Z"
+                }
+              ],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "sum",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [
+                "华北"
+              ],
+              "comparison_window": null
+            },
+            "message": "",
+            "summary": "查询华北地区与上一问同期的已支付销售额。",
+            "disposition": "query"
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "schema",
+            "call_id": "step_1",
+            "summary": "Inspect authorized schema for sales by customer region.",
+            "arguments": {
+              "query": "orders customers order_items tables columns status ordered_at region customer_id order_id quantity unit_price"
+            }
+          }
+        }
+      ]
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "8049.00"
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 3620,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 17:59:49.433414+08:00"
+      },
+      {
+        "event_id": 3621,
+        "stage": "running",
+        "payload": {
+          "base_version": 1
+        },
+        "at": "2026-10-17 17:59:49.441888+08:00"
+      },
+      {
+        "event_id": 3622,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 17:59:49.445378+08:00"
+      },
+      {
+        "event_id": 3623,
+        "stage": "retrieval",
+        "payload": {
+          "table_count": 3,
+          "schema_version": "5406f5f9558ff639"
+        },
+        "at": "2026-10-17 17:59:53.320577+08:00"
+      },
+      {
+        "event_id": 3624,
+        "stage": "tool_started",
+        "payload": {
+          "name": "schema",
+          "source": "model",
+          "call_id": "step_1",
+          "input_digest": "b8deb32b5f43e3ae945f3ee5bf7769a0d20155a3439ba1d3ed03c544aac1ffbd"
+        },
+        "at": "2026-10-17 17:59:54.988223+08:00"
+      },
+      {
+        "event_id": 3625,
+        "stage": "tool_finished",
+        "payload": {
+          "name": "schema",
+          "status": "ok",
+          "call_id": "step_1",
+          "result_ref": "21bfe70f-3943-4d3f-90b9-d1e33145c1a5"
+        },
+        "at": "2026-10-17 17:59:54.991466+08:00"
+      },
+      {
+        "event_id": 3626,
+        "stage": "failed",
+        "payload": {
+          "code": "MODEL_INVALID"
+        },
+        "at": "2026-10-17 17:59:53.753342+08:00"
+      }
+    ]
+  },
+  {
+    "case_id": "v2-051",
+    "question": "2026年9月订单数同比增长多少？",
+    "split": "development",
+    "kind": "e2e",
+    "live": true,
+    "status": "succeeded",
+    "error_code": null,
+    "expected": "clarify",
+    "actual_disposition": "reject",
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "26ae80ca-8d93-4188-a94c-1c9f1360fe08",
+    "duration_ms": 42022.8625499999,
+    "result": {
+      "sql": [],
+      "model": "deepseek-flash",
+      "usage": {
+        "retries": 1,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": false,
+        "input_tokens": null,
+        "reserved_usd": "0.0237762",
+        "http_attempts": 2,
+        "output_tokens": null,
+        "unknown_attempts": 1,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "answer": "当前数据覆盖范围不包含去年九月，无法计算 2026 年 9 月订单数的同比增长；未观测到的历史数据不能按零处理。可改为查询 2026 年 9 月订单数，或提供覆盖去年九月的订单数据。",
+      "run_id": "26ae80ca-8d93-4188-a94c-1c9f1360fe08",
+      "evidence": {},
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": null,
+            "message": "当前数据覆盖范围不包含去年九月，无法计算 2026 年 9 月订单数的同比增长；未观测到的历史数据不能按零处理。可改为查询 2026 年 9 月订单数，或提供覆盖去年九月的订单数据。",
+            "summary": "同比所需的历史同期数据不在覆盖范围内",
+            "disposition": "reject"
+          }
+        }
+      ],
+      "disposition": "reject",
+      "duration_ms": 41982.45194299989
+    },
+    "reference": null,
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 3643,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 18:00:14.550312+08:00"
+      },
+      {
+        "event_id": 3644,
+        "stage": "running",
+        "payload": {
+          "base_version": 0
+        },
+        "at": "2026-10-17 18:00:14.558238+08:00"
+      },
+      {
+        "event_id": 3645,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 18:00:14.561754+08:00"
+      },
+      {
+        "event_id": 3646,
+        "stage": "succeeded",
+        "payload": {},
+        "at": "2026-10-17 18:00:54.027569+08:00"
+      }
+    ]
+  }
+]

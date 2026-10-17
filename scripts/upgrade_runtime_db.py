@@ -18,6 +18,7 @@ def main():
     if os.geteuid() != 0:
         raise SystemExit("Administrator required for isolated runtime role provisioning")
     env = ROOT / ".env"
+    original = env.stat()
     values = dotenv_values(env)
     password = values.get("INSIGHTFLOW_RUNTIME_PASSWORD") or secrets.token_urlsafe(32)
     # Connect as cluster admin using peer identity; never alter global authentication settings.
@@ -70,6 +71,7 @@ def main():
             quote_mode="always",
         )
     os.chmod(env, 0o600)
+    os.chown(env, original.st_uid, original.st_gid)
     print(
         "Additive runtime migrations applied to dedicated dev/test databases; local secrets saved privately."
     )

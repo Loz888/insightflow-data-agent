@@ -1,6 +1,7 @@
 """Scan actual Git blobs, including reachable history, without printing matches."""
 
 import argparse
+import json
 import os
 from pathlib import Path
 import re
@@ -31,9 +32,14 @@ def main():
     known = []
     if (root / ".env").exists():
         for key, value in dotenv_values(root / ".env").items():
-            if value and ("DATABASE_URL" in key or "KEY" in key or "TOKEN" in key):
+            if value and ("URL" in key or "KEY" in key or "TOKEN" in key or "PASSWORD" in key):
                 known.append(value)
-                if "DATABASE_URL" in key:
+                if "AUTH_TOKENS" in key:
+                    try:
+                        known.extend(json.loads(value).keys())
+                    except (ValueError, TypeError, AttributeError):
+                        pass
+                if "URL" in key:
                     try:
                         known.append(conninfo_to_dict(value).get("password", ""))
                     except Exception:

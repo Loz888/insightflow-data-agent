@@ -1,0 +1,7 @@
+{
+  "version": "v2.1",
+  "preserves_v2_0_sha256": "c30d189525328ad731fc75cfe41e3e16f0505546e2761d301b875ef789a4c17c",
+  "additional_cases": 5,
+  "sha256": "fad60e3d0a0bbaaa719986a549a57616ed8ec5451aadf06574f4a7d707d28b1c",
+  "changes": "Additive shipping-related schema with duplicate-event fan-out negative control; zero/NULL date cohort. No original answers changed."
+}

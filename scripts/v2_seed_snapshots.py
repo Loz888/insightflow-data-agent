@@ -47,12 +47,17 @@ def main():
                 for migration in sorted((ROOT / "migrations").glob("00[1-4]*.sql")):
                     c.execute(migration.read_text())
             counts = seed(owner, random_seed=n)
+            with checked_connection(owner, owner=True) as c:
+                c.execute((ROOT / "migrations/007_v2_business_extensions.sql").read_text())
         else:
             with checked_connection(owner, owner=True) as c:
                 counts = {
                     t: c.execute("SELECT count(*) FROM business." + t).fetchone()[0]
                     for t in ("customers", "products", "orders", "order_items", "refunds")
                 }
+        with checked_connection(owner, owner=True) as c:
+            for extension in sorted((ROOT / "migrations").glob("00[7-8]*.sql")):
+                c.execute(extension.read_text())
         reader = conninfo_to_dict(d["INSIGHTFLOW_DATABASE_URL"])
         reader["dbname"] = name
         set_key(

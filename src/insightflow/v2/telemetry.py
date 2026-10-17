@@ -1,7 +1,38 @@
 from contextlib import contextmanager
 from time import perf_counter
 from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram, generate_latest
-from opentelemetry import trace
+from collections import deque
+from threading import Lock
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import SpanExporter, SpanExportResult, SimpleSpanProcessor
+
+
+class BoundedExporter(SpanExporter):
+    def __init__(self):
+        self.spans = deque(maxlen=2000)
+        self.lock = Lock()
+
+    def export(self, spans):
+        with self.lock:
+            for span in spans:
+                self.spans.append(
+                    {
+                        "name": span.name,
+                        "trace_id": format(span.context.trace_id, "032x"),
+                        "span_id": format(span.context.span_id, "016x"),
+                        "run_id": span.attributes.get("run.id"),
+                        "duration_ms": (span.end_time - span.start_time) / 1000000,
+                        "status": span.status.status_code.name,
+                    }
+                )
+        return SpanExportResult.SUCCESS
+
+    def shutdown(self):
+        pass
+
+    def for_run(self, rid):
+        with self.lock:
+            return [s for s in self.spans if s["run_id"] == str(rid)]
 
 
 class Telemetry:
@@ -30,7 +61,22 @@ class Telemetry:
             "Conservative reservations; not supplier bill",
             registry=self.registry,
         )
-        self.tracer = trace.get_tracer("insightflow.v2")
+        self.pool_wait = Gauge(
+            "insightflow_pool_wait_seconds",
+            "Cumulative actual psycopg pool wait",
+            ["pool"],
+            registry=self.registry,
+        )
+        self.pool_waiting = Gauge(
+            "insightflow_pool_waiting",
+            "Actual queued psycopg pool borrowers",
+            ["pool"],
+            registry=self.registry,
+        )
+        self.exporter = BoundedExporter()
+        self.trace_provider = TracerProvider()
+        self.trace_provider.add_span_processor(SimpleSpanProcessor(self.exporter))
+        self.tracer = self.trace_provider.get_tracer("insightflow.v2")
 
     @contextmanager
     def stage(self, name, run_id):

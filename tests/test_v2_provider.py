@@ -114,7 +114,7 @@ def test_http_classification(status, code, calls):
         ("not JSON", "stop", "MODEL_INVALID"),
         (" ", "stop", "MODEL_INVALID"),
         ("{", "length", "MODEL_TRUNCATED"),
-        ('{"call_id":"x","name":"shell","arguments":{}}', "stop", "MODEL_INVALID"),
+        ('{"call_id":"x","name":"shell","arguments":{}}', "stop", "TOOL_DENIED"),
         ('{"call_id":"x","name":"schema","arguments":{},"unexpected":1}', "stop", "MODEL_INVALID"),
     ],
 )
@@ -180,3 +180,24 @@ def test_configuration_not_asserts(kw):
     args.update(kw)
     with pytest.raises(ValueError):
         V2Settings(**args)
+
+
+def test_structural_field_retry_keeps_budget_and_diagnostics():
+    def handler(r, n):
+        content = '{"call_id":12,"name":"schema","arguments":{}}' if n == 1 else None
+        return httpx.Response(200, json=raw(content))
+
+    action, budget, ledger, _ = run_protocol(handler)
+    assert action.name == "schema" and budget.calls == 2
+    assert any("invalid_fields" in x for x in budget.decisions)
+    assert len(ledger.reservations) == 2
+
+
+def test_otel_sdk_export_is_real_and_bounded():
+    t = Telemetry()
+    with t.stage("sql", "controlled-run"):
+        pass
+    spans = t.exporter.for_run("controlled-run")
+    assert len(spans) == 1 and spans[0]["name"] == "sql" and int(spans[0]["trace_id"], 16) != 0
+    assert spans[0]["duration_ms"] >= 0
+    t.trace_provider.shutdown()

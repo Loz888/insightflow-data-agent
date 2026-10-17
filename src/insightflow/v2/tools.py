@@ -6,7 +6,7 @@ from uuid import uuid4
 from pydantic import ValidationError
 from insightflow.agent.cancellation import Cancellation
 from insightflow.database.errors import AgentError
-from insightflow.retrieval.glossary import METRICS
+from insightflow.v2.definitions import METRICS
 from insightflow.v2.contracts import SchemaArgs, MetricArgs, SQLArgs, CompareArgs, ToolResult
 from insightflow.v2.errors import Fault
 from insightflow.v2.semantics import SemanticSQLGuard
@@ -55,6 +55,13 @@ class Registry:
         elif name in ("validate_sql", "execute_sql"):
             if not {"schema", "metric"} <= successful:
                 raise Fault("TOOL_ORDER", "执行前必须查询授权Schema和指标口径。", True)
+            if state.get("selected", {}).get("schema_version") != self.retriever.version:
+                raise Fault("SCHEMA_CHANGED", "Schema已变化，请重新开始请求。")
+            from insightflow.database.validator import SQLValidator
+
+            current_validator = SQLValidator(self.retriever.tables)
+            self.guard = SemanticSQLGuard(current_validator)
+            self.executor.validator = current_validator
             validated = self.guard.validate(args.sql, plan, args.period)
             if name == "validate_sql":
                 value = {"valid": True, "tables": validated.tables, "period": args.period}

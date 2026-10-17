@@ -14,6 +14,7 @@ COVERAGE_START = datetime(2026, 6, 3, tzinfo=UTC)
 COVERAGE_END = datetime(2026, 10, 1, tzinfo=UTC)
 REGIONS = ("华东", "华南", "华北", "西部")
 AGGREGATIONS = {
+    "delivered_order_count": "count",
     "customer_count": "count",
     "product_count": "count",
     "order_count": "count",
@@ -100,6 +101,31 @@ def guard_question(question, plan, previous, clock):
         re.I,
     ):
         raise Fault("SAFETY_DENIED", "请求涉及未授权操作或指令覆盖。")
+    explicit_metrics = [
+        ("已送达订单数", "delivered_order_count"),
+        ("退款金额率", "refund_amount_rate"),
+        ("退款订单率", "refunded_order_rate"),
+        ("退款率", "refunded_order_rate"),
+        ("退款金额", "refund_amount"),
+        ("客单价", "average_order_value"),
+        ("GMV", "gmv"),
+        ("销售额", "paid_revenue"),
+        ("营收", "paid_revenue"),
+        ("已支付订单", "paid_order_count"),
+        ("待支付订单", "pending_order_count"),
+        ("取消订单", "cancelled_order_count"),
+        ("订单总数", "order_count"),
+        ("订单数", "order_count"),
+        ("客户数", "customer_count"),
+        ("商品数", "product_count"),
+    ]
+    for phrase, metric in explicit_metrics:
+        if phrase.lower() in question.lower():
+            if metric != plan.metric:
+                raise Fault("SEMANTIC_MISMATCH", "明确指标与模型计划不一致。", True)
+            break
+    if re.search(r"(?:排除|不含)(?:已支付|待支付|已取消|取消)", question):
+        raise Fault("CLARIFICATION", "订单状态排除尚未定义，请使用明确的受支持指标。")
     if plan.aggregation != AGGREGATIONS[plan.metric]:
         raise Fault("SEMANTIC_MISMATCH", "指标与聚合口径不一致。", True)
     windows = explicit_windows(question, clock)
@@ -207,6 +233,8 @@ def reference_sql(p, period="current"):
         source = "business.orders AS o"
         if p.include_regions or p.exclude_regions or p.dimension == "region":
             source += " JOIN business.customers AS c ON o.customer_id = c.id"
+        if m == "delivered_order_count":
+            source += " JOIN (SELECT order_id FROM business.shipping_events WHERE status = 'delivered' GROUP BY order_id) AS d ON o.id = d.order_id"
         needs_sales = m in ("paid_revenue", "gmv", "refund_amount_rate", "average_order_value")
         needs_refunds = m in ("refund_amount", "refund_amount_rate", "refunded_order_rate")
         if needs_sales:
@@ -215,6 +243,7 @@ def reference_sql(p, period="current"):
             source += " LEFT JOIN (SELECT order_id, SUM(refund_amount) AS refunded FROM business.refunds WHERE status = 'succeeded' GROUP BY order_id) AS r ON o.id = r.order_id"
         expression = {
             "order_count": "COUNT(*)",
+            "delivered_order_count": "COUNT(*)",
             "paid_order_count": "COUNT(*)",
             "pending_order_count": "COUNT(*)",
             "cancelled_order_count": "COUNT(*)",

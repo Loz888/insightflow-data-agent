@@ -37,7 +37,7 @@ def test_replay_schema_constraints_indexes(database_urls):
         assert conn.execute("SELECT count(*) FROM pg_indexes WHERE schemaname='business'").fetchone()[0] >= 11
         assert (
             conn.execute(
-                "SELECT count(*) FROM information_schema.table_constraints WHERE table_schema='business' AND constraint_type='FOREIGN KEY'"
+                "SELECT count(*) FROM information_schema.table_constraints WHERE table_schema='business' AND table_name IN ('customers','products','orders','order_items','refunds') AND constraint_type='FOREIGN KEY'"
             ).fetchone()[0]
             == 4
         )

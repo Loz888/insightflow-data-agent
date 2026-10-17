@@ -1,0 +1,80 @@
+[
+  {
+    "question": "订单数量",
+    "metric": "order_count",
+    "tables": [
+      "orders"
+    ]
+  },
+  {
+    "question": "已支付营业收入",
+    "metric": "paid_revenue",
+    "tables": [
+      "orders",
+      "order_items"
+    ]
+  },
+  {
+    "question": "成功退货金额",
+    "metric": "refund_amount",
+    "tables": [
+      "orders",
+      "refunds"
+    ]
+  },
+  {
+    "question": "退款金额占比",
+    "metric": "refund_amount_rate",
+    "tables": [
+      "orders",
+      "order_items",
+      "refunds"
+    ]
+  },
+  {
+    "question": "平均每单金额",
+    "metric": "average_order_value",
+    "tables": [
+      "orders",
+      "order_items"
+    ]
+  },
+  {
+    "question": "已送达订单数量",
+    "metric": "delivered_order_count",
+    "tables": [
+      "orders",
+      "shipping_events"
+    ]
+  },
+  {
+    "question": "配送已送达订单数而非营销曝光",
+    "metric": "delivered_order_count",
+    "tables": [
+      "orders",
+      "shipping_events"
+    ]
+  },
+  {
+    "question": "商品平均标价而不是供应商成本",
+    "metric": "average_price",
+    "tables": [
+      "products"
+    ]
+  },
+  {
+    "question": "顾客数量",
+    "metric": "customer_count",
+    "tables": [
+      "customers"
+    ]
+  },
+  {
+    "question": "GMV而非营销消耗",
+    "metric": "gmv",
+    "tables": [
+      "orders",
+      "order_items"
+    ]
+  }
+]

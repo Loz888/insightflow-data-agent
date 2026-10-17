@@ -37,10 +37,18 @@ class V2Settings(BaseSettings):
     max_http_attempts: int = Field(500, ge=1, le=1000)
     lease_seconds: float = Field(15, ge=3, le=120)
     idempotency_ttl_seconds: int = Field(86400, ge=60, le=604800)
-    retrieval_mode: Literal["full", "rules", "lexical"] = "lexical"
+    retrieval_mode: Literal["full", "rules", "lexical"] = "rules"
     context_enabled: bool = True
     feedback_enabled: bool = True
     stream_model: bool = False
+
+    def __init__(self, **values):
+        explicit = values.get("auth_tokens")
+        if "auth_tokens" in values and not explicit:
+            raise ValueError("explicit empty auth_tokens is invalid")
+        super().__init__(**values)
+        if explicit is not None:
+            self.auth_tokens = dict(explicit)
 
     @model_validator(mode="after")
     def valid(self):

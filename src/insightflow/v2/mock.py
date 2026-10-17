@@ -22,6 +22,7 @@ class OfflineProvider:
                 return Decision(disposition="reject", message="未授权操作。")
             metric = old.get("metric")
             mapping = [
+                ("已送达订单数", "delivered_order_count"),
                 ("退款金额率", "refund_amount_rate"),
                 ("退款订单率", "refunded_order_rate"),
                 ("退款率", "refunded_order_rate"),
@@ -33,11 +34,14 @@ class OfflineProvider:
                 ("已支付订单", "paid_order_count"),
                 ("待支付订单", "pending_order_count"),
                 ("取消订单", "cancelled_order_count"),
+                ("订单总数", "order_count"),
                 ("订单数", "order_count"),
                 ("订单数量", "order_count"),
                 ("成交单数", "order_count"),
+                ("客户总数", "customer_count"),
                 ("客户数", "customer_count"),
                 ("顾客数", "customer_count"),
+                ("商品总数", "product_count"),
                 ("商品数", "product_count"),
                 ("平均标价", "average_price"),
                 ("最高标价", "max_price"),

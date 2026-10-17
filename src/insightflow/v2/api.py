@@ -137,6 +137,17 @@ def create_app(settings=None, provider=None):
     async def get_run(run_id: str, request: Request, user=Depends(principal)):
         return public(await asyncio.to_thread(request.app.state.runtime.store.get, rid(run_id), user))
 
+    @app.get("/v2/runs/{run_id}/trace")
+    async def trace_run(run_id: str, request: Request, user=Depends(principal)):
+        rt = request.app.state.runtime
+        run_id = rid(run_id)
+        await asyncio.to_thread(rt.store.get, run_id, user)
+        return {
+            "run_id": run_id,
+            "spans": rt.telemetry.exporter.for_run(run_id),
+            "scope": "bounded process-local OTel SDK spans; persistent events remain in PostgreSQL",
+        }
+
     @app.post("/v2/runs/{run_id}/cancel")
     async def cancel(run_id: str, request: Request, user=Depends(principal)):
         rt = request.app.state.runtime

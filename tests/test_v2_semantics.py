@@ -200,3 +200,9 @@ def test_unsupported_clarifies(q):
             guard_question(q, d.plan, {}, CLOCK)
     else:
         assert d.disposition == "clarify"
+
+
+def test_wrong_metric_plan_rejected_even_if_its_sql_is_safe():
+    wrong = plan("2026年9月已支付订单数").plan
+    with pytest.raises(Fault, match="指标"):
+        guard_question("2026年9月订单数是多少？", wrong, {}, CLOCK)

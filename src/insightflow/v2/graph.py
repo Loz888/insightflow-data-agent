@@ -6,13 +6,13 @@ import re
 from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
 from insightflow.database.errors import AgentError
-from insightflow.retrieval.glossary import METRICS
+from insightflow.v2.definitions import METRICS
 from insightflow.v2.contracts import Decision, Action, Answer
 from insightflow.v2.errors import Fault
 from insightflow.v2.semantics import guard_question, COVERAGE_START, COVERAGE_END
 
 SQL_CONVENTIONS = """Use PostgreSQL canonical supported contract: physical tables business.orders AS o, customers AS c, products AS p.
-Order counts COUNT(*) AS value; customer/product counts COUNT(*) AS value. Product avg/min/max use p.price.
+Delivered orders additionally JOIN (SELECT order_id FROM business.shipping_events WHERE status = 'delivered' GROUP BY order_id) AS d ON o.id = d.order_id and require o.status = 'paid'. Order counts COUNT(*) AS value; customer/product counts COUNT(*) AS value. Product avg/min/max use p.price.
 Date predicates o.ordered_at >= CAST('YYYY-MM-DDTHH:MM:SSZ' AS TIMESTAMPTZ) AND o.ordered_at < CAST(... AS TIMESTAMPTZ), wrapped in parentheses; multiple windows OR.
 Order/customer join o.customer_id = c.id. Regions c.region IN (...) or NOT IN (...), alphabetically sorted values. All explicit filters AND, time then status then include then exclude.
 Status for paid metrics o.status = 'paid'; GMV o.status <> 'cancelled'; pending/cancelled counts their exact status.
@@ -82,7 +82,7 @@ def build_graph(provider, registry, settings, store, telemetry):
                 "reference_time": settings.reference_time.isoformat(),
                 "coverage": [COVERAGE_START.isoformat(), COVERAGE_END.isoformat()],
                 "trusted_metrics": METRICS,
-                "rules": "Interpret all modifiers; uncertainty -> clarify. Relative N days = N complete UTC days before reference day; do not substitute data max time. Explicit conditions override, omitted conditions inherit. No unseen data counted as zero.",
+                "rules": "Use disposition clarify for unavailable data, ambiguity or unsupported business requests; reserve reject for security/authorization violations. Interpret all modifiers; uncertainty -> clarify. Relative N days = N complete UTC days before reference day; do not substitute data max time. Explicit conditions override, omitted conditions inherit. No unseen data counted as zero.",
             },
             Decision,
             s["budget"],

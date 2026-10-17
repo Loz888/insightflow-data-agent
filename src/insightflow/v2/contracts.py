@@ -1,7 +1,9 @@
 from datetime import datetime
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-from insightflow.llm.base import Metric
+from insightflow.llm.base import Metric as V1Metric
+
+Metric = V1Metric | Literal["delivered_order_count"]
 
 
 class Strict(BaseModel):
