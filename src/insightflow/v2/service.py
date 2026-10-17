@@ -2,7 +2,6 @@ import asyncio
 import time
 from contextlib import suppress
 from uuid import uuid4
-from datetime import datetime, timezone
 from insightflow.config import Settings
 from insightflow.database.executor import ReadonlyExecutor
 from insightflow.v2.errors import Fault
@@ -57,11 +56,13 @@ class Runtime:
         if self.closing:
             raise Fault("SHUTTING_DOWN")
         # Replays must work even when overloaded; only new work consumes admission capacity.
+        local_deadline = time.monotonic() + self.s.request_seconds
         row, created = await asyncio.to_thread(
             self.store.enqueue, principal, body, self.s.request_seconds, self.s.idempotency_ttl_seconds
         )
         rid = str(row["run_id"])
         if created:
+            row["_local_deadline"] = local_deadline
             if len(self.tasks) >= self.s.active_limit:
                 await asyncio.to_thread(
                     self.store.complete, rid, principal, self.owner, "failed", None, None, None, "OVERLOADED"
@@ -102,9 +103,7 @@ class Runtime:
         session = None
         status = "failed"
         error = None
-        budget = RequestBudget(
-            rid, time.monotonic() + max(0, (row["deadline"] - datetime.now(timezone.utc)).total_seconds())
-        )
+        budget = RequestBudget(rid, row.get("_local_deadline", time.monotonic() + self.s.request_seconds))
         try:
             async with asyncio.timeout(budget.remaining()):
                 queue_started = time.monotonic()

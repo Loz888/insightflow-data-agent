@@ -5,7 +5,6 @@ Queued work has durable ordering; process-lost work is marked interrupted, never
 import hashlib
 import json
 from uuid import uuid4, UUID
-from datetime import datetime, timezone
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 from psycopg_pool import ConnectionPool
@@ -116,7 +115,11 @@ class Store:
             ).fetchone()
             if run["status"] != "queued":
                 return None
-            if session["lease_until"] and session["lease_until"] > datetime.now(timezone.utc):
+            if (
+                session["lease_until"]
+                and session["lease_until"]
+                > c.execute("SELECT clock_timestamp() AS server_now").fetchone()["server_now"]
+            ):
                 return None
             if session["active_run"]:
                 lost = str(session["active_run"])
@@ -193,7 +196,8 @@ class Store:
                 if (
                     str(session["active_run"]) != str(rid)
                     or str(session["lease_owner"]) != str(UUID(str(owner)))
-                    or session["lease_until"] <= datetime.now(timezone.utc)
+                    or session["lease_until"]
+                    <= c.execute("SELECT clock_timestamp() AS server_now").fetchone()["server_now"]
                 ):
                     raise Fault("LEASE_LOST", "旧进程无法提交新会话事实。")
             if run["cancel_requested"]:
@@ -201,7 +205,11 @@ class Store:
                 result = None
                 plan = None
                 error = "CANCELLED"
-            if run["deadline"] <= datetime.now(timezone.utc) and status == "succeeded":
+            if (
+                run["deadline"]
+                <= c.execute("SELECT clock_timestamp() AS server_now").fetchone()["server_now"]
+                and status == "succeeded"
+            ):
                 status = "failed"
                 result = None
                 plan = None
