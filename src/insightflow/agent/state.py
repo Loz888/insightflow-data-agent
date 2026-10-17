@@ -23,3 +23,7 @@ class AgentState(TypedDict, total=False):
     usage: dict[str, Any]
     history: list[dict[str, Any]]
     context_budget: dict[str, Any]
+    model_name: str
+    timings: dict[str, float]
+    node_events: list[dict[str, Any]]
+    total_duration_ms: float

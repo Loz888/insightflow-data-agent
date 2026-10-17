@@ -1,12 +1,10 @@
 from insightflow.llm.base import Metric
-import json
-import logging
 import time
 from typing import Callable, TypeVar
 from pydantic import BaseModel, Field, ConfigDict
 from insightflow.database.errors import AgentError
 
-log = logging.getLogger("insightflow.tools")
+from insightflow.observability import event, emit
 
 T = TypeVar("T")
 
@@ -54,16 +52,4 @@ class Tools:
             error = exc.kind.value
             raise
         finally:
-            log.info(
-                json.dumps(
-                    {
-                        "request_id": state["request_id"],
-                        "session_id": state["session_id"],
-                        "node_name": node,
-                        "tool_name": tool,
-                        "duration_ms": round((time.perf_counter() - started) * 1000, 3),
-                        "error_kind": error,
-                    },
-                    ensure_ascii=False,
-                )
-            )
+            emit(event(state, node, (time.perf_counter() - started) * 1000, error, tool))

@@ -1,3 +1,5 @@
+import time
+from insightflow.observability import observed_node
 from insightflow.database.errors import AgentError, ErrorKind
 
 
@@ -26,6 +28,7 @@ class Nodes:
                 "retryable": False,
             }
 
+    @observed_node("UnderstandQuestion")
     def understand(self, s):
         def run():
             plan = self.provider.understand(s["question"], s.get("conversation_context", {}))
@@ -33,6 +36,7 @@ class Nodes:
 
         return self.call(s, "UnderstandQuestion", run)
 
+    @observed_node("SelectSchema")
     def select(self, s):
         from insightflow.llm.base import Plan
         from insightflow.retrieval.retriever import SchemaRetriever
@@ -73,29 +77,43 @@ class Nodes:
 
         return self.call(s, "SelectSchema", run)
 
+    @observed_node("GenerateSQL")
     def generate(self, s):
         from insightflow.llm.base import Plan
         from insightflow.context.manager import ContextManager
 
+        measured = {"context_duration_ms": 0.0, "generation_duration_ms": 0.0}
+
         def run():
-            context = ContextManager(self.settings).build(
-                s["question"],
-                Plan.model_validate(s["plan"]),
-                s["retrieved_context"],
-                s.get("history", []),
-                s.get("feedback"),
-            )
-            generated = self.provider.generate(
-                Plan.model_validate(s["plan"]), context["text"], s.get("feedback")
-            )
+            started = time.perf_counter()
+            try:
+                context = ContextManager(self.settings).build(
+                    s["question"],
+                    Plan.model_validate(s["plan"]),
+                    s["retrieved_context"],
+                    s.get("history", []),
+                    s.get("feedback"),
+                )
+            finally:
+                measured["context_duration_ms"] = (time.perf_counter() - started) * 1000
+            started = time.perf_counter()
+            try:
+                generated = self.provider.generate(
+                    Plan.model_validate(s["plan"]), context["text"], s.get("feedback")
+                )
+            finally:
+                measured["generation_duration_ms"] = (time.perf_counter() - started) * 1000
             return {
                 "generated_sql": generated.sql,
                 "model_calls": s.get("model_calls", 0) + 1,
                 "context_budget": context,
             }
 
-        return self.call(s, "GenerateSQL", run)
+        result = self.call(s, "GenerateSQL", run)
+        result["_timing_additions"] = measured
+        return result
 
+    @observed_node("ValidateSQL")
     def validate(self, s):
         def run():
             checked = self.tools.executor.validator.validate(s["generated_sql"])
@@ -103,6 +121,7 @@ class Nodes:
 
         return self.call(s, "ValidateSQL", run)
 
+    @observed_node("ExecuteSQL")
     def execute(self, s):
         def run():
             rows = self.tools.measured(
@@ -115,6 +134,7 @@ class Nodes:
 
         return self.call(s, "ExecuteSQL", run)
 
+    @observed_node("ClassifyFailure")
     def classify(self, s):
         count = s.get("retry_count", 0)
         sql_retry = s.get("retryable") and s.get("error", {}).get("kind") in (
@@ -137,6 +157,7 @@ class Nodes:
             }
         return {"retryable": False, "trace": s["trace"] + ["ClassifyFailure"]}
 
+    @observed_node("GenerateAnswer")
     def answer(self, s):
         trace = s.get("trace", []) + ["GenerateAnswer"]
         if s.get("error") or not s.get("query_result"):

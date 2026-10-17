@@ -1,3 +1,5 @@
+import time
+from insightflow.observability import event, emit
 from threading import RLock
 from uuid import uuid4
 from insightflow.agent.graph import build_graph
@@ -33,9 +35,22 @@ class AgentService:
         from insightflow.agent.cancellation import Cancellation, CURRENT_CANCELLATION
         from insightflow.database.errors import AgentError, ErrorKind
 
+        started = time.perf_counter()
+        request_id = str(uuid4())
+        trace_state = {
+            "request_id": request_id,
+            "session_id": session_id,
+            "model_name": getattr(self.provider, "model_name", self.provider.model_type),
+        }
         token = cancellation or Cancellation()
-        while not self.lock.acquire(timeout=0.05):
-            token.check()
+        try:
+            while not self.lock.acquire(timeout=0.05):
+                token.check()
+        except AgentError as exc:
+            emit(event(trace_state, "Request", (time.perf_counter() - started) * 1000, exc.kind.value))
+            raise
+        queue_wait = (time.perf_counter() - started) * 1000
+        request_error = None
         context = CURRENT_CANCELLATION.set(token)
         try:
             before_usage = self.provider.usage()
@@ -51,7 +66,10 @@ class AgentService:
                 {
                     "question": question,
                     "session_id": session_id,
-                    "request_id": str(uuid4()),
+                    "request_id": request_id,
+                    "model_name": trace_state["model_name"],
+                    "timings": {},
+                    "node_events": [],
                     "conversation_context": (previous if previous is not None else dict(session.constraints))
                     if use_history
                     else {},
@@ -79,8 +97,30 @@ class AgentService:
                 raise AgentError(
                     ErrorKind.SESSION_STATE_ERROR, "会话保存失败，未返回本轮业务答案。"
                 ) from None
+            timings = result.setdefault("timings", {})
+            for key in (
+                "understanding_duration_ms",
+                "retrieval_duration_ms",
+                "context_duration_ms",
+                "generation_duration_ms",
+                "validation_duration_ms",
+                "sql_duration_ms",
+                "answer_duration_ms",
+            ):
+                timings.setdefault(key, 0.0)
+            timings["llm_duration_ms"] = (
+                timings["understanding_duration_ms"] + timings["generation_duration_ms"]
+            )
+            timings["queue_wait_ms"] = queue_wait
+            result["total_duration_ms"] = (time.perf_counter() - started) * 1000
+            trace_state["retry_count"] = result.get("retry_count", 0)
+            request_error = result.get("error", {}).get("kind") if result.get("error") else None
             return result
+        except AgentError as exc:
+            request_error = exc.kind.value
+            raise
         finally:
+            emit(event(trace_state, "Request", (time.perf_counter() - started) * 1000, request_error))
             CURRENT_CANCELLATION.reset(context)
             self.lock.release()
 
