@@ -1,0 +1,866 @@
+[
+  {
+    "case_id": "q01",
+    "question": "客户总数是多少？",
+    "difficulty": "basic",
+    "expected_metric": "customer_count",
+    "relevant_tables": [
+      "customers"
+    ],
+    "reference_sql": "SELECT count(*) AS value FROM business.customers",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          100
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q02",
+    "question": "商品总数是多少？",
+    "difficulty": "basic",
+    "expected_metric": "product_count",
+    "relevant_tables": [
+      "products"
+    ],
+    "reference_sql": "SELECT count(*) AS value FROM business.products",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          30
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q03",
+    "question": "订单总数是多少？",
+    "difficulty": "basic",
+    "expected_metric": "order_count",
+    "relevant_tables": [
+      "orders"
+    ],
+    "reference_sql": "SELECT count(*) AS value FROM business.orders",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          500
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q04",
+    "question": "已支付订单数是多少？",
+    "difficulty": "basic",
+    "expected_metric": "paid_order_count",
+    "relevant_tables": [
+      "orders"
+    ],
+    "reference_sql": "SELECT count(*) AS value FROM business.orders WHERE status='paid'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          334
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q05",
+    "question": "待支付订单数是多少？",
+    "difficulty": "basic",
+    "expected_metric": "pending_order_count",
+    "relevant_tables": [
+      "orders"
+    ],
+    "reference_sql": "SELECT count(*) AS value FROM business.orders WHERE status='pending'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          83
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q06",
+    "question": "已取消订单数是多少？",
+    "difficulty": "basic",
+    "expected_metric": "cancelled_order_count",
+    "relevant_tables": [
+      "orders"
+    ],
+    "reference_sql": "SELECT count(*) AS value FROM business.orders WHERE status='cancelled'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          83
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q07",
+    "question": "商品平均价格是多少？",
+    "difficulty": "basic",
+    "expected_metric": "average_price",
+    "relevant_tables": [
+      "products"
+    ],
+    "reference_sql": "SELECT avg(price) AS value FROM business.products",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "128.5000000000000000"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q08",
+    "question": "商品最高价格是多少？",
+    "difficulty": "basic",
+    "expected_metric": "max_price",
+    "relevant_tables": [
+      "products"
+    ],
+    "reference_sql": "SELECT max(price) AS value FROM business.products",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "230.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q09",
+    "question": "商品最低价格是多少？",
+    "difficulty": "basic",
+    "expected_metric": "min_price",
+    "relevant_tables": [
+      "products"
+    ],
+    "reference_sql": "SELECT min(price) AS value FROM business.products",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "27.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q10",
+    "question": "各类别商品数量是多少？",
+    "difficulty": "basic",
+    "expected_metric": "product_count",
+    "relevant_tables": [
+      "products"
+    ],
+    "reference_sql": "SELECT category AS dimension,count(*) AS value FROM business.products GROUP BY category ORDER BY dimension",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "办公",
+          10
+        ],
+        [
+          "家居",
+          10
+        ],
+        [
+          "电子",
+          10
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q11",
+    "question": "已支付销售收入是多少？",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items"
+    ],
+    "reference_sql": "SELECT coalesce(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o WHERE o.status='paid'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "186631.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q12",
+    "question": "2026年9月已支付销售收入是多少？",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items"
+    ],
+    "reference_sql": "SELECT coalesce(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "48472.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q13",
+    "question": "华东地区已支付销售收入是多少？",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "customers"
+    ],
+    "reference_sql": "SELECT coalesce(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' AND c.region='华东'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "44597.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q14",
+    "question": "各地区已支付销售收入比较",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "customers"
+    ],
+    "reference_sql": "SELECT c.region AS dimension,coalesce(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' GROUP BY c.region ORDER BY dimension",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "华东",
+          "44597.00"
+        ],
+        [
+          "华北",
+          "43522.00"
+        ],
+        [
+          "华南",
+          "52270.00"
+        ],
+        [
+          "西部",
+          "46242.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q15",
+    "question": "各商品类别销售收入比较",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "products"
+    ],
+    "reference_sql": "SELECT p.category AS dimension,sum(i.quantity*i.unit_price) AS value FROM business.order_items i JOIN business.orders o ON o.id=i.order_id JOIN business.products p ON p.id=i.product_id WHERE o.status='paid' GROUP BY p.category ORDER BY dimension",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "办公",
+          "59460.00"
+        ],
+        [
+          "家居",
+          "70384.00"
+        ],
+        [
+          "电子",
+          "56787.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q16",
+    "question": "销售收入最高的前5个商品",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "products"
+    ],
+    "reference_sql": "SELECT p.name AS dimension,sum(i.quantity*i.unit_price) AS value FROM business.order_items i JOIN business.orders o ON o.id=i.order_id JOIN business.products p ON p.id=i.product_id WHERE o.status='paid' GROUP BY p.name ORDER BY value DESC,dimension LIMIT 5",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "Product-30",
+          "12420.00"
+        ],
+        [
+          "Product-28",
+          "12096.00"
+        ],
+        [
+          "Product-24",
+          "11656.00"
+        ],
+        [
+          "Product-27",
+          "10241.00"
+        ],
+        [
+          "Product-20",
+          "9440.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q17",
+    "question": "销售收入最高的前5个客户",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "customers"
+    ],
+    "reference_sql": "SELECT c.name AS dimension,sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' GROUP BY c.name ORDER BY value DESC,dimension LIMIT 5",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "Customer-094",
+          "4674.00"
+        ],
+        [
+          "Customer-006",
+          "4113.00"
+        ],
+        [
+          "Customer-043",
+          "3953.00"
+        ],
+        [
+          "Customer-086",
+          "3854.00"
+        ],
+        [
+          "Customer-049",
+          "3683.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q18",
+    "question": "各地区已支付订单数比较",
+    "difficulty": "join",
+    "expected_metric": "paid_order_count",
+    "relevant_tables": [
+      "orders",
+      "customers"
+    ],
+    "reference_sql": "SELECT c.region AS dimension,count(*) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' GROUP BY c.region ORDER BY dimension",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "华东",
+          77
+        ],
+        [
+          "华北",
+          79
+        ],
+        [
+          "华南",
+          87
+        ],
+        [
+          "西部",
+          91
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q19",
+    "question": "各月份已支付销售收入比较",
+    "difficulty": "join",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items"
+    ],
+    "reference_sql": "SELECT to_char(o.ordered_at AT TIME ZONE 'UTC','YYYY-MM') AS dimension,sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)) AS value FROM business.orders o WHERE o.status='paid' GROUP BY dimension ORDER BY dimension",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "2026-06",
+          "46165.00"
+        ],
+        [
+          "2026-07",
+          "47009.00"
+        ],
+        [
+          "2026-08",
+          "44985.00"
+        ],
+        [
+          "2026-09",
+          "48472.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q20",
+    "question": "GMV是多少？",
+    "difficulty": "join",
+    "expected_metric": "gmv",
+    "relevant_tables": [
+      "orders",
+      "order_items"
+    ],
+    "reference_sql": "SELECT coalesce(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o WHERE o.status<>'cancelled'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "238834.00"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q21",
+    "question": "2026年9月退款订单率是多少？",
+    "difficulty": "complex",
+    "expected_metric": "refunded_order_rate",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "refunds"
+    ],
+    "reference_sql": "SELECT count(*) FILTER (WHERE coalesce((SELECT sum(r.refund_amount) FROM business.refunds r WHERE r.order_id=o.id AND r.status='succeeded'),0)>0)::numeric/NULLIF(count(*),0) AS value FROM business.orders o WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "0.19767441860465116279"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q22",
+    "question": "2026年9月成功退款金额是多少？",
+    "difficulty": "complex",
+    "expected_metric": "refund_amount",
+    "relevant_tables": [
+      "orders",
+      "refunds"
+    ],
+    "reference_sql": "SELECT coalesce(sum(coalesce((SELECT sum(r.refund_amount) FROM business.refunds r WHERE r.order_id=o.id AND r.status='succeeded'),0)),0) AS value FROM business.orders o WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "5762.75"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q23",
+    "question": "2026年9月退款金额率是多少？",
+    "difficulty": "complex",
+    "expected_metric": "refund_amount_rate",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "refunds"
+    ],
+    "reference_sql": "SELECT sum(coalesce((SELECT sum(r.refund_amount) FROM business.refunds r WHERE r.order_id=o.id AND r.status='succeeded'),0))/NULLIF(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "0.11888822412939428949"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q24",
+    "question": "2026年9月客单价是多少？",
+    "difficulty": "complex",
+    "expected_metric": "average_order_value",
+    "relevant_tables": [
+      "orders",
+      "order_items"
+    ],
+    "reference_sql": "SELECT sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id))/NULLIF(count(*),0) AS value FROM business.orders o WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "563.6279069767441860"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": false
+  },
+  {
+    "case_id": "q25",
+    "question": "2026年9月各地区退款订单率比较",
+    "difficulty": "complex",
+    "expected_metric": "refunded_order_rate",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "refunds",
+      "customers"
+    ],
+    "reference_sql": "SELECT c.region AS dimension,count(*) FILTER (WHERE coalesce((SELECT sum(r.refund_amount) FROM business.refunds r WHERE r.order_id=o.id AND r.status='succeeded'),0)>0)::numeric/NULLIF(count(*),0) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00' GROUP BY c.region ORDER BY dimension",
+    "expected_result": {
+      "columns": [
+        "dimension",
+        "value"
+      ],
+      "rows": [
+        [
+          "华东",
+          "0.33333333333333333333"
+        ],
+        [
+          "华北",
+          "0.17647058823529411765"
+        ],
+        [
+          "华南",
+          "0.21052631578947368421"
+        ],
+        [
+          "西部",
+          "0.07692307692307692308"
+        ]
+      ]
+    },
+    "history": [],
+    "expected_constraints": {},
+    "ordered": true
+  },
+  {
+    "case_id": "q26",
+    "question": "那华东地区呢？",
+    "difficulty": "multi",
+    "expected_metric": "refunded_order_rate",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "refunds",
+      "customers"
+    ],
+    "reference_sql": "SELECT count(*) FILTER (WHERE coalesce((SELECT sum(r.refund_amount) FROM business.refunds r WHERE r.order_id=o.id AND r.status='succeeded'),0)>0)::numeric/NULLIF(count(*),0) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00' AND c.region='华东'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "0.33333333333333333333"
+        ]
+      ]
+    },
+    "history": [
+      "2026年9月退款订单率是多少？"
+    ],
+    "expected_constraints": {
+      "month": "2026-09",
+      "region": "华东",
+      "metric": "refunded_order_rate"
+    },
+    "ordered": false
+  },
+  {
+    "case_id": "q27",
+    "question": "那华南地区呢？",
+    "difficulty": "multi",
+    "expected_metric": "paid_revenue",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "customers"
+    ],
+    "reference_sql": "SELECT coalesce(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00' AND c.region='华南'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "11881.00"
+        ]
+      ]
+    },
+    "history": [
+      "2026年9月已支付销售收入是多少？"
+    ],
+    "expected_constraints": {
+      "month": "2026-09",
+      "region": "华南",
+      "metric": "paid_revenue"
+    },
+    "ordered": false
+  },
+  {
+    "case_id": "q28",
+    "question": "改成2026年8月呢？",
+    "difficulty": "multi",
+    "expected_metric": "paid_order_count",
+    "relevant_tables": [
+      "orders",
+      "customers"
+    ],
+    "reference_sql": "SELECT count(*) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-08-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-09-01 00:00:00+00' AND c.region='华北'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          22
+        ]
+      ]
+    },
+    "history": [
+      "华北地区已支付订单数是多少？"
+    ],
+    "expected_constraints": {
+      "month": "2026-08",
+      "region": "华北",
+      "metric": "paid_order_count"
+    },
+    "ordered": false
+  },
+  {
+    "case_id": "q29",
+    "question": "改成西部地区呢？",
+    "difficulty": "multi",
+    "expected_metric": "gmv",
+    "relevant_tables": [
+      "orders",
+      "order_items",
+      "customers"
+    ],
+    "reference_sql": "SELECT coalesce(sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id)),0) AS value FROM business.orders o JOIN business.customers c ON c.id=o.customer_id WHERE o.status<>'cancelled' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00' AND c.region='西部'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "17673.00"
+        ]
+      ]
+    },
+    "history": [
+      "2026年9月华东地区GMV是多少？"
+    ],
+    "expected_constraints": {
+      "month": "2026-09",
+      "region": "西部",
+      "metric": "gmv"
+    },
+    "ordered": false
+  },
+  {
+    "case_id": "q30",
+    "question": "改成2026年9月呢？",
+    "difficulty": "multi",
+    "expected_metric": "average_order_value",
+    "relevant_tables": [
+      "orders",
+      "order_items"
+    ],
+    "reference_sql": "SELECT sum((SELECT sum(i.quantity*i.unit_price) FROM business.order_items i WHERE i.order_id=o.id))/NULLIF(count(*),0) AS value FROM business.orders o WHERE o.status='paid' AND o.ordered_at >= TIMESTAMPTZ '2026-09-01 00:00:00+00' AND o.ordered_at < TIMESTAMPTZ '2026-10-01 00:00:00+00'",
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "563.6279069767441860"
+        ]
+      ]
+    },
+    "history": [
+      "2026年8月客单价是多少？"
+    ],
+    "expected_constraints": {
+      "month": "2026-09",
+      "metric": "average_order_value"
+    },
+    "ordered": false
+  }
+]

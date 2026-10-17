@@ -13,7 +13,13 @@ def create_app(settings: Settings | None = None):
 
     @app.get("/schema", response_model=SchemaResponse)
     def schema():
-        return {"schema_name": "business", "tables": {}}
+        if not settings.database_url.get_secret_value():
+            return {"schema_name": "business", "tables": {}}
+        from insightflow.database.metadata import read_catalog
+
+        catalog = read_catalog(settings.database_url.get_secret_value())
+        return {"schema_name": "business", "tables": {k: list(v.columns) for k, v in catalog.items()}}
+
     return app
 
 
