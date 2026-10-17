@@ -43,3 +43,56 @@ API 默认 127.0.0.1、无认证，适合本地演示。没有 Redis、额外 Sc
 [SQLGlot](https://sqlglot.com/)；
 [DeepSeek Chat API](https://api-docs.deepseek.com/api/create-chat-completion/)；
 [FastAPI 测试](https://fastapi.tiangolo.com/tutorial/testing/)。
+
+## Architecture Diagram
+```mermaid
+flowchart LR
+    FastAPI --> AgentService
+    AgentService --> LangGraph
+    LangGraph --> ContextManager
+    LangGraph --> SchemaRetriever
+    SchemaRetriever --> SchemaCatalog
+    LangGraph --> LLMProvider
+    LangGraph --> SQLValidator
+    SQLValidator --> ReadonlyExecutor
+    ReadonlyExecutor --> PostgreSQL
+    Evaluation --> AgentService
+    Evaluation --> IndependentReference[Independent Reference Results]
+```
+
+## Agent State Transition
+```mermaid
+flowchart TD
+    START --> UnderstandQuestion
+    UnderstandQuestion --> SelectSchema
+    UnderstandQuestion -->|error| GenerateAnswer
+    SelectSchema --> GenerateSQL
+    SelectSchema -->|error| GenerateAnswer
+    GenerateSQL --> ValidateSQL
+    ValidateSQL --> ExecuteSQL
+    ExecuteSQL --> GenerateAnswer
+    GenerateSQL -->|error| ClassifyFailure
+    ValidateSQL -->|error| ClassifyFailure
+    ExecuteSQL -->|error| ClassifyFailure
+    ClassifyFailure -->|recoverable SQL and budget| GenerateSQL
+    ClassifyFailure -->|reject / exhausted| GenerateAnswer
+    GenerateAnswer --> END
+```
+
+## Data Flow
+```mermaid
+flowchart LR
+    Request[Question / Session] --> UnderstandQuestion
+    SessionStore --> UnderstandQuestion
+    UnderstandQuestion --> Plan[Metric / constraints]
+    Plan --> SelectSchema
+    SchemaCatalog --> SelectSchema
+    SelectSchema --> ContextManager
+    Plan --> ContextManager
+    ContextManager --> GenerateSQL
+    GenerateSQL --> ValidateSQL
+    ValidateSQL --> ExecuteSQL
+    ExecuteSQL --> Evidence[PostgreSQL evidence]
+    Evidence --> GenerateAnswer
+    GenerateAnswer --> Response[Answer / SQL / evidence / limitations]
+```
