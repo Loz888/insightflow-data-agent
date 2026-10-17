@@ -67,6 +67,12 @@ class SQLValidator:
             reject("查询 AST 超出复杂度预算。")
         for node in nodes:
             name = type(node).__name__
+            if (
+                isinstance(node, exp.Var)
+                and isinstance(node.parent, (exp.DateTrunc, exp.TimestampTrunc))
+                and node.this in ("MONTH", "DAY", "YEAR")
+            ):
+                continue
             if name not in ALLOWED:
                 reject("不支持或危险的 SQL 结构：" + name)
             if isinstance(node, exp.Func) and name not in FUNCTIONS:

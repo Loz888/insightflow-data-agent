@@ -28,6 +28,7 @@ class RequestBudget:
     unknown_attempts: int = 0
     reserved: Decimal = field(default_factory=lambda: Decimal(0))
     model_ids: list = field(default_factory=list)
+    decisions: list = field(default_factory=list)
 
     def remaining(self):
         seconds = self.deadline - time.monotonic()
@@ -121,6 +122,8 @@ class AsyncDeepSeek:
                     self.s.max_http_attempts,
                     budget.run_id,
                     reservation,
+                    self.s.input_price_per_million,
+                    self.s.output_price_per_million,
                 )
                 budget.calls += 1
                 budget.token_reservations += token_bound + self.s.max_output_tokens
@@ -130,7 +133,8 @@ class AsyncDeepSeek:
                     "model": self.s.model,
                     "messages": messages,
                     "response_format": {"type": "json_object"},
-                    "thinking": {"type": "disabled"},
+                    "thinking": {"type": "enabled"},
+                    "reasoning_effort": self.s.thinking_effort,
                     "temperature": 0,
                     "max_tokens": self.s.max_output_tokens,
                     "stream": self.s.stream_model,
@@ -174,6 +178,8 @@ class AsyncDeepSeek:
                 ):
                     raise Fault("MODEL_INVALID", "空内容或非正常结束。")
                 result = schema.model_validate_json(content)
+                if task in ("plan", "action"):
+                    budget.decisions.append({"task": task, "output": result.model_dump(mode="json")})
                 await asyncio.to_thread(self.store.settle, attempt, "ok", usage)
                 return result
             except httpx.HTTPStatusError:

@@ -1,0 +1,129 @@
+[
+  {
+    "event_id": 24,
+    "stage": "queued",
+    "payload": {},
+    "at": "2026-10-17 17:46:11.772787+08:00"
+  },
+  {
+    "event_id": 25,
+    "stage": "running",
+    "payload": {
+      "base_version": 0
+    },
+    "at": "2026-10-17 17:46:11.788048+08:00"
+  },
+  {
+    "event_id": 26,
+    "stage": "understanding",
+    "payload": {},
+    "at": "2026-10-17 17:46:11.794098+08:00"
+  },
+  {
+    "event_id": 27,
+    "stage": "retrieval",
+    "payload": {
+      "table_count": 2,
+      "schema_version": "5406f5f9558ff639"
+    },
+    "at": "2026-10-17 17:46:12.875185+08:00"
+  },
+  {
+    "event_id": 28,
+    "stage": "tool_started",
+    "payload": {
+      "name": "metric",
+      "source": "model",
+      "call_id": "step_1",
+      "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+    },
+    "at": "2026-10-17 17:46:13.965311+08:00"
+  },
+  {
+    "event_id": 29,
+    "stage": "tool_finished",
+    "payload": {
+      "name": "metric",
+      "status": "ok",
+      "call_id": "step_1",
+      "result_ref": "7ceaffba-2692-42f1-b36e-1c7b871cf45a"
+    },
+    "at": "2026-10-17 17:46:13.968045+08:00"
+  },
+  {
+    "event_id": 30,
+    "stage": "tool_started",
+    "payload": {
+      "name": "execute_sql",
+      "source": "model",
+      "call_id": "step_2",
+      "input_digest": "addde93bf5f12daf8b19abcfd9f1a860321d1ab3a1a760760593a0946d6acbaa"
+    },
+    "at": "2026-10-17 17:46:15.131194+08:00"
+  },
+  {
+    "event_id": 31,
+    "stage": "tool_finished",
+    "payload": {
+      "code": "TOOL_ORDER",
+      "name": "execute_sql",
+      "status": "error",
+      "call_id": "step_2",
+      "result_ref": "error-step_2"
+    },
+    "at": "2026-10-17 17:46:15.134117+08:00"
+  },
+  {
+    "event_id": 32,
+    "stage": "tool_started",
+    "payload": {
+      "name": "schema",
+      "source": "model",
+      "call_id": "step_3",
+      "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+    },
+    "at": "2026-10-17 17:46:16.062631+08:00"
+  },
+  {
+    "event_id": 33,
+    "stage": "tool_finished",
+    "payload": {
+      "name": "schema",
+      "status": "ok",
+      "call_id": "step_3",
+      "result_ref": "ad514e30-d38c-4eec-8e8d-770d5e76bbab"
+    },
+    "at": "2026-10-17 17:46:16.066047+08:00"
+  },
+  {
+    "event_id": 34,
+    "stage": "tool_started",
+    "payload": {
+      "name": "execute_sql",
+      "source": "model",
+      "call_id": "step_4",
+      "input_digest": "addde93bf5f12daf8b19abcfd9f1a860321d1ab3a1a760760593a0946d6acbaa"
+    },
+    "at": "2026-10-17 17:46:17.250397+08:00"
+  },
+  {
+    "event_id": 35,
+    "stage": "tool_finished",
+    "payload": {
+      "code": "SEMANTIC_MISMATCH",
+      "name": "execute_sql",
+      "status": "error",
+      "call_id": "step_4",
+      "result_ref": "error-step_4"
+    },
+    "at": "2026-10-17 17:46:17.263141+08:00"
+  },
+  {
+    "event_id": 36,
+    "stage": "failed",
+    "payload": {
+      "code": "TOOL_LOOP"
+    },
+    "at": "2026-10-17 17:46:18.468289+08:00"
+  }
+]

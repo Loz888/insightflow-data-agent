@@ -263,7 +263,7 @@ class Store:
             for row in rows:
                 self._event(c, row["run_id"], "interrupted", {"code": "QUEUE_ORPHANED"})
 
-    def reserve(self, experiment, budget, max_attempts, rid, amount):
+    def reserve(self, experiment, budget, max_attempts, rid, amount, input_rate=None, output_rate=None):
         attempt = str(uuid4())
         with self.pool.connection() as c, c.transaction():
             c.execute(
@@ -281,20 +281,47 @@ class Store:
             if not row:
                 raise Fault("EXPERIMENT_BUDGET", "共享实验预算已耗尽，停止新付费请求。")
             c.execute(
-                "INSERT INTO agent_runtime.model_attempts(attempt_id,run_id,experiment_id,reservation) VALUES (%s,%s,%s,%s)",
-                (attempt, rid, experiment, amount),
+                "INSERT INTO agent_runtime.model_attempts(attempt_id,run_id,experiment_id,reservation,input_rate,output_rate) VALUES (%s,%s,%s,%s,%s,%s)",
+                (attempt, rid, experiment, amount, input_rate or "0.30", output_rate or "1.20"),
             )
         return attempt
 
     def settle(self, attempt, outcome, usage=None):
-        with self.pool.connection() as c:
+        from decimal import Decimal
+
+        with self.pool.connection() as c, c.transaction():
+            row = c.execute(
+                "SELECT * FROM agent_runtime.model_attempts WHERE attempt_id=%s FOR UPDATE", (attempt,)
+            ).fetchone()
+            if not row or row["usage_known"]:
+                return
+            charged = None
+            if usage is not None:
+                charged = (
+                    Decimal(usage[0]) * row["input_rate"] + Decimal(usage[1]) * row["output_rate"]
+                ) / Decimal(1000000)
+                if charged > row["reservation"]:
+                    # Unexpected usage cannot silently create fresh budget.
+                    c.execute(
+                        "UPDATE agent_runtime.experiments SET reserved=budget WHERE experiment_id=%s",
+                        (row["experiment_id"],),
+                    )
+                    usage = None
+                    charged = None
+                    outcome = "USAGE_BOUND_VIOLATION"
+                else:
+                    c.execute(
+                        "UPDATE agent_runtime.experiments SET reserved=reserved-%s WHERE experiment_id=%s",
+                        (row["reservation"] - charged, row["experiment_id"]),
+                    )
             c.execute(
-                "UPDATE agent_runtime.model_attempts SET outcome=%s,usage_known=%s,input_tokens=%s,output_tokens=%s WHERE attempt_id=%s",
+                "UPDATE agent_runtime.model_attempts SET outcome=%s,usage_known=%s,input_tokens=%s,output_tokens=%s,charged=%s WHERE attempt_id=%s",
                 (
                     outcome,
                     usage is not None,
                     usage[0] if usage else None,
                     usage[1] if usage else None,
+                    charged,
                     attempt,
                 ),
             )

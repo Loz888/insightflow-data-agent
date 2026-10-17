@@ -267,9 +267,61 @@ class SemanticSQLGuard:
         # Qualification normalizes unqualified columns, casing and whitespace.
         # Alias names / expression structure must follow the documented canonical contract.
         def canonical(text):
+            from sqlglot import exp
+
             tree = sqlglot.parse_one(text, read="postgres")
-            for node in tree.walk():
+            # Normalize only proven local equivalences: redundant parentheses,
+            # UTC representations of time bounds, COUNT(nonnullable physical PK).
+            for node in reversed(list(tree.walk())):
                 node.comments = None
+                if isinstance(node, exp.Paren):
+                    node.replace(node.this.copy())
+                elif (
+                    isinstance(node, exp.Count)
+                    and isinstance(node.this, exp.Column)
+                    and node.this.name == "id"
+                    and node.this.table in ("o", "c", "p")
+                    and not node.args.get("distinct")
+                ):
+                    node.set("this", exp.Star())
+            for function in tree.find_all(exp.Anonymous):
+                args = function.expressions
+                if (
+                    function.name.lower() == "count"
+                    and len(args) == 1
+                    and isinstance(args[0], exp.Column)
+                    and args[0].name == "id"
+                    and args[0].table in ("o", "c", "p")
+                ):
+                    function.set("expressions", [exp.Star()])
+            for comparison in tree.find_all(exp.GTE, exp.LT):
+                if isinstance(comparison.this, exp.Column) and comparison.this.name == "ordered_at":
+                    rhs = comparison.expression
+                    literal = rhs.this if isinstance(rhs, exp.Cast) else rhs
+                    if isinstance(literal, exp.Literal) and literal.is_string:
+                        try:
+                            d = datetime.fromisoformat(literal.this.replace("Z", "+00:00"))
+                            if d.tzinfo is None:
+                                d = d.replace(tzinfo=UTC)
+                            comparison.set(
+                                "expression",
+                                sqlglot.parse_one("CAST('%s' AS TIMESTAMPTZ)" % _stamp(d), read="postgres"),
+                            )
+                        except ValueError:
+                            pass
+
+            # AND/OR are commutative within their existing AST grouping.
+            def ordered(node):
+                if isinstance(node, (exp.And, exp.Or)):
+                    members = list(node.flatten())
+                    members.sort(key=lambda x: x.sql(dialect="postgres", normalize=True))
+                    rebuilt = members[0].copy()
+                    for item in members[1:]:
+                        rebuilt = type(node)(this=rebuilt, expression=item.copy())
+                    return rebuilt
+                return node
+
+            tree = tree.transform(ordered)
             return tree.sql(dialect="postgres", normalize=True)
 
         if canonical(proposed.sql) != canonical(expected.sql):

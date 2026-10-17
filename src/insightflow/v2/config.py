@@ -13,6 +13,7 @@ class V2Settings(BaseSettings):
     # Map opaque local bearer secrets to trusted principal IDs. Never supplied by request bodies.
     auth_tokens: dict[str, str]
     model: Literal["deepseek-flash", "deepseek-v4-pro"] = "deepseek-flash"
+    thinking_effort: Literal["max"] = "max"
     live_enabled: bool = False
     api_key: SecretStr = SecretStr("")
     reference_time: datetime = datetime(2026, 10, 1, tzinfo=timezone.utc)
@@ -20,9 +21,9 @@ class V2Settings(BaseSettings):
     experiment_id: str = Field("upgrade-v2-20261017", pattern=r"^[a-zA-Z0-9_-]{1,64}$")
     input_price_per_million: Decimal = Field(Decimal("0.30"), gt=0)
     output_price_per_million: Decimal = Field(Decimal("1.20"), gt=0)
-    request_seconds: float = Field(90, gt=0, le=180)
+    request_seconds: float = Field(180, gt=0, le=180)
     queue_seconds: float = Field(3, gt=0, le=30)
-    model_timeout: float = Field(20, gt=0, le=30)
+    model_timeout: float = Field(30, gt=0, le=30)
     model_concurrency: int = Field(2, ge=1, le=4)
     db_concurrency: int = Field(4, ge=1, le=8)
     active_limit: int = Field(8, ge=1, le=32)
@@ -30,9 +31,9 @@ class V2Settings(BaseSettings):
     max_tool_calls: int = Field(10, ge=1, le=16)
     max_graph_steps: int = Field(26, ge=8, le=50)
     max_sql_repairs: int = Field(2, ge=0, le=2)
-    max_output_tokens: int = Field(1536, ge=256, le=4096)
+    max_output_tokens: int = Field(8192, ge=256, le=16384)
     max_input_bytes: int = Field(24000, ge=2000, le=48000)
-    request_token_budget: int = Field(90000, ge=5000, le=160000)
+    request_token_budget: int = Field(160000, ge=5000, le=160000)
     max_http_attempts: int = Field(500, ge=1, le=1000)
     lease_seconds: float = Field(15, ge=3, le=120)
     idempotency_ttl_seconds: int = Field(86400, ge=60, le=604800)

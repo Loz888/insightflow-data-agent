@@ -127,6 +127,7 @@ class Runtime:
                 output = {
                     **result["output"],
                     "usage": budget.usage(),
+                    "decisions": budget.decisions,
                     "model": self.s.model if self.provider.source == "model" else "offline-rules",
                     "duration_ms": (time.perf_counter() - started) * 1000,
                     "run_id": rid,
@@ -170,7 +171,7 @@ class Runtime:
                             principal,
                             self.owner,
                             status,
-                            {"usage": budget.usage()},
+                            {"usage": budget.usage(), "decisions": budget.decisions},
                             None,
                             None,
                             error,
