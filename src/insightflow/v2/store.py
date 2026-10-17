@@ -4,7 +4,7 @@ Queued work has durable ordering; process-lost work is marked interrupted, never
 
 import hashlib
 import json
-from uuid import uuid4
+from uuid import uuid4, UUID
 from datetime import datetime, timezone
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
@@ -192,7 +192,7 @@ class Store:
             if run["status"] == "running":
                 if (
                     str(session["active_run"]) != str(rid)
-                    or str(session["lease_owner"]) != str(owner)
+                    or str(session["lease_owner"]) != str(UUID(str(owner)))
                     or session["lease_until"] <= datetime.now(timezone.utc)
                 ):
                     raise Fault("LEASE_LOST", "旧进程无法提交新会话事实。")

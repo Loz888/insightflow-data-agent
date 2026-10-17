@@ -1,0 +1,1 @@
+{"status":"FAIL_HARNESS","error":"Scorer called with rows instead of Evidence object; corrected without changing comparison rules."}

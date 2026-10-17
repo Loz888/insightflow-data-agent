@@ -1,0 +1,181 @@
+{
+  "run_id": "ec2a12c1-d009-47f3-82cd-211678517e5c",
+  "status": "succeeded",
+  "error_code": null,
+  "result": {
+    "sql": [
+      "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+    ],
+    "model": "deepseek-flash",
+    "usage": {
+      "retries": 0,
+      "model_ids": [
+        "deepseek-flash"
+      ],
+      "usage_known": true,
+      "input_tokens": 10412,
+      "reserved_usd": "0.0725586",
+      "http_attempts": 6,
+      "output_tokens": 1687,
+      "unknown_attempts": 0,
+      "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+    },
+    "answer": "所查询月份的订单总数已列于引用证据中。",
+    "metric": "order_count",
+    "run_id": "ec2a12c1-d009-47f3-82cd-211678517e5c",
+    "repairs": 1,
+    "evidence": {
+      "rows": [
+        [
+          123
+        ]
+      ],
+      "columns": [
+        "value"
+      ],
+      "row_count": 1
+    },
+    "citations": [
+      {
+        "row": 0,
+        "value": 123,
+        "column": 0,
+        "evidence_id": "16df1872-7353-46ef-bb69-e81615ca0ff8"
+      }
+    ],
+    "decisions": [
+      {
+        "task": "plan",
+        "output": {
+          "plan": {
+            "order": "desc",
+            "top_n": null,
+            "metric": "order_count",
+            "windows": [
+              {
+                "end": "2026-10-01T00:00:00Z",
+                "start": "2026-09-01T00:00:00Z"
+              }
+            ],
+            "currency": "CNY",
+            "timezone": "UTC",
+            "dimension": null,
+            "comparison": "none",
+            "aggregation": "count",
+            "data_version": "v1-seed20261020",
+            "metric_version": "2026-10-v1",
+            "exclude_regions": [],
+            "include_regions": [],
+            "comparison_window": null
+          },
+          "message": "",
+          "summary": "",
+          "disposition": "query"
+        }
+      },
+      {
+        "task": "action",
+        "output": {
+          "name": "metric",
+          "call_id": "step_1",
+          "summary": "Confirm the trusted order-count metric definition before querying.",
+          "arguments": {
+            "metric": "order_count"
+          }
+        }
+      },
+      {
+        "task": "action",
+        "output": {
+          "name": "execute_sql",
+          "call_id": "step_2",
+          "summary": "Execute the order-count query for September 2026 UTC.",
+          "arguments": {
+            "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+          }
+        }
+      },
+      {
+        "task": "action",
+        "output": {
+          "name": "schema",
+          "call_id": "step_3",
+          "summary": "Query the authorized schema for the orders table before running SQL.",
+          "arguments": {
+            "query": "orders"
+          }
+        }
+      },
+      {
+        "task": "action",
+        "output": {
+          "name": "execute_sql",
+          "call_id": "step_4",
+          "summary": "查询指定 UTC 时间区间内的订单总数。",
+          "arguments": {
+            "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))",
+            "period": "current"
+          }
+        }
+      }
+    ],
+    "disposition": "answer",
+    "duration_ms": 12636.90955100003,
+    "evidence_id": "16df1872-7353-46ef-bb69-e81615ca0ff8",
+    "limitations": [
+      "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+      "会话隔离不等于业务行级多租户隔离。",
+      "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+    ],
+    "time_windows": [
+      {
+        "end": "2026-10-01T00:00:00Z",
+        "start": "2026-09-01T00:00:00Z"
+      }
+    ],
+    "tool_records": [
+      {
+        "name": "metric",
+        "source": "model",
+        "status": "ok",
+        "call_id": "step_1",
+        "result_ref": "ef2a22f9-b3b4-4161-9375-f07614cb442e",
+        "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+      },
+      {
+        "name": "execute_sql",
+        "source": "model",
+        "status": "error",
+        "call_id": "step_2",
+        "result_ref": "error-step_2",
+        "input_digest": "a2c98fb0964828773144119001d383ddf656bc1008ab5cd65cc743870e723b1d"
+      },
+      {
+        "name": "schema",
+        "source": "model",
+        "status": "ok",
+        "call_id": "step_3",
+        "result_ref": "a1cfdb10-4c59-4c5f-9c40-ed1f65423482",
+        "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+      },
+      {
+        "name": "execute_sql",
+        "source": "model",
+        "status": "ok",
+        "call_id": "step_4",
+        "result_ref": "16df1872-7353-46ef-bb69-e81615ca0ff8",
+        "input_digest": "addde93bf5f12daf8b19abcfd9f1a860321d1ab3a1a760760593a0946d6acbaa"
+      }
+    ],
+    "answer_source": "model",
+    "schema_version": "5406f5f9558ff639",
+    "comparison_window": null,
+    "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+  },
+  "model": "deepseek-flash",
+  "prompt_version": "insightflow-agent-v3-20261017",
+  "git_commit": "04068775ac2c8c7ac943a300405617368b92f04c",
+  "worktree": "committed Max implementation",
+  "data_version": "v1-seed20261020",
+  "at": "2026-10-17T09:50:01.701335+00:00"
+}

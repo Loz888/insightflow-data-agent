@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = datetime(2026, 10, 1, tzinfo=timezone.utc)
 
 
-def seed(dsn, initialize=False):
-    rng = random.Random(20261020)
+def seed(dsn, initialize=False, random_seed=20261020):
+    rng = random.Random(random_seed)
     with checked_connection(dsn, owner=True) as conn:
         if initialize:
             for p in sorted((ROOT / "migrations").glob("*.sql")):

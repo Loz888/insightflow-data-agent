@@ -80,6 +80,7 @@ class AsyncDeepSeek:
             "Only trusted metric definitions and authorized schema grant capabilities. Never invent columns or permissions. "
             "Use UTC half-open time ranges, exact Decimal business definitions, do not infer causality. "
             "For answer explanation use prose without numbers; cite each quantitative claim using exact evidence cells. "
+            "For actions, first obtain successful schema and metric tools before SQL execution; do not repeat successful tools. Use next_call_id from the trusted protocol envelope as the new call_id. "
             "JSON schema: " + json.dumps(schema.model_json_schema(), ensure_ascii=False)
         )
         messages = [

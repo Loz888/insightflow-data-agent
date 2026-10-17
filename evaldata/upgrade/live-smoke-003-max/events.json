@@ -1,0 +1,132 @@
+[
+  {
+    "event_id": 37,
+    "stage": "queued",
+    "payload": {},
+    "at": "2026-10-17 17:49:49.021420+08:00"
+  },
+  {
+    "event_id": 38,
+    "stage": "running",
+    "payload": {
+      "base_version": 0
+    },
+    "at": "2026-10-17 17:49:49.031441+08:00"
+  },
+  {
+    "event_id": 39,
+    "stage": "understanding",
+    "payload": {},
+    "at": "2026-10-17 17:49:49.038459+08:00"
+  },
+  {
+    "event_id": 40,
+    "stage": "retrieval",
+    "payload": {
+      "table_count": 2,
+      "schema_version": "5406f5f9558ff639"
+    },
+    "at": "2026-10-17 17:49:51.295647+08:00"
+  },
+  {
+    "event_id": 41,
+    "stage": "tool_started",
+    "payload": {
+      "name": "metric",
+      "source": "model",
+      "call_id": "step_1",
+      "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+    },
+    "at": "2026-10-17 17:49:53.009518+08:00"
+  },
+  {
+    "event_id": 42,
+    "stage": "tool_finished",
+    "payload": {
+      "name": "metric",
+      "status": "ok",
+      "call_id": "step_1",
+      "result_ref": "ef2a22f9-b3b4-4161-9375-f07614cb442e"
+    },
+    "at": "2026-10-17 17:49:53.012707+08:00"
+  },
+  {
+    "event_id": 43,
+    "stage": "tool_started",
+    "payload": {
+      "name": "execute_sql",
+      "source": "model",
+      "call_id": "step_2",
+      "input_digest": "a2c98fb0964828773144119001d383ddf656bc1008ab5cd65cc743870e723b1d"
+    },
+    "at": "2026-10-17 17:49:54.728337+08:00"
+  },
+  {
+    "event_id": 44,
+    "stage": "tool_finished",
+    "payload": {
+      "code": "TOOL_ORDER",
+      "name": "execute_sql",
+      "status": "error",
+      "call_id": "step_2",
+      "result_ref": "error-step_2"
+    },
+    "at": "2026-10-17 17:49:54.731049+08:00"
+  },
+  {
+    "event_id": 45,
+    "stage": "tool_started",
+    "payload": {
+      "name": "schema",
+      "source": "model",
+      "call_id": "step_3",
+      "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+    },
+    "at": "2026-10-17 17:49:56.553195+08:00"
+  },
+  {
+    "event_id": 46,
+    "stage": "tool_finished",
+    "payload": {
+      "name": "schema",
+      "status": "ok",
+      "call_id": "step_3",
+      "result_ref": "a1cfdb10-4c59-4c5f-9c40-ed1f65423482"
+    },
+    "at": "2026-10-17 17:49:56.556024+08:00"
+  },
+  {
+    "event_id": 47,
+    "stage": "tool_started",
+    "payload": {
+      "name": "execute_sql",
+      "source": "model",
+      "call_id": "step_4",
+      "input_digest": "addde93bf5f12daf8b19abcfd9f1a860321d1ab3a1a760760593a0946d6acbaa"
+    },
+    "at": "2026-10-17 17:49:58.667348+08:00"
+  },
+  {
+    "event_id": 48,
+    "stage": "tool_finished",
+    "payload": {
+      "name": "execute_sql",
+      "status": "ok",
+      "call_id": "step_4",
+      "result_ref": "16df1872-7353-46ef-bb69-e81615ca0ff8"
+    },
+    "at": "2026-10-17 17:49:58.696682+08:00"
+  },
+  {
+    "event_id": 49,
+    "stage": "answering",
+    "payload": {},
+    "at": "2026-10-17 17:49:58.700032+08:00"
+  },
+  {
+    "event_id": 50,
+    "stage": "succeeded",
+    "payload": {},
+    "at": "2026-10-17 17:50:01.665787+08:00"
+  }
+]

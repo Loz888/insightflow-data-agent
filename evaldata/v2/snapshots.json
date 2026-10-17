@@ -1,0 +1,26 @@
+[
+  {
+    "data_version": "v2-seed101",
+    "seed": 101,
+    "counts": {
+      "customers": 100,
+      "products": 30,
+      "orders": 500,
+      "order_items": 1001,
+      "refunds": 165
+    },
+    "new_snapshot": true
+  },
+  {
+    "data_version": "v2-seed202",
+    "seed": 202,
+    "counts": {
+      "customers": 100,
+      "products": 30,
+      "orders": 500,
+      "order_items": 1001,
+      "refunds": 165
+    },
+    "new_snapshot": true
+  }
+]

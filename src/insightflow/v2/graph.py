@@ -306,6 +306,7 @@ def build_graph(provider, registry, settings, store, telemetry):
                 for x in s["tool_results"]
                 if x["name"] == "execute_sql" and x["status"] == "ok"
             ],
+            "sql_by_period": {k: v["sql"] for k, v in s["evidence_by_period"].items()},
             "limitations": [
                 "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
                 "会话隔离不等于业务行级多租户隔离。",

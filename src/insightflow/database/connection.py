@@ -1,7 +1,7 @@
 import psycopg
 from psycopg.conninfo import conninfo_to_dict
 
-DATABASES = {"insightflow_dev", "insightflow_test"}
+DATABASES = {"insightflow_dev", "insightflow_test", "insightflow_v2_seed101", "insightflow_v2_seed202"}
 
 
 def checked_connection(dsn: str, *, owner: bool = False, test_only: bool = False):
