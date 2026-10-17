@@ -6,7 +6,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class V2Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="INSIGHTFLOW_V2_", env_file=None, extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="INSIGHTFLOW_V2_", env_file=None, extra="ignore", hide_input_in_errors=True
+    )
     mode: Literal["mock", "deepseek"] = "mock"
     runtime_url: SecretStr
     reader_url: SecretStr

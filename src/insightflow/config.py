@@ -4,7 +4,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="INSIGHTFLOW_", env_file=None, extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="INSIGHTFLOW_", env_file=None, extra="ignore", hide_input_in_errors=True
+    )
     database_url: SecretStr = SecretStr("")
     mode: Literal["mock", "deepseek"] = "mock"
     experiment_mode: Literal["baseline", "retrieval_only", "context_only", "full"] = "full"

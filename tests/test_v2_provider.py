@@ -201,3 +201,18 @@ def test_otel_sdk_export_is_real_and_bounded():
     assert len(spans) == 1 and spans[0]["name"] == "sql" and int(spans[0]["trace_id"], 16) != 0
     assert spans[0]["duration_ms"] >= 0
     t.trace_provider.shutdown()
+
+
+def test_configuration_errors_do_not_echo_input_secrets():
+    with pytest.raises(ValueError) as exc:
+        V2Settings(
+            runtime_url="private-runtime-connection",
+            reader_url="private-reader-connection",
+            auth_tokens={"synthetic-conf-error-token-only": "a"},
+            mode="deepseek",
+            live_enabled=True,
+            api_key="synthetic-must-not-appear",
+            project_budget_usd="NaN",
+        )
+    assert "synthetic-must-not-appear" not in str(exc.value)
+    assert "private-runtime-connection" not in str(exc.value)

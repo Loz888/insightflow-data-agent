@@ -1,5 +1,9 @@
 """Small real Max HTTP smoke; shares the same durable upgrade budget, no secret output."""
 
+import argparse
+import hashlib
+
+
 import asyncio
 import json
 import os
@@ -66,7 +70,20 @@ async def run(out):
 
 
 def main():
-    out = ROOT / "evaldata/upgrade/live-http-001"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+    out = Path(args.output)
+    snapshot = {
+        "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "source_sha256": hashlib.sha256(
+            b"".join(p.read_bytes() for p in sorted((ROOT / "src/insightflow/v2").glob("*.py")))
+        ).hexdigest(),
+        "requested_model": "deepseek-flash",
+        "documented_snapshot": "DeepSeek-V4.1-Flash-1017",
+        "thinking": "enabled",
+        "reasoning_effort": "max",
+    }
     out.mkdir(parents=True, exist_ok=False)
     d = dotenv_values(ROOT / ".env")
     env = dict(os.environ)
@@ -97,6 +114,7 @@ def main():
     try:
         records = asyncio.run(run(out))
         summary = {
+            **snapshot,
             "entry": "real loopback HTTP + Flash Max + real PostgreSQL",
             "cases": len(records),
             "correct": sum(x["correct"] for x in records),
