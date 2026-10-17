@@ -211,3 +211,22 @@ def test_wrong_metric_plan_rejected_even_if_its_sql_is_safe():
 def test_safe_bound_table_alias_equivalence(validator):
     p = QueryPlan(metric="customer_count", aggregation="count")
     assert SemanticSQLGuard(validator).validate("SELECT count(*) AS value FROM customers", p)
+
+
+@pytest.mark.parametrize(
+    "question",
+    [
+        "2026年9月金额超过100的订单数",
+        "2026年9月支付方式为微信的订单数",
+        "近30天订单数与前30天相比增长多少",
+        "2026年9月不排除华东订单数",
+        "2026年9月不只华东地区订单数",
+        "2026年9月周末订单数",
+    ],
+)
+def test_unrepresentable_modifiers_never_silently_dropped(question):
+    # Simulate a model proposing an otherwise valid plan that dropped the modifier.
+    candidate = plan("2026年9月订单数").plan
+    with pytest.raises(Fault) as exc:
+        guard_question(question, candidate, {}, CLOCK)
+    assert exc.value.code == "CLARIFICATION"

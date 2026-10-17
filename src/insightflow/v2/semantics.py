@@ -93,6 +93,19 @@ def guard_question(question, plan, previous, clock):
     """Verify explicit lexical constraints in addition to model-produced structured semantics.
     This is not a general natural-language theorem prover; ambiguous language is rejected.
     """
+    if re.search(r"不排除|不要排除|不只|不仅|并非|排除.*(?:以外|之外)", question):
+        raise Fault("CLARIFICATION", "复合否定存在歧义，请明确包含和排除的地区集合。")
+    if re.search(
+        r"金额(?:大于|小于)|超过\s*\d|至少\s*\d|多于\s*\d|少于\s*\d|支付方式|客户等级|配送时长|工作日|周末|含当天|北京时间",
+        question,
+    ):
+        raise Fault("CLARIFICATION", "该筛选或时间口径尚未在QueryPlan中定义，不能静默忽略。")
+    if (
+        re.search(r"相比|对比|比较|较上|前一期|增长率|增幅|增长", question)
+        and not re.search(r"同比|环比", question)
+        and plan.dimension != "month"
+    ):
+        raise Fault("CLARIFICATION", "请明确受支持的月环比或同比；其他对比表达暂不自动推断。")
     if re.search(r"美元|美金|USD|CNY以外|因果|导致|为什么|预测|利润|利润率|留存|复购", question, re.I):
         raise Fault("CLARIFICATION", "币种、指标或因果要求超出已定义业务能力。")
     if re.search(

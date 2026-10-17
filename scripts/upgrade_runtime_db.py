@@ -41,19 +41,9 @@ def main():
                     sql.Identifier(name), sql.Identifier(role)
                 )
             )
-            for migration in sorted((ROOT / "migrations").glob("00[5-9]*.sql")):
-                c.execute(migration.read_text())
-            c.execute(sql.SQL("GRANT USAGE ON SCHEMA agent_runtime TO {}").format(sql.Identifier(role)))
-            c.execute(
-                sql.SQL(
-                    "GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA agent_runtime TO {}"
-                ).format(sql.Identifier(role))
-            )
-            c.execute(
-                sql.SQL("GRANT USAGE,SELECT ON ALL SEQUENCES IN SCHEMA agent_runtime TO {}").format(
-                    sql.Identifier(role)
-                )
-            )
+        from migrate_v2 import migrate
+
+        migrate(owner)
         # Preserve the established host/port; no password is displayed.
         from psycopg.conninfo import conninfo_to_dict, make_conninfo
 
