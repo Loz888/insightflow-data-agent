@@ -82,7 +82,7 @@ def build_graph(provider, registry, settings, store, telemetry):
                 "reference_time": settings.reference_time.isoformat(),
                 "coverage": [COVERAGE_START.isoformat(), COVERAGE_END.isoformat()],
                 "trusted_metrics": METRICS,
-                "rules": "Use disposition clarify for unavailable data, ambiguity or unsupported business requests; reserve reject for security/authorization violations. Interpret all modifiers; uncertainty -> clarify. Relative N days = N complete UTC days before reference day; do not substitute data max time. Explicit conditions override, omitted conditions inherit. No unseen data counted as zero.",
+                "rules": "For customer/product counts or product prices use windows=[] (no order-date attribution). For a new session without explicit dates use windows=[]; coverage is not a requested filter. Use disposition clarify for unavailable data, ambiguity or unsupported business requests; reserve reject for security/authorization violations. Interpret all modifiers; uncertainty -> clarify. Relative N days = N complete UTC days before reference day; do not substitute data max time. Explicit conditions override, omitted conditions inherit. No unseen data counted as zero.",
             },
             Decision,
             s["budget"],

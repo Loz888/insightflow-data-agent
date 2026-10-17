@@ -37,6 +37,7 @@ class Runtime:
         )
         self.graph = build_graph(self.provider, self.registry, settings, self.store, self.telemetry)
         self.tasks = {}
+        self.principals = {}
         self.closing = False
         self.reaper = None
 
@@ -66,8 +67,14 @@ class Runtime:
                     self.store.complete, rid, principal, self.owner, "failed", None, None, None, "OVERLOADED"
                 )
                 raise Fault("OVERLOADED", "服务已满，请稍后重试；新幂等键才创建新尝试。")
+            self.principals[rid] = principal
             self.tasks[rid] = asyncio.create_task(self._run(row))
-            self.tasks[rid].add_done_callback(lambda task, key=rid: self.tasks.pop(key, None))
+
+            def completed(task, key=rid):
+                self.tasks.pop(key, None)
+                self.principals.pop(key, None)
+
+            self.tasks[rid].add_done_callback(completed)
         return await asyncio.to_thread(self.store.get, rid, principal), not created
 
     async def _heartbeat(self, row, task):
@@ -210,8 +217,12 @@ class Runtime:
             with suppress(asyncio.CancelledError):
                 await self.reaper
         tasks = list(self.tasks.values())
-        for task in tasks:
-            task.cancel()
+        for rid, task in list(self.tasks.items()):
+            principal = self.principals.get(rid)
+            if principal is not None:
+                await self.cancel(rid, principal)
+            else:
+                task.cancel()
         if tasks:
             await asyncio.gather(*tasks, return_exceptions=True)
         await self.provider.close()

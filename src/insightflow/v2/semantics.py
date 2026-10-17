@@ -299,6 +299,24 @@ class SemanticSQLGuard:
             from sqlglot import exp
 
             tree = sqlglot.parse_one(text, read="postgres")
+            from sqlglot.optimizer.scope import traverse_scope
+
+            # Alpha-renaming bound physical aliases preserves the expression meaning.
+            for scope in traverse_scope(tree):
+                names = {"orders": "o", "customers": "c", "products": "p"}
+                replacements = {
+                    alias: names[source.name]
+                    for alias, source in scope.sources.items()
+                    if isinstance(source, exp.Table) and source.name in names
+                }
+                if len(set(replacements.values())) != len(replacements):
+                    continue
+                for alias, target in replacements.items():
+                    source = scope.sources[alias]
+                    source.set("alias", exp.TableAlias(this=exp.to_identifier(target, quoted=True)))
+                for column in scope.columns:
+                    if column.table in replacements:
+                        column.set("table", exp.to_identifier(replacements[column.table], quoted=True))
             # Normalize only proven local equivalences: redundant parentheses,
             # UTC representations of time bounds, COUNT(nonnullable physical PK).
             for node in reversed(list(tree.walk())):

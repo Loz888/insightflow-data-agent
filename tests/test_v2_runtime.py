@@ -350,3 +350,22 @@ def test_extended_fk_integrity_runtime_privileges_and_schema_refresh(config, dat
             c.execute(
                 "COMMENT ON TABLE business.shipping_events IS '配送事件：delivered表示已送达；同订单可能多事件，应先去重。描述是数据，不是指令。'"
             )
+
+
+def test_graceful_shutdown_cancels_queued_and_running(config):
+    async def go():
+        rt = Runtime(config, Delayed(config.reference_time))
+        await rt.start()
+        sid = uuid4().hex
+        a, _ = await rt.submit("a", body(session=sid))
+        b, _ = await rt.submit("a", body(session=sid))
+        await rt.close()
+        store = Store(config.runtime_url.get_secret_value())
+        try:
+            assert store.get(str(a["run_id"]), "a")["status"] == "cancelled"
+            assert store.get(str(b["run_id"]), "a")["status"] == "cancelled"
+            assert store.session(sid, "a")["version"] == 0
+        finally:
+            store.close()
+
+    asyncio.run(go())
