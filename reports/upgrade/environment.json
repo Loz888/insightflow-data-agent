@@ -1,0 +1,11 @@
+{
+  "python": "3.12.3",
+  "platform": "Linux/WSL",
+  "cpu_model": "AMD Ryzen AI 9 H 365 w/ Radeon 880M",
+  "logical_cpus": 20,
+  "memory": "14111416 kB",
+  "postgres": "16",
+  "data_orders": 500,
+  "http_entry": "loopback TCP",
+  "background_note": "Shared host; live and engineering checks may overlap; not a dedicated performance laboratory."
+}

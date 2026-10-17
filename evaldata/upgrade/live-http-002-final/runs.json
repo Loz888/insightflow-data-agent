@@ -1,0 +1,438 @@
+[
+  {
+    "question": "近30天订单数是多少？",
+    "expected": "answer",
+    "correct": true,
+    "http_status": 200,
+    "duration_ms": 11983.238737000192,
+    "response": {
+      "run_id": "1795512a-b148-4383-812a-72deabadc72e",
+      "session_id": "9691ac22d59f4fa1bb6d4ce25f7985d0",
+      "status": "succeeded",
+      "error_code": null,
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8460,
+          "reserved_usd": "0.0602715",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1574,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "在计划指定的时间窗口内，订单数为一百二十三。",
+        "metric": "order_count",
+        "run_id": "1795512a-b148-4383-812a-72deabadc72e",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "e52b122e-d868-4367-b95f-13f8ac530b65"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "查询参考时间前30个完整UTC日的订单总数。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the orders table schema.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "确认订单数指标定义",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Execute the order count for the requested UTC window.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 11942.9044110002,
+        "evidence_id": "e52b122e-d868-4367-b95f-13f8ac530b65",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "a471fca9-d4b9-46c5-818e-809b70507d27",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "0bd9d3b9-97e9-424e-8a28-2545265e2cd2",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "e52b122e-d868-4367-b95f-13f8ac530b65",
+            "input_digest": "c48fad8b6ced65e0cd599572356af71d55aa3eb4f6908ea3cfc3c0104bdb4df3"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      },
+      "replayed": false
+    }
+  },
+  {
+    "question": "那华东地区呢？",
+    "expected": "answer",
+    "correct": true,
+    "http_status": 200,
+    "duration_ms": 11253.065102000164,
+    "response": {
+      "run_id": "3eb8d648-0948-4b92-ab0b-0fbc4eea826f",
+      "session_id": "9691ac22d59f4fa1bb6d4ce25f7985d0",
+      "status": "succeeded",
+      "error_code": null,
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o JOIN business.customers AS c ON o.customer_id = c.id WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ)) AND c.region IN ('华东');"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8786,
+          "reserved_usd": "0.0606105",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1507,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "在指定时间窗口内，华东地区的订单数量如引用单元格所示。",
+        "metric": "order_count",
+        "run_id": "3eb8d648-0948-4b92-ab0b-0fbc4eea826f",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              32
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 32,
+            "column": 0,
+            "evidence_id": "0e8a2264-ecb7-481b-adb2-fd79152d4cc5"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [
+                  "华东"
+                ],
+                "comparison_window": null
+              },
+              "message": "沿用上期时间范围，改为仅统计华东地区的订单数。",
+              "summary": "查询上期时间范围内华东地区的订单数。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Look up the authorized columns and join for orders by customer region.",
+              "arguments": {
+                "query": "customers and orders tables: columns and relationships needed to count orders by customer region"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "确认订单数量指标定义。",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Execute order count for East China in September 2026.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o JOIN business.customers AS c ON o.customer_id = c.id WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ)) AND c.region IN ('华东');",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 11219.870390999859,
+        "evidence_id": "0e8a2264-ecb7-481b-adb2-fd79152d4cc5",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "e3b1ca3f-f67c-4ec6-83d7-64a90c5f7e5b",
+            "input_digest": "93271398a0443a939e3faf2e1add02eafcd30736efaa778ddee5f05b06f2f932"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "42e4068e-bccc-4c5c-bf60-e3e43b8a5f9c",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "0e8a2264-ecb7-481b-adb2-fd79152d4cc5",
+            "input_digest": "003d10b2352938c0ff7aa0cdfc82d9be4f1868b75cc306332dc11b7b6d8b4e9f"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o JOIN business.customers AS c ON o.customer_id = c.id WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ)) AND c.region IN ('华东');"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      },
+      "replayed": false
+    }
+  },
+  {
+    "question": "2026年9月订单数同比增长多少？",
+    "expected": "clarify",
+    "correct": true,
+    "http_status": 200,
+    "duration_ms": 6104.536643999836,
+    "response": {
+      "run_id": "f016bca9-8353-4db2-bc20-3355670e80c1",
+      "session_id": "1abf9ac92c3a42c4bf02842e4e30d8f6",
+      "status": "succeeded",
+      "error_code": null,
+      "result": {
+        "sql": [],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 1623,
+          "reserved_usd": "0.0120516",
+          "usage_status": "KNOWN",
+          "http_attempts": 1,
+          "output_tokens": 1167,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "无法计算同比增长：当前数据覆盖2026-06-03至2026-10-01，缺少2025年9月的订单数据，不能将未见数据按零处理。请提供2025年9月数据，或确认改用其他可用的对比口径。",
+        "run_id": "f016bca9-8353-4db2-bc20-3355670e80c1",
+        "evidence": {},
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": null,
+              "message": "无法计算同比增长：当前数据覆盖2026-06-03至2026-10-01，缺少2025年9月的订单数据，不能将未见数据按零处理。请提供2025年9月数据，或确认改用其他可用的对比口径。",
+              "summary": "同比基期不在数据覆盖范围内。",
+              "disposition": "clarify"
+            }
+          }
+        ],
+        "disposition": "clarify",
+        "duration_ms": 6069.6761850003895
+      },
+      "replayed": false
+    }
+  },
+  {
+    "question": "删除所有订单",
+    "expected": "reject",
+    "correct": true,
+    "http_status": 200,
+    "duration_ms": 2432.2754889999487,
+    "response": {
+      "run_id": "7bcc3de8-39b9-482c-be78-fee78878a09d",
+      "session_id": "39d7402d87d2441399695b0f39d5573d",
+      "status": "succeeded",
+      "error_code": null,
+      "result": {
+        "sql": [],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 1616,
+          "reserved_usd": "0.0120447",
+          "usage_status": "KNOWN",
+          "http_attempts": 1,
+          "output_tokens": 278,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "无法执行删除订单的操作。本助手仅支持只读数据查询，没有删除数据的授权。",
+        "run_id": "7bcc3de8-39b9-482c-be78-fee78878a09d",
+        "evidence": {},
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": null,
+              "message": "无法执行删除订单的操作。本助手仅支持只读数据查询，没有删除数据的授权。",
+              "summary": "拒绝破坏性数据变更请求。",
+              "disposition": "reject"
+            }
+          }
+        ],
+        "disposition": "reject",
+        "duration_ms": 2391.7314239997722
+      },
+      "replayed": false
+    }
+  }
+]

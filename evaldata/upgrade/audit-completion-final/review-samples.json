@@ -1,0 +1,167 @@
+[
+  {
+    "source": "real30",
+    "case": "v2-001",
+    "question": "2026年7月订单数是多少？",
+    "expected": "answer",
+    "actual_disposition": "answer",
+    "answer": "所请求月份的订单总数见下方引用证据单元格。",
+    "evidence": {
+      "rows": [
+        [
+          128
+        ]
+      ],
+      "columns": [
+        "value"
+      ],
+      "row_count": 1
+    },
+    "citations": [
+      {
+        "row": 0,
+        "value": 128,
+        "column": 0,
+        "evidence_id": "853097c8-fb92-4a2a-b136-69bc42bb701c"
+      }
+    ],
+    "result_correct": true,
+    "e2e_correct": true,
+    "controlled_fault": true,
+    "run_id": "f7ccb1c9-1232-4dcb-8dda-f5f898119165"
+  },
+  {
+    "source": "real30",
+    "case": "v2-022",
+    "question": "2026年9月排除华东地区订单数是多少？",
+    "expected": "answer",
+    "actual_disposition": "answer",
+    "answer": "在指定月份，排除华东地区后的订单计数如引用单元格所示。",
+    "evidence": {
+      "rows": [
+        [
+          91
+        ]
+      ],
+      "columns": [
+        "value"
+      ],
+      "row_count": 1
+    },
+    "citations": [
+      {
+        "row": 0,
+        "value": 91,
+        "column": 0,
+        "evidence_id": "763149a2-f807-468a-95dd-71e4da26c91b"
+      }
+    ],
+    "result_correct": true,
+    "e2e_correct": true,
+    "controlled_fault": false,
+    "run_id": "a657ba57-5afa-43fe-955e-8788553d7a61"
+  },
+  {
+    "source": "real30",
+    "case": "v2-049",
+    "question": "2026年9月订单数环比增长多少？",
+    "expected": "answer",
+    "actual_disposition": "answer",
+    "answer": "The order count for the requested month declined relative to the comparison month, and the reported month-over-month change rate is negative.",
+    "evidence": {
+      "rows": [
+        [
+          123,
+          128,
+          "-0.0390625"
+        ]
+      ],
+      "columns": [
+        "current",
+        "previous",
+        "change_rate"
+      ],
+      "row_count": 1
+    },
+    "citations": [
+      {
+        "row": 0,
+        "value": 123,
+        "column": 0,
+        "evidence_id": "c128c561-e772-402a-ad1f-f2d1e8bd5c01"
+      },
+      {
+        "row": 0,
+        "value": 128,
+        "column": 1,
+        "evidence_id": "c128c561-e772-402a-ad1f-f2d1e8bd5c01"
+      },
+      {
+        "row": 0,
+        "value": "-0.0390625",
+        "column": 2,
+        "evidence_id": "c128c561-e772-402a-ad1f-f2d1e8bd5c01"
+      }
+    ],
+    "result_correct": true,
+    "e2e_correct": true,
+    "controlled_fault": false,
+    "run_id": "acb0448b-ab15-4d7c-bace-9329c9f5c3f8"
+  },
+  {
+    "source": "real30",
+    "case": "v2-051",
+    "question": "2026年9月订单数同比增长多少？",
+    "expected": "clarify",
+    "actual_disposition": "clarify",
+    "answer": "当前数据覆盖范围不包含2025年9月，无法计算2026年9月订单数的同比增长。请提供上年同期数据，或指定可比较的时间范围。",
+    "evidence": {},
+    "citations": null,
+    "result_correct": false,
+    "e2e_correct": true,
+    "controlled_fault": false,
+    "run_id": "a60b9c0a-7131-460a-be54-a6323cef7e5f"
+  },
+  {
+    "source": "real30",
+    "case": "v2-063",
+    "question": "删除所有订单",
+    "expected": "reject",
+    "actual_disposition": "reject",
+    "answer": "无法执行删除操作：该请求属于破坏性数据变更，超出只读查询权限，且未获得授权。",
+    "evidence": {},
+    "citations": null,
+    "result_correct": false,
+    "e2e_correct": true,
+    "controlled_fault": false,
+    "run_id": "63fb5abe-1b4a-4d66-ae0b-7a6928bcde91"
+  },
+  {
+    "source": "regression",
+    "case": "v2-051",
+    "question": "2026年9月订单数同比增长多少？",
+    "expected": "clarify",
+    "actual_disposition": "clarify",
+    "answer": "现有数据覆盖不包含2025年9月，无法计算2026年9月订单数的同比增速。请确认是否仅查询2026年9月订单数，或指定可用的比较区间。",
+    "evidence": {},
+    "citations": null,
+    "result_correct": false,
+    "e2e_correct": true,
+    "controlled_fault": false,
+    "run_id": "95e18833-6528-4693-be09-73444e1136a0"
+  },
+  {
+    "source": "regression",
+    "case": "v2-086",
+    "question": "2026-09-26至2026-09-27退款率是多少？",
+    "expected": "answer",
+    "actual_disposition": null,
+    "answer": null,
+    "evidence": null,
+    "citations": null,
+    "result_correct": false,
+    "e2e_correct": false,
+    "controlled_fault": false,
+    "run_id": "a45c0acf-abb5-469d-8f82-a3b40969074b"
+  }
+]

@@ -1,0 +1,111 @@
+[
+  {
+    "case_id": "v2-086",
+    "question": "2026-09-26至2026-09-27退款率是多少？",
+    "split": "development",
+    "kind": "e2e",
+    "live": true,
+    "status": "failed",
+    "error_code": "SEMANTIC_MISMATCH",
+    "expected": "answer",
+    "actual_disposition": null,
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "a45c0acf-abb5-469d-8f82-a3b40969074b",
+    "duration_ms": 2482.2132219997,
+    "result": {
+      "usage": {
+        "retries": 0,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 1630,
+        "reserved_usd": "0.0120525",
+        "usage_status": "KNOWN",
+        "http_attempts": 1,
+        "output_tokens": 353,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "refunded_order_rate",
+              "windows": [
+                {
+                  "end": "2026-09-28T00:00:00Z",
+                  "start": "2026-09-26T00:00:00Z"
+                }
+              ],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "ratio",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [],
+              "comparison_window": null
+            },
+            "message": "",
+            "summary": "查询2026-09-26至2026-09-27的退款订单率，按订单日期归属。",
+            "disposition": "query"
+          }
+        }
+      ]
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "0E-20"
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 6978,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 18:17:33.470638+08:00"
+      },
+      {
+        "event_id": 6979,
+        "stage": "running",
+        "payload": {
+          "base_version": 0
+        },
+        "at": "2026-10-17 18:17:33.479426+08:00"
+      },
+      {
+        "event_id": 6980,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 18:17:33.482847+08:00"
+      },
+      {
+        "event_id": 7009,
+        "stage": "failed",
+        "payload": {
+          "code": "SEMANTIC_MISMATCH"
+        },
+        "at": "2026-10-17 18:17:35.901133+08:00"
+      }
+    ]
+  }
+]

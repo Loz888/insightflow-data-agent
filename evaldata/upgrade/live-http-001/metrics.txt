@@ -1,0 +1,183 @@
+# HELP insightflow_requests_total Finished requests
+# TYPE insightflow_requests_total counter
+insightflow_requests_total{status="succeeded"} 4.0
+# HELP insightflow_requests_created Finished requests
+# TYPE insightflow_requests_created gauge
+insightflow_requests_created{status="succeeded"} 1.7922324419632547e+09
+# HELP insightflow_retries_total Bounded retries
+# TYPE insightflow_retries_total counter
+# HELP insightflow_active_runs In-process admitted requests
+# TYPE insightflow_active_runs gauge
+insightflow_active_runs 0.0
+# HELP insightflow_stage_seconds Actual stage duration
+# TYPE insightflow_stage_seconds histogram
+insightflow_stage_seconds_bucket{le="0.005",stage="session_queue"} 0.0
+insightflow_stage_seconds_bucket{le="0.01",stage="session_queue"} 3.0
+insightflow_stage_seconds_bucket{le="0.025",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="0.05",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="0.075",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="0.1",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="0.25",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="0.5",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="0.75",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="1.0",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="2.5",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="5.0",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="7.5",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="10.0",stage="session_queue"} 4.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="session_queue"} 4.0
+insightflow_stage_seconds_count{stage="session_queue"} 4.0
+insightflow_stage_seconds_sum{stage="session_queue"} 0.043093328999930236
+insightflow_stage_seconds_bucket{le="0.005",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.01",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.025",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.05",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.075",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.1",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.25",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.5",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="0.75",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="1.0",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="2.5",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="5.0",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="7.5",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="10.0",stage="model_queue"} 12.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="model_queue"} 12.0
+insightflow_stage_seconds_count{stage="model_queue"} 12.0
+insightflow_stage_seconds_sum{stage="model_queue"} 0.00015887499966993346
+insightflow_stage_seconds_bucket{le="0.005",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.01",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.025",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.05",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.075",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.1",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.25",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.5",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="0.75",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="1.0",stage="model"} 0.0
+insightflow_stage_seconds_bucket{le="2.5",stage="model"} 7.0
+insightflow_stage_seconds_bucket{le="5.0",stage="model"} 12.0
+insightflow_stage_seconds_bucket{le="7.5",stage="model"} 12.0
+insightflow_stage_seconds_bucket{le="10.0",stage="model"} 12.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="model"} 12.0
+insightflow_stage_seconds_count{stage="model"} 12.0
+insightflow_stage_seconds_sum{stage="model"} 27.518744953999885
+insightflow_stage_seconds_bucket{le="0.005",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.01",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.025",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.05",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.075",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.1",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.25",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.5",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="0.75",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="1.0",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="2.5",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="5.0",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="7.5",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="10.0",stage="retrieval"} 2.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="retrieval"} 2.0
+insightflow_stage_seconds_count{stage="retrieval"} 2.0
+insightflow_stage_seconds_sum{stage="retrieval"} 0.0025554170001669263
+insightflow_stage_seconds_bucket{le="0.005",stage="tool"} 4.0
+insightflow_stage_seconds_bucket{le="0.01",stage="tool"} 4.0
+insightflow_stage_seconds_bucket{le="0.025",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="0.05",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="0.075",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="0.1",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="0.25",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="0.5",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="0.75",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="1.0",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="2.5",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="5.0",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="7.5",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="10.0",stage="tool"} 6.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="tool"} 6.0
+insightflow_stage_seconds_count{stage="tool"} 6.0
+insightflow_stage_seconds_sum{stage="tool"} 0.04347819499935213
+insightflow_stage_seconds_bucket{le="0.005",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.01",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.025",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.05",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.075",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.1",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.25",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.5",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="0.75",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="1.0",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="2.5",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="5.0",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="7.5",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="10.0",stage="db_queue"} 2.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="db_queue"} 2.0
+insightflow_stage_seconds_count{stage="db_queue"} 2.0
+insightflow_stage_seconds_sum{stage="db_queue"} 0.00019250200011811103
+insightflow_stage_seconds_bucket{le="0.005",stage="sql"} 0.0
+insightflow_stage_seconds_bucket{le="0.01",stage="sql"} 1.0
+insightflow_stage_seconds_bucket{le="0.025",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="0.05",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="0.075",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="0.1",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="0.25",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="0.5",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="0.75",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="1.0",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="2.5",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="5.0",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="7.5",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="10.0",stage="sql"} 2.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="sql"} 2.0
+insightflow_stage_seconds_count{stage="sql"} 2.0
+insightflow_stage_seconds_sum{stage="sql"} 0.019496810999953595
+insightflow_stage_seconds_bucket{le="0.005",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.01",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.025",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.05",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.075",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.1",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.25",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.5",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="0.75",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="1.0",stage="run"} 0.0
+insightflow_stage_seconds_bucket{le="2.5",stage="run"} 1.0
+insightflow_stage_seconds_bucket{le="5.0",stage="run"} 2.0
+insightflow_stage_seconds_bucket{le="7.5",stage="run"} 2.0
+insightflow_stage_seconds_bucket{le="10.0",stage="run"} 2.0
+insightflow_stage_seconds_bucket{le="+Inf",stage="run"} 4.0
+insightflow_stage_seconds_count{stage="run"} 4.0
+insightflow_stage_seconds_sum{stage="run"} 27.886691649000113
+# HELP insightflow_stage_seconds_created Actual stage duration
+# TYPE insightflow_stage_seconds_created gauge
+insightflow_stage_seconds_created{stage="session_queue"} 1.792232434006302e+09
+insightflow_stage_seconds_created{stage="model_queue"} 1.7922324340159209e+09
+insightflow_stage_seconds_created{stage="model"} 1.7922324346188793e+09
+insightflow_stage_seconds_created{stage="retrieval"} 1.7922324346288157e+09
+insightflow_stage_seconds_created{stage="tool"} 1.7922324361741457e+09
+insightflow_stage_seconds_created{stage="db_queue"} 1.7922324398116338e+09
+insightflow_stage_seconds_created{stage="sql"} 1.792232439820455e+09
+insightflow_stage_seconds_created{stage="run"} 1.7922324419632752e+09
+# HELP insightflow_model_tokens_total Known model tokens
+# TYPE insightflow_model_tokens_total counter
+insightflow_model_tokens_total{kind="input"} 20471.0
+insightflow_model_tokens_total{kind="output"} 3735.0
+# HELP insightflow_model_tokens_created Known model tokens
+# TYPE insightflow_model_tokens_created gauge
+insightflow_model_tokens_created{kind="input"} 1.7922324346190147e+09
+insightflow_model_tokens_created{kind="output"} 1.792232434619023e+09
+# HELP insightflow_usage_unknown_total HTTP attempts without trustworthy usage
+# TYPE insightflow_usage_unknown_total counter
+insightflow_usage_unknown_total 0.0
+# HELP insightflow_usage_unknown_created HTTP attempts without trustworthy usage
+# TYPE insightflow_usage_unknown_created gauge
+insightflow_usage_unknown_created 1.792232432951012e+09
+# HELP insightflow_reserved_usd_total Conservative reservations; not supplier bill
+# TYPE insightflow_reserved_usd_total counter
+insightflow_reserved_usd_total 0.14497829999999998
+# HELP insightflow_reserved_usd_created Conservative reservations; not supplier bill
+# TYPE insightflow_reserved_usd_created gauge
+insightflow_reserved_usd_created 1.7922324329510174e+09
+# HELP insightflow_pool_wait_seconds Cumulative actual psycopg pool wait
+# TYPE insightflow_pool_wait_seconds gauge
+# HELP insightflow_pool_waiting Actual queued psycopg pool borrowers
+# TYPE insightflow_pool_waiting gauge

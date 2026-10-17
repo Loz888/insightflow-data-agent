@@ -1,0 +1,51 @@
+[
+  {
+    "id": "IFU-001",
+    "status": "OPEN",
+    "issue": "Real model sometimes produces invalid JSON actions",
+    "evidence": "evaldata/upgrade/live-max-002/failures.json",
+    "mitigation": "Bounded schema-only retry; fail closed without executing malformed actions."
+  },
+  {
+    "id": "IFU-002",
+    "status": "OPEN",
+    "issue": "Conservative SQL contract rejects some equivalent NULL/refund query forms",
+    "evidence": "evaldata/upgrade/live-max-regression-001/failures.json",
+    "mitigation": "No fake success or relaxed result scorer; supported-form limitation disclosed."
+  },
+  {
+    "id": "IFU-003",
+    "status": "MITIGATED",
+    "issue": "Master-data plan got invented order dates; customer alias false rejection",
+    "evidence": "evaldata/upgrade/live-max-regression-001/runs.jsonl",
+    "mitigation": "Explicit master-data instructions and bounded alias equivalence; targeted retest passed, not a universal guarantee."
+  },
+  {
+    "id": "IFU-004",
+    "status": "BLOCKED",
+    "issue": "Docker build/Compose execution unavailable",
+    "evidence": "reports/upgrade/compose-static.json",
+    "required": "Install/start local Docker engine and rerun container acceptance."
+  },
+  {
+    "id": "IFU-005",
+    "status": "NOT_RUN",
+    "issue": "Independent human review of natural-language outputs",
+    "evidence": "evaldata/upgrade/audit-completion-final/human-review.md",
+    "required": "Human reviewer to inspect prepared samples; AI review is not human sign-off."
+  },
+  {
+    "id": "IFU-006",
+    "status": "KNOWN_LIMITATION",
+    "issue": "Durable runtime has higher latency and lower Mock HTTP throughput",
+    "evidence": "evaldata/upgrade/http-performance-002/runs.json",
+    "mitigation": "Reported without speedup claim; no current production SLA."
+  },
+  {
+    "id": "IFU-007",
+    "status": "RESOLVED",
+    "issue": "Early runtime config merge, fixed sleep recovery and local clock fencing",
+    "evidence": "reports/upgrade/fresh-environment.json",
+    "mitigation": "Explicit auth-source isolation, observable recovery and DB/monotonic clocks; final fresh325 pass."
+  }
+]

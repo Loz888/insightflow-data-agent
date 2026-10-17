@@ -1,0 +1,571 @@
+[
+  {
+    "case_id": "v2-034",
+    "question": "客户数是多少？",
+    "split": "development",
+    "kind": "e2e",
+    "live": true,
+    "status": "failed",
+    "error_code": "SEMANTIC_MISMATCH",
+    "expected": "answer",
+    "actual_disposition": null,
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "72e0e96b-c471-42f2-9a40-03b153b54999",
+    "duration_ms": 12135.966882000048,
+    "result": {
+      "usage": {
+        "retries": 0,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 12195,
+        "reserved_usd": "0.0744873",
+        "usage_status": "KNOWN",
+        "http_attempts": 6,
+        "output_tokens": 1506,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "customer_count",
+              "windows": [],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "count",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [],
+              "comparison_window": null
+            },
+            "message": "客户数按客户表统计，不按订单时间或地区筛选。",
+            "summary": "查询客户总数。",
+            "disposition": "query"
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "schema",
+            "call_id": "step_1",
+            "summary": "Look up the authorized customers table schema before running the customer-count query.",
+            "arguments": {
+              "query": "customers"
+            }
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "metric",
+            "call_id": "step_2",
+            "summary": "Confirm the customer count metric definition before querying.",
+            "arguments": {
+              "metric": "customer_count"
+            }
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "execute_sql",
+            "call_id": "step_3",
+            "summary": "Execute the trusted customer count metric over all customers.",
+            "arguments": {
+              "sql": "SELECT COUNT(*) AS value FROM customers;",
+              "period": "current"
+            }
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "execute_sql",
+            "call_id": "step_4",
+            "summary": "执行客户数查询",
+            "arguments": {
+              "sql": "SELECT COUNT(*) AS value FROM customers;",
+              "period": "current"
+            }
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "execute_sql",
+            "call_id": "step_5",
+            "summary": "执行客户数查询",
+            "arguments": {
+              "sql": "SELECT COUNT(*) AS value FROM customers",
+              "period": "current"
+            }
+          }
+        }
+      ]
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          100
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 6696,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 18:12:03.200693+08:00"
+      },
+      {
+        "event_id": 6697,
+        "stage": "running",
+        "payload": {
+          "base_version": 0
+        },
+        "at": "2026-10-17 18:12:03.212142+08:00"
+      },
+      {
+        "event_id": 6698,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 18:12:03.217051+08:00"
+      },
+      {
+        "event_id": 6699,
+        "stage": "retrieval",
+        "payload": {
+          "table_count": 1,
+          "schema_version": "218d8a5016da427e"
+        },
+        "at": "2026-10-17 18:12:05.611266+08:00"
+      },
+      {
+        "event_id": 6700,
+        "stage": "tool_started",
+        "payload": {
+          "name": "schema",
+          "source": "model",
+          "call_id": "step_1",
+          "input_digest": "56acb5e9c7d429fcd6e1a206beb89ffd59bca049b72859c9c8c3bf8bf74750ab"
+        },
+        "at": "2026-10-17 18:12:07.275962+08:00"
+      },
+      {
+        "event_id": 6701,
+        "stage": "tool_finished",
+        "payload": {
+          "name": "schema",
+          "status": "ok",
+          "call_id": "step_1",
+          "result_ref": "a8d12d75-6105-4202-8346-6959a2c0aaa3"
+        },
+        "at": "2026-10-17 18:12:07.279098+08:00"
+      },
+      {
+        "event_id": 6702,
+        "stage": "tool_started",
+        "payload": {
+          "name": "metric",
+          "source": "model",
+          "call_id": "step_2",
+          "input_digest": "739c067b93454d235d350c6e3dd989caba7059ae3463470cdc383db5b86c4e23"
+        },
+        "at": "2026-10-17 18:12:08.184770+08:00"
+      },
+      {
+        "event_id": 6703,
+        "stage": "tool_finished",
+        "payload": {
+          "name": "metric",
+          "status": "ok",
+          "call_id": "step_2",
+          "result_ref": "29cd8f48-3375-4589-84ed-0339905873a5"
+        },
+        "at": "2026-10-17 18:12:08.187631+08:00"
+      },
+      {
+        "event_id": 6704,
+        "stage": "tool_started",
+        "payload": {
+          "name": "execute_sql",
+          "source": "model",
+          "call_id": "step_3",
+          "input_digest": "d5d79b5c022df1d41cacde5dc3067cd3794067a52a997451fcdd9d1420a2bee6"
+        },
+        "at": "2026-10-17 18:12:07.969147+08:00"
+      },
+      {
+        "event_id": 6705,
+        "stage": "tool_finished",
+        "payload": {
+          "code": "SEMANTIC_MISMATCH",
+          "name": "execute_sql",
+          "status": "error",
+          "call_id": "step_3",
+          "result_ref": "error-step_3"
+        },
+        "at": "2026-10-17 18:12:07.975121+08:00"
+      },
+      {
+        "event_id": 6706,
+        "stage": "tool_started",
+        "payload": {
+          "name": "execute_sql",
+          "source": "model",
+          "call_id": "step_4",
+          "input_digest": "d5d79b5c022df1d41cacde5dc3067cd3794067a52a997451fcdd9d1420a2bee6"
+        },
+        "at": "2026-10-17 18:12:10.834649+08:00"
+      },
+      {
+        "event_id": 6707,
+        "stage": "tool_finished",
+        "payload": {
+          "code": "SEMANTIC_MISMATCH",
+          "name": "execute_sql",
+          "status": "error",
+          "call_id": "step_4",
+          "result_ref": "error-step_4"
+        },
+        "at": "2026-10-17 18:12:10.841253+08:00"
+      },
+      {
+        "event_id": 6708,
+        "stage": "tool_started",
+        "payload": {
+          "name": "execute_sql",
+          "source": "model",
+          "call_id": "step_5",
+          "input_digest": "4859312364c67c57377651ab2996ec331ffe274953dabcb3c87340554c081f54"
+        },
+        "at": "2026-10-17 18:12:12.782355+08:00"
+      },
+      {
+        "event_id": 6709,
+        "stage": "tool_finished",
+        "payload": {
+          "code": "SEMANTIC_MISMATCH",
+          "name": "execute_sql",
+          "status": "error",
+          "call_id": "step_5",
+          "result_ref": "error-step_5"
+        },
+        "at": "2026-10-17 18:12:12.789037+08:00"
+      },
+      {
+        "event_id": 6710,
+        "stage": "failed",
+        "payload": {
+          "code": "SEMANTIC_MISMATCH"
+        },
+        "at": "2026-10-17 18:12:12.796300+08:00"
+      }
+    ]
+  },
+  {
+    "case_id": "v2-036",
+    "question": "平均标价是多少？",
+    "split": "frozen_seen",
+    "kind": "e2e",
+    "live": true,
+    "status": "succeeded",
+    "error_code": null,
+    "expected": "answer",
+    "actual_disposition": "clarify",
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "90f2cdc8-7532-4307-8561-6df2df9acd12",
+    "duration_ms": 5791.931452000426,
+    "result": {
+      "sql": [],
+      "model": "deepseek-flash",
+      "usage": {
+        "retries": 0,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 1582,
+        "reserved_usd": "0.0119916",
+        "usage_status": "KNOWN",
+        "http_attempts": 1,
+        "output_tokens": 1009,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "answer": "主数据指标没有订单日期口径。",
+      "run_id": "90f2cdc8-7532-4307-8561-6df2df9acd12",
+      "evidence": {},
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "average_price",
+              "windows": [
+                {
+                  "end": "2026-10-01T00:00:00Z",
+                  "start": "2026-06-03T00:00:00Z"
+                }
+              ],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "average",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [],
+              "comparison_window": null
+            },
+            "message": "",
+            "summary": "计算可用商品标价的平均值。",
+            "disposition": "query"
+          }
+        }
+      ],
+      "disposition": "clarify",
+      "duration_ms": 5732.732600999952
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "128.5000000000000000"
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 6723,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 18:12:21.798851+08:00"
+      },
+      {
+        "event_id": 6724,
+        "stage": "running",
+        "payload": {
+          "base_version": 0
+        },
+        "at": "2026-10-17 18:12:21.810476+08:00"
+      },
+      {
+        "event_id": 6725,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 18:12:21.814459+08:00"
+      },
+      {
+        "event_id": 6726,
+        "stage": "succeeded",
+        "payload": {},
+        "at": "2026-10-17 18:12:27.541892+08:00"
+      }
+    ]
+  },
+  {
+    "case_id": "v2-046",
+    "question": "那华东地区呢？",
+    "split": "development",
+    "kind": "e2e",
+    "live": true,
+    "status": "failed",
+    "error_code": "MODEL_INVALID",
+    "expected": "answer",
+    "actual_disposition": null,
+    "sql_executed": false,
+    "result_correct": false,
+    "semantic_correct": false,
+    "disposition_correct": false,
+    "evidence_consistent": false,
+    "e2e_correct": false,
+    "run_id": "746fb5a6-df59-4d3b-b11d-cfb49de6f569",
+    "duration_ms": 21387.05644399988,
+    "result": {
+      "usage": {
+        "retries": 1,
+        "model_ids": [
+          "deepseek-flash"
+        ],
+        "usage_known": true,
+        "input_tokens": 7951,
+        "reserved_usd": "0.0495231",
+        "usage_status": "KNOWN",
+        "http_attempts": 4,
+        "output_tokens": 988,
+        "unknown_attempts": 0,
+        "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+      },
+      "decisions": [
+        {
+          "task": "plan",
+          "output": {
+            "plan": {
+              "order": "desc",
+              "top_n": null,
+              "metric": "order_count",
+              "windows": [
+                {
+                  "end": "2026-10-01T00:00:00Z",
+                  "start": "2026-09-01T00:00:00Z"
+                }
+              ],
+              "currency": "CNY",
+              "timezone": "UTC",
+              "dimension": null,
+              "comparison": "none",
+              "aggregation": "count",
+              "data_version": "v1-seed20261020",
+              "metric_version": "2026-10-v1",
+              "exclude_regions": [],
+              "include_regions": [
+                "华东"
+              ],
+              "comparison_window": null
+            },
+            "message": "",
+            "summary": "查询上一时间范围内华东地区的订单数，沿用原有统计口径。",
+            "disposition": "query"
+          }
+        },
+        {
+          "task": "action",
+          "output": {
+            "name": "schema",
+            "call_id": "step_1",
+            "summary": "检查订单与客户地区字段",
+            "arguments": {
+              "query": "orders customers region ordered_at"
+            }
+          }
+        },
+        {
+          "task": "action",
+          "invalid_fields": [
+            {
+              "path": "",
+              "type": "json_invalid"
+            }
+          ]
+        },
+        {
+          "task": "action",
+          "invalid_fields": [
+            {
+              "path": "",
+              "type": "json_invalid"
+            }
+          ]
+        }
+      ]
+    },
+    "reference": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          32
+        ]
+      ],
+      "row_count": 1
+    },
+    "cross_snapshot_results": [],
+    "controlled_fault": false,
+    "events": [
+      {
+        "event_id": 6787,
+        "stage": "queued",
+        "payload": {},
+        "at": "2026-10-17 18:13:25.386149+08:00"
+      },
+      {
+        "event_id": 6788,
+        "stage": "running",
+        "payload": {
+          "base_version": 1
+        },
+        "at": "2026-10-17 18:13:25.397547+08:00"
+      },
+      {
+        "event_id": 6789,
+        "stage": "understanding",
+        "payload": {},
+        "at": "2026-10-17 18:13:25.403005+08:00"
+      },
+      {
+        "event_id": 6790,
+        "stage": "retrieval",
+        "payload": {
+          "table_count": 2,
+          "schema_version": "218d8a5016da427e"
+        },
+        "at": "2026-10-17 18:13:28.832278+08:00"
+      },
+      {
+        "event_id": 6791,
+        "stage": "tool_started",
+        "payload": {
+          "name": "schema",
+          "source": "model",
+          "call_id": "step_1",
+          "input_digest": "b88ef7694330a3bbff46dd9c2d673280f539f471b3094786bae6ba84f6b0c691"
+        },
+        "at": "2026-10-17 18:13:30.801597+08:00"
+      },
+      {
+        "event_id": 6792,
+        "stage": "tool_finished",
+        "payload": {
+          "name": "schema",
+          "status": "ok",
+          "call_id": "step_1",
+          "result_ref": "d1b8c92c-6d61-4d66-ab6c-5009f1737cbc"
+        },
+        "at": "2026-10-17 18:13:30.804926+08:00"
+      },
+      {
+        "event_id": 6793,
+        "stage": "failed",
+        "payload": {
+          "code": "MODEL_INVALID"
+        },
+        "at": "2026-10-17 18:13:34.122033+08:00"
+      }
+    ]
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "entry": "real loopback HTTP + Flash Max + real PostgreSQL",
+  "cases": 4,
+  "correct": 4,
+  "notes": "Small smoke with query/followup/clarification/refusal; latency is not Mock throughput and not a production SLA."
+}

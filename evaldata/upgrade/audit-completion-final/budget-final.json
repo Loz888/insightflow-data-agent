@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-17T10:34:03.159465+00:00",
+  "ledger": {
+    "experiment_id": "upgrade-v2-20261017",
+    "budget": "2.00",
+    "reserved": "0.4856967",
+    "attempts": 468
+  },
+  "http_attempt_limit": 500,
+  "remaining_attempts": 32,
+  "groups": [
+    {
+      "outcome": "MODEL_INVALID",
+      "usage_known": true,
+      "attempts": 16,
+      "input_tokens": "34359",
+      "output_tokens": "2752",
+      "gross_reservations": "0.2009994",
+      "measured_peak_charge": "0.0136101"
+    },
+    {
+      "outcome": "MODEL_TIMEOUT",
+      "usage_known": false,
+      "attempts": 1,
+      "input_tokens": null,
+      "output_tokens": null,
+      "gross_reservations": "0.0118881",
+      "measured_peak_charge": null
+    },
+    {
+      "outcome": "ok",
+      "usage_known": true,
+      "attempts": 451,
+      "input_tokens": "790827",
+      "output_tokens": "152112",
+      "gross_reservations": "5.3807367",
+      "measured_peak_charge": "0.4121079"
+    }
+  ],
+  "notes": "ledger reserved = conservative accounted cost after measured-usage reconciliation, plus unreleased unknown/legacy reservations. Not actual supplier bill. No budget reset."
+}

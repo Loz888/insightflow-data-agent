@@ -1,0 +1,212 @@
+{
+  "at": "2026-10-17T10:34:03.164810+00:00",
+  "overall": "PARTIAL_PASS",
+  "branch": "upgrade/deepseek-runtime-v2",
+  "accepted_code_commit": "c2ed5747ef6b6110d8b7af74ff49f546e5564639",
+  "tests": {
+    "passed": 325,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "unit_passed": 148,
+    "integration_passed": 177
+  },
+  "fresh_environment": {
+    "status": "PASS",
+    "environment": "new Python venv + newly initialized PostgreSQL16 cluster; fresh 4 databases, no original cluster changed",
+    "tests": {
+      "passed": 325,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "unit_passed": 148,
+      "integration_passed": 177
+    },
+    "http": "PASS",
+    "migration_replay": "PASS",
+    "docker": "BLOCKED_NO_ENGINE",
+    "paid_model": "NOT_RUN_IN_FRESH_CI",
+    "source_commit": "c2ed5747ef6b6110d8b7af74ff49f546e5564639"
+  },
+  "original30": {
+    "cases": 30,
+    "model_type": "mock",
+    "sql_exact_match_rate": 0.26666666666666666,
+    "sql_execution_rate": 1.0,
+    "sql_result_accuracy": 1.0,
+    "answer_groundedness": 1.0,
+    "success_rate": 1.0,
+    "p50_ms": 12.893,
+    "p95_ms": 25.421,
+    "average_retry_count": 0.0,
+    "model_call_count": 70,
+    "token_usage_known_cases": 0,
+    "input_tokens": null,
+    "output_tokens": null,
+    "error_distribution": {},
+    "real_deepseek": "NOT RUN"
+  },
+  "offline87": {
+    "mode": "mock",
+    "retrieval_mode": "rules",
+    "context_enabled": true,
+    "feedback_enabled": true,
+    "model": "offline-rules",
+    "thinking_effort": null,
+    "at": "2026-10-17T10:21:36.003480+00:00",
+    "git_commit": "889f654dcf7ddc75d3e33d9253c1b7f721690059",
+    "source_sha256": "3e6bb0fccf741a7ef9afc4075f4e0540f36364c6402caea16bb0bf8fd7361cf5",
+    "prompt_version": "insightflow-agent-v3-20261017",
+    "data_version": "v1-seed20261020",
+    "dataset_sha256": "c30d189525328ad731fc75cfe41e3e16f0505546e2761d301b875ef789a4c17c",
+    "execution": {
+      "correct": 55,
+      "total": 55
+    },
+    "result_accuracy": {
+      "correct": 55,
+      "total": 55
+    },
+    "semantic_accuracy": {
+      "correct": 55,
+      "total": 55
+    },
+    "clarification_rejection": {
+      "correct": 20,
+      "total": 20
+    },
+    "evidence_consistency": {
+      "correct": 55,
+      "total": 55
+    },
+    "e2e": {
+      "correct": 87,
+      "total": 87
+    },
+    "not_run_budget": 0,
+    "p50_ms": 176.23306499990576,
+    "p95_ms": 250.96675699978732,
+    "budget": {
+      "experiment_id": "upgrade-v2-20261017",
+      "budget": "2.00",
+      "reserved": "0.4741200",
+      "attempts": 456
+    },
+    "usage_unknown_runs": 0,
+    "limitations": [
+      "Test questions were inspected during development; frozen_seen is not an unseen benchmark.",
+      "Automatic natural-language evidence checking is limited; representative human review is separate.",
+      "No causal or production-scale inference."
+    ]
+  },
+  "live30": {
+    "mode": "deepseek",
+    "retrieval_mode": "rules",
+    "context_enabled": true,
+    "feedback_enabled": true,
+    "model": "deepseek-flash",
+    "thinking_effort": "max",
+    "at": "2026-10-17T10:14:42.920356+00:00",
+    "git_commit": "dff9ac3502ff5c9480360ef454f0a9ba436a276f",
+    "source_sha256": "8ef866ffbd82e7629198582aa1139e2d7e361f67eec235ba4a1461c72ef83c51",
+    "prompt_version": "insightflow-agent-v3-20261017",
+    "data_version": "v1-seed20261020",
+    "dataset_sha256": "c30d189525328ad731fc75cfe41e3e16f0505546e2761d301b875ef789a4c17c",
+    "execution": {
+      "correct": 23,
+      "total": 26
+    },
+    "result_accuracy": {
+      "correct": 23,
+      "total": 26
+    },
+    "semantic_accuracy": {
+      "correct": 23,
+      "total": 26
+    },
+    "clarification_rejection": {
+      "correct": 4,
+      "total": 4
+    },
+    "evidence_consistency": {
+      "correct": 23,
+      "total": 26
+    },
+    "e2e": {
+      "correct": 27,
+      "total": 30
+    },
+    "not_run_budget": 0,
+    "p50_ms": 11671.70297299981,
+    "p95_ms": 23615.465704000144,
+    "budget": {
+      "experiment_id": "upgrade-v2-20261017",
+      "budget": "2.00",
+      "reserved": "0.3425010",
+      "attempts": 318
+    },
+    "usage_unknown_runs": 0,
+    "limitations": [
+      "Test questions were inspected during development; frozen_seen is not an unseen benchmark.",
+      "Automatic natural-language evidence checking is limited; representative human review is separate.",
+      "No causal or production-scale inference."
+    ]
+  },
+  "live_http_final": {
+    "source_commit": "c2ed5747ef6b6110d8b7af74ff49f546e5564639",
+    "source_sha256": "aed375dc987ca2d3ce1953906e724a88cb343ce29ec745b0d2922ebf08d3bb86",
+    "requested_model": "deepseek-flash",
+    "documented_snapshot": "DeepSeek-V4.1-Flash-1017",
+    "thinking": "enabled",
+    "reasoning_effort": "max",
+    "entry": "real loopback HTTP + Flash Max + real PostgreSQL",
+    "cases": 4,
+    "correct": 4,
+    "notes": "Small smoke with query/followup/clarification/refusal; latency is not Mock throughput and not a production SLA."
+  },
+  "budget": {
+    "at": "2026-10-17T10:34:03.159465+00:00",
+    "ledger": {
+      "experiment_id": "upgrade-v2-20261017",
+      "budget": "2.00",
+      "reserved": "0.4856967",
+      "attempts": 468
+    },
+    "http_attempt_limit": 500,
+    "remaining_attempts": 32,
+    "groups": [
+      {
+        "outcome": "MODEL_INVALID",
+        "usage_known": true,
+        "attempts": 16,
+        "input_tokens": "34359",
+        "output_tokens": "2752",
+        "gross_reservations": "0.2009994",
+        "measured_peak_charge": "0.0136101"
+      },
+      {
+        "outcome": "MODEL_TIMEOUT",
+        "usage_known": false,
+        "attempts": 1,
+        "input_tokens": null,
+        "output_tokens": null,
+        "gross_reservations": "0.0118881",
+        "measured_peak_charge": null
+      },
+      {
+        "outcome": "ok",
+        "usage_known": true,
+        "attempts": 451,
+        "input_tokens": "790827",
+        "output_tokens": "152112",
+        "gross_reservations": "5.3807367",
+        "measured_peak_charge": "0.4121079"
+      }
+    ],
+    "notes": "ledger reserved = conservative accounted cost after measured-usage reconciliation, plus unreleased unknown/legacy reservations. Not actual supplier bill. No budget reset."
+  },
+  "docker": "BLOCKED_NO_ENGINE",
+  "remote_v2_ci": "NOT_RUN_NO_PUSH_REQUESTED",
+  "human_review": "NOT_RUN_PACKET_PROVIDED",
+  "paid_calls_stopped": true
+}

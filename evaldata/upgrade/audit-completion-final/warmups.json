@@ -1,0 +1,1976 @@
+[
+  {
+    "experiment_record": "evaldata/upgrade/live-max-001/runs.jsonl",
+    "main_run_id": "57dd95dc-35bb-4228-9feb-9e4aec899f37",
+    "warmup": {
+      "run_id": "bedf26f9-84a6-486c-bc62-143b02c0a173",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8321,
+          "reserved_usd": "0.0601728",
+          "http_attempts": 5,
+          "output_tokens": 1392,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "所提供证据显示，该月订单总数为引用单元格中的数值。",
+        "metric": "order_count",
+        "run_id": "bedf26f9-84a6-486c-bc62-143b02c0a173",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "9aaae1d1-5f73-454d-a2f1-d0290dde97a2"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "查询指定月份的全部订单数量。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect schema for order count query.",
+              "arguments": {
+                "query": "orders order_count ordered_at status"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Confirm the trusted definition for order count before querying.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Execute the order-count query for September 2026.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 10042.714112000112,
+        "evidence_id": "9aaae1d1-5f73-454d-a2f1-d0290dde97a2",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "63d2ff14-f438-4422-aa09-7b29c61443ec",
+            "input_digest": "3b58d68668f950536a62ed2b7e1a189ef401199d02b283315765c3bfd8f43b36"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "45f16a69-527a-46db-a264-d787944ce1d8",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "9aaae1d1-5f73-454d-a2f1-d0290dde97a2",
+            "input_digest": "addde93bf5f12daf8b19abcfd9f1a860321d1ab3a1a760760593a0946d6acbaa"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        },
+        "schema_version": "5406f5f9558ff639",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-max-001/runs.jsonl",
+    "main_run_id": "adf5e1c4-44ca-43b6-95f0-f6d9202fa507",
+    "warmup": {
+      "run_id": "bd52a1cd-7703-4d4a-9a5a-87a20a6a2cb0",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8324,
+          "reserved_usd": "0.0601728",
+          "http_attempts": 5,
+          "output_tokens": 1328,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "所问月份的订单数为证据所示值。",
+        "metric": "order_count",
+        "run_id": "bd52a1cd-7703-4d4a-9a5a-87a20a6a2cb0",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "03352944-5ffa-407e-b95b-1967b7eb567e"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "查询2026年9月全部订单数。",
+              "summary": "统计2026年9月的订单总数。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the orders schema before querying September 2026 order counts.",
+              "arguments": {
+                "query": "orders table columns needed for order_count filtered by ordered_at"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Resolve the trusted order count metric definition.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Execute September 2026 order count.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 10514.833887000123,
+        "evidence_id": "03352944-5ffa-407e-b95b-1967b7eb567e",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "30d8fe0a-8192-441b-9756-5e9d75b60816",
+            "input_digest": "72ba7d7f01df88428560a8c89e238dc4275c424dce9a64c02859899dba88368a"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "1be97ee9-afbd-4702-9c97-87bc19b71fd0",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "03352944-5ffa-407e-b95b-1967b7eb567e",
+            "input_digest": "08c5a4804f20126724feba80befd3eff25d20d9d583c3fe3b08396d48a60e652"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "5406f5f9558ff639",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-max-001/runs.jsonl",
+    "main_run_id": "a288ba30-735b-45e9-8984-95b91fc5a3ce",
+    "warmup": {
+      "run_id": "a4c66d86-56f4-44ae-a5ed-8176c3c23ee2",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8326,
+          "reserved_usd": "0.0601728",
+          "http_attempts": 5,
+          "output_tokens": 1457,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "按指定统计口径，该月订单数为一百二十三。",
+        "metric": "order_count",
+        "run_id": "a4c66d86-56f4-44ae-a5ed-8176c3c23ee2",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "21edb180-c215-4ca9-bff0-cfa8039cd1a4"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "统计指定月份内全部订单的数量。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect order columns needed for order count by order timestamp.",
+              "arguments": {
+                "query": "orders: id, ordered_at, status"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Retrieve the trusted order count metric definition.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Count all orders placed during September 2026 using the specified UTC half-open window.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 10428.207203000056,
+        "evidence_id": "21edb180-c215-4ca9-bff0-cfa8039cd1a4",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "2cab8677-85f5-4f5f-8265-b13e3f129b5d",
+            "input_digest": "542c6e4c9292dc15006d4ddf1da18f04ecf2edc076047c146160efd47a61b239"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "2a4da648-88b4-420e-972b-07216ed739cb",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "21edb180-c215-4ca9-bff0-cfa8039cd1a4",
+            "input_digest": "08c5a4804f20126724feba80befd3eff25d20d9d583c3fe3b08396d48a60e652"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "5406f5f9558ff639",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-max-002/runs.jsonl",
+    "main_run_id": "746fb5a6-df59-4d3b-b11d-cfb49de6f569",
+    "warmup": {
+      "run_id": "45bd57b7-c1d0-4e64-833f-e4315c8fe792",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8438,
+          "reserved_usd": "0.0602211",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1842,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "所查询月份的订单数为引用单元格中的数值。",
+        "metric": "order_count",
+        "run_id": "45bd57b7-c1d0-4e64-833f-e4315c8fe792",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "5d564fc8-1afd-403c-aba4-714ac629f0e7"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "统计指定月份的订单数。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the authorized orders schema before querying the order count.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Confirm the trusted order-count definition before querying September 2026.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "查询2026年9月UTC时间范围内的订单总数。",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 12574.854940000023,
+        "evidence_id": "5d564fc8-1afd-403c-aba4-714ac629f0e7",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "f0388de6-1a1d-4ba5-a2da-0d8bae9d0069",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "a5335096-02fb-4793-a924-dc2bfbafae23",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "5d564fc8-1afd-403c-aba4-714ac629f0e7",
+            "input_digest": "d27d95d89d2104fcba1ab627c4a37888aa3f680350ee159dc288cf68f116d13b"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-max-002/runs.jsonl",
+    "main_run_id": "1c1d6072-4091-4788-a076-3276d2becc38",
+    "warmup": {
+      "run_id": "b9867d0b-e034-47ae-bbf5-c149aee9ed54",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8445,
+          "reserved_usd": "0.0602211",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1256,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "在指定的整月时间窗口（UTC）内，订单总数如所引用的汇总值所示；该结果仅为计数汇总，不涉及因果推断。",
+        "metric": "order_count",
+        "run_id": "b9867d0b-e034-47ae-bbf5-c149aee9ed54",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "b1c9ada8-890a-40f3-92c1-1bb65e3e4145"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "查询指定月份的订单总数。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the orders table schema before querying.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Retrieve the trusted metric definition for order_count before generating SQL.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Count all orders placed in September 2026.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 9600.973825999972,
+        "evidence_id": "b1c9ada8-890a-40f3-92c1-1bb65e3e4145",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "aeb3cc1b-02ba-416c-9b9d-76b47e57fd0b",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "4e601b20-8c67-4a4c-973c-5589fd6a0a74",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "b1c9ada8-890a-40f3-92c1-1bb65e3e4145",
+            "input_digest": "addde93bf5f12daf8b19abcfd9f1a860321d1ab3a1a760760593a0946d6acbaa"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-max-002/runs.jsonl",
+    "main_run_id": "fe0d185f-f37d-41e1-a5ca-b3a1cb2185fd",
+    "warmup": {
+      "run_id": "d1b5dc80-5189-4c85-aeb3-2672a75c72d5",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8439,
+          "reserved_usd": "0.0602211",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1287,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "已按指定月份窗口查询订单数，具体结果见引用。",
+        "metric": "order_count",
+        "run_id": "d1b5dc80-5189-4c85-aeb3-2672a75c72d5",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "6f1ca7c1-7632-4a8c-9c95-8695919d90b1"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the orders table schema before computing the September 2026 order count.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "确认订单数指标定义",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Count all orders placed in September 2026.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 9605.192666999756,
+        "evidence_id": "6f1ca7c1-7632-4a8c-9c95-8695919d90b1",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "8a062495-76b9-4fa8-9ab7-6b86d851f547",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "40a913f6-5c17-4037-82d6-fa102c013ab3",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "6f1ca7c1-7632-4a8c-9c95-8695919d90b1",
+            "input_digest": "fe368d15ae94be223f454b38189e425f50379318e81fccd0e2056d12ef149a57"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-max-regression-001/runs.jsonl",
+    "main_run_id": "bf826f2e-597a-4052-9a84-65af711255d3",
+    "warmup": {
+      "run_id": "3a189ba1-311d-4fa8-a3ab-d0f57a99a4f7",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8464,
+          "reserved_usd": "0.0602760",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1342,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "The order count for the requested month is reported in the cited evidence cell.",
+        "metric": "order_count",
+        "run_id": "3a189ba1-311d-4fa8-a3ab-d0f57a99a4f7",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "77e13d98-2ffe-4821-a14c-26956766472b"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "统计指定月份的全部订单数量。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Confirm the trusted order count definition before querying September 2026 orders.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Count all orders in September 2026 using the UTC half-open window.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 11364.632421999886,
+        "evidence_id": "77e13d98-2ffe-4821-a14c-26956766472b",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "cec8a483-6e5f-4807-9275-f97461051377",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "e014db7a-85bf-4ef4-8592-d48c7a3c13a4",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "77e13d98-2ffe-4821-a14c-26956766472b",
+            "input_digest": "08c5a4804f20126724feba80befd3eff25d20d9d583c3fe3b08396d48a60e652"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-max-regression-001/runs.jsonl",
+    "main_run_id": "d3e95fed-cad0-4212-994b-0c243741a5cb",
+    "warmup": {
+      "run_id": "1b523da0-056e-46b7-9dfa-e08e15b413a7",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8471,
+          "reserved_usd": "0.0602760",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1360,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "所询月份的订单计数为引用单元格所示数值。",
+        "metric": "order_count",
+        "run_id": "1b523da0-056e-46b7-9dfa-e08e15b413a7",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "fe0be05d-d28e-49e8-9419-58e9549603a2"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "统计指定 UTC 日历月内的全部订单数量。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the authorized orders schema before querying September 2026 order counts.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Confirm the trusted order_count metric definition before querying September 2026 orders.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Count all orders placed in September 2026 using the UTC half-open window.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 10735.220276999826,
+        "evidence_id": "fe0be05d-d28e-49e8-9419-58e9549603a2",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "a46f7d3b-4c90-4011-971b-48588872ecc6",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "4d68c44c-1372-45ff-b6b0-039880948b1b",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "fe0be05d-d28e-49e8-9419-58e9549603a2",
+            "input_digest": "08c5a4804f20126724feba80befd3eff25d20d9d583c3fe3b08396d48a60e652"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-paired-001/context-with_context/runs.jsonl",
+    "main_run_id": "94696d19-c8bb-4597-9324-7b6e68146244",
+    "warmup": {
+      "run_id": "86b6c6f6-4187-484e-8c12-9f08f5c9a0e3",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 1,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 10568,
+          "reserved_usd": "0.0727041",
+          "usage_status": "KNOWN",
+          "http_attempts": 6,
+          "output_tokens": 1730,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "目标月份（协调世界时整月）的订单数为一百二十三单。",
+        "metric": "order_count",
+        "run_id": "86b6c6f6-4187-484e-8c12-9f08f5c9a0e3",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "e7f7c41e-2d17-43f0-83bd-db19645a6378"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "Order count for the requested month.",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Look up the orders table schema needed for the order-count question.",
+              "arguments": {
+                "query": "orders table columns id, customer_id, ordered_at, status"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "invalid_fields": [
+              {
+                "path": "",
+                "type": "json_invalid"
+              }
+            ]
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Resolve trusted definition for order_count metric.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Execute the order count for September 2026.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 13294.835281999895,
+        "evidence_id": "e7f7c41e-2d17-43f0-83bd-db19645a6378",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "6bd32d85-455d-424d-819e-2b9e61446578",
+            "input_digest": "68ed8856b0c809c18670392df8e2d2502134ea8adfa1d614897bb4e4a34a1b66"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "41946ca8-872c-4f59-a65c-f28f1f20f4ca",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "e7f7c41e-2d17-43f0-83bd-db19645a6378",
+            "input_digest": "fe368d15ae94be223f454b38189e425f50379318e81fccd0e2056d12ef149a57"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value\nFROM business.orders AS o\nWHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ)\n  AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-paired-001/context-with_context/runs.jsonl",
+    "main_run_id": "85fb378c-ade3-4770-a3ea-955543cfedbb",
+    "warmup": {
+      "run_id": "8e2189d0-40f4-40a8-bcc2-bfb0c5e5f0b6",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8468,
+          "reserved_usd": "0.0602760",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1372,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "指定月份的订单总数如引用单元格所示。",
+        "metric": "order_count",
+        "run_id": "8e2189d0-40f4-40a8-bcc2-bfb0c5e5f0b6",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "7e879359-b4a2-405b-9086-081f3d80c69c"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "查询2026年9月的全部订单总数。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the authorized orders table schema before building the order-count query.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Confirm the order_count metric definition",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Execute the September 2026 order-count query.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 9874.234320999676,
+        "evidence_id": "7e879359-b4a2-405b-9086-081f3d80c69c",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "88f86495-38ae-4f83-8caf-d30b3429f413",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "98818e86-74c0-4410-9d4a-8a646fe8e486",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "7e879359-b4a2-405b-9086-081f3d80c69c",
+            "input_digest": "08c5a4804f20126724feba80befd3eff25d20d9d583c3fe3b08396d48a60e652"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-paired-001/context-without_context/runs.jsonl",
+    "main_run_id": "50d44bfa-f2b3-4c32-a057-7c8ef3e6c385",
+    "warmup": {
+      "run_id": "073be4c4-b387-482e-9634-c07fa0b6a347",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 0,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 8471,
+          "reserved_usd": "0.0602760",
+          "usage_status": "KNOWN",
+          "http_attempts": 5,
+          "output_tokens": 1234,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "指定月份内的订单总量见引用证据。",
+        "metric": "order_count",
+        "run_id": "073be4c4-b387-482e-9634-c07fa0b6a347",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [
+          {
+            "row": 0,
+            "value": 123,
+            "column": 0,
+            "evidence_id": "9be18df4-54c0-4bcb-b212-22a173cd82ee"
+          }
+        ],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "统计2026年9月UTC自然月内的订单数。",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect authorized orders schema fields needed for the order count.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Confirm the trusted order_count metric definition before querying September 2026 orders.",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Count all orders in September 2026 UTC.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 9717.521793000287,
+        "evidence_id": "9be18df4-54c0-4bcb-b212-22a173cd82ee",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "5173771c-2f67-4125-b13f-2d8d8d881ad3",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "8adb3a46-5780-4420-90dd-5b9b9230db6d",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "9be18df4-54c0-4bcb-b212-22a173cd82ee",
+            "input_digest": "08c5a4804f20126724feba80befd3eff25d20d9d583c3fe3b08396d48a60e652"
+          }
+        ],
+        "answer_source": "model",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ));"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  },
+  {
+    "experiment_record": "evaldata/upgrade/live-paired-001/context-without_context/runs.jsonl",
+    "main_run_id": "a99df7f5-146b-4128-a681-401f745c0258",
+    "warmup": {
+      "run_id": "d9e31c6f-e8b6-426d-884e-78c56c75664d",
+      "question": "2026年9月订单数是多少？",
+      "status": "succeeded",
+      "result": {
+        "sql": [
+          "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        ],
+        "model": "deepseek-flash",
+        "usage": {
+          "retries": 1,
+          "model_ids": [
+            "deepseek-flash"
+          ],
+          "usage_known": true,
+          "input_tokens": 10436,
+          "reserved_usd": "0.0726138",
+          "usage_status": "KNOWN",
+          "http_attempts": 6,
+          "output_tokens": 1338,
+          "unknown_attempts": 0,
+          "input_token_bound_method": "UTF-8 byte upper bound + protocol overhead; not measured usage"
+        },
+        "answer": "以下为已验证查询证据；空结果或NULL不当作零。",
+        "metric": "order_count",
+        "run_id": "d9e31c6f-e8b6-426d-884e-78c56c75664d",
+        "repairs": 0,
+        "evidence": {
+          "rows": [
+            [
+              123
+            ]
+          ],
+          "columns": [
+            "value"
+          ],
+          "row_count": 1
+        },
+        "citations": [],
+        "decisions": [
+          {
+            "task": "plan",
+            "output": {
+              "plan": {
+                "order": "desc",
+                "top_n": null,
+                "metric": "order_count",
+                "windows": [
+                  {
+                    "end": "2026-10-01T00:00:00Z",
+                    "start": "2026-09-01T00:00:00Z"
+                  }
+                ],
+                "currency": "CNY",
+                "timezone": "UTC",
+                "dimension": null,
+                "comparison": "none",
+                "aggregation": "count",
+                "data_version": "v1-seed20261020",
+                "metric_version": "2026-10-v1",
+                "exclude_regions": [],
+                "include_regions": [],
+                "comparison_window": null
+              },
+              "message": "",
+              "summary": "",
+              "disposition": "query"
+            }
+          },
+          {
+            "task": "action",
+            "invalid_fields": [
+              {
+                "path": "",
+                "type": "json_invalid"
+              }
+            ]
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "schema",
+              "call_id": "step_1",
+              "summary": "Inspect the authorized orders table schema before querying the requested order count.",
+              "arguments": {
+                "query": "orders"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "metric",
+              "call_id": "step_2",
+              "summary": "Resolve the order count metric before querying September orders",
+              "arguments": {
+                "metric": "order_count"
+              }
+            }
+          },
+          {
+            "task": "action",
+            "output": {
+              "name": "execute_sql",
+              "call_id": "step_3",
+              "summary": "Executing the order-count query for the September 2026 UTC window.",
+              "arguments": {
+                "sql": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))",
+                "period": "current"
+              }
+            }
+          }
+        ],
+        "disposition": "answer",
+        "duration_ms": 12262.726974999623,
+        "evidence_id": "3df1db8a-e1ae-4f22-83e5-1895d9404505",
+        "limitations": [
+          "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
+          "会话隔离不等于业务行级多租户隔离。",
+          "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。"
+        ],
+        "time_windows": [
+          {
+            "end": "2026-10-01T00:00:00Z",
+            "start": "2026-09-01T00:00:00Z"
+          }
+        ],
+        "tool_records": [
+          {
+            "name": "schema",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_1",
+            "result_ref": "fa23be8d-26dc-438d-a2dc-f8e70820e429",
+            "input_digest": "e18ec1c29493187cf24c89cffbb281a44b005fe7fb0ec10f921eed8128da5f64"
+          },
+          {
+            "name": "metric",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_2",
+            "result_ref": "58a937d8-9f12-44c4-b7bd-dd50d0c2ab3e",
+            "input_digest": "36ff993b48905df129d9c83ba7a22b142fbbc9fbcfa5bde7b1d99f72ed07b7d5"
+          },
+          {
+            "name": "execute_sql",
+            "source": "model",
+            "status": "ok",
+            "call_id": "step_3",
+            "result_ref": "3df1db8a-e1ae-4f22-83e5-1895d9404505",
+            "input_digest": "addde93bf5f12daf8b19abcfd9f1a860321d1ab3a1a760760593a0946d6acbaa"
+          }
+        ],
+        "answer_source": "deterministic_fallback",
+        "sql_by_period": {
+          "current": "SELECT COUNT(*) AS value FROM business.orders AS o WHERE (o.ordered_at >= CAST('2026-09-01T00:00:00Z' AS TIMESTAMPTZ) AND o.ordered_at < CAST('2026-10-01T00:00:00Z' AS TIMESTAMPTZ))"
+        },
+        "schema_version": "218d8a5016da427e",
+        "comparison_window": null,
+        "metric_definition": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。"
+      }
+    }
+  }
+]

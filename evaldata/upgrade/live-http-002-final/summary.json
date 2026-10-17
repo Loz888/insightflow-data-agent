@@ -1,0 +1,12 @@
+{
+  "source_commit": "c2ed5747ef6b6110d8b7af74ff49f546e5564639",
+  "source_sha256": "aed375dc987ca2d3ce1953906e724a88cb343ce29ec745b0d2922ebf08d3bb86",
+  "requested_model": "deepseek-flash",
+  "documented_snapshot": "DeepSeek-V4.1-Flash-1017",
+  "thinking": "enabled",
+  "reasoning_effort": "max",
+  "entry": "real loopback HTTP + Flash Max + real PostgreSQL",
+  "cases": 4,
+  "correct": 4,
+  "notes": "Small smoke with query/followup/clarification/refusal; latency is not Mock throughput and not a production SLA."
+}

@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-17T10:21:11.413328+00:00",
+  "shared_ledger": {
+    "experiment_id": "upgrade-v2-20261017",
+    "budget": "2.00",
+    "reserved": "0.4741200",
+    "attempts": 456
+  },
+  "attempt_groups": [
+    {
+      "outcome": "MODEL_INVALID",
+      "usage_known": true,
+      "attempts": 16,
+      "input_tokens": "34359",
+      "output_tokens": "2752",
+      "gross_reservations": "0.2009994",
+      "known_conservative_charge": "0.0136101"
+    },
+    {
+      "outcome": "MODEL_TIMEOUT",
+      "usage_known": false,
+      "attempts": 1,
+      "input_tokens": null,
+      "output_tokens": null,
+      "gross_reservations": "0.0118881",
+      "known_conservative_charge": null
+    },
+    {
+      "outcome": "ok",
+      "usage_known": true,
+      "attempts": 439,
+      "input_tokens": "770342",
+      "output_tokens": "147586",
+      "gross_reservations": "5.2357584",
+      "known_conservative_charge": "0.4005312"
+    }
+  ]
+}

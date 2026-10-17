@@ -1,0 +1,29 @@
+{
+  "model": "controlled delayed Mock; no paid call",
+  "entry": "real loopback HTTP + real PostgreSQL",
+  "scenarios": [
+    {
+      "scenario": "HTTP client disconnect",
+      "status": "PASS",
+      "run_id": "ac4c972f-a851-4dda-8fba-952c399eaf86"
+    },
+    {
+      "scenario": "SSE disconnect",
+      "status": "PASS",
+      "run_id": "ad0b02d7-769d-47c9-86f9-d2431b58b1cb"
+    },
+    {
+      "scenario": "admission backpressure",
+      "status": "PASS",
+      "http_status": 429
+    },
+    {
+      "scenario": "queue timeout",
+      "status": "PASS"
+    },
+    {
+      "scenario": "request deadline and resource reuse",
+      "status": "PASS"
+    }
+  ]
+}

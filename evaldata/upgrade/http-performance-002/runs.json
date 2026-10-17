@@ -1,0 +1,2160 @@
+{
+  "entry": "actual loopback HTTP; same four question mix, real PostgreSQL, Mock models",
+  "requests_per_version": 128,
+  "results": [
+    {
+      "version": "v1",
+      "profiles": [
+        {
+          "concurrency": 1,
+          "requests": 32,
+          "successes": 32,
+          "throughput_rps": 48.657683303722656,
+          "p50_ms": 20.48428599982799,
+          "p95_ms": 23.169114999745943,
+          "p99_ms": 24.157975999969494,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        },
+        {
+          "concurrency": 2,
+          "requests": 32,
+          "successes": 32,
+          "throughput_rps": 56.1156527048063,
+          "p50_ms": 31.765505999828747,
+          "p95_ms": 87.46695399986493,
+          "p99_ms": 90.9267679999175,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        },
+        {
+          "concurrency": 4,
+          "requests": 32,
+          "successes": 32,
+          "throughput_rps": 61.04602287710241,
+          "p50_ms": 64.2947399996956,
+          "p95_ms": 72.76484399972105,
+          "p99_ms": 81.0618569998951,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        },
+        {
+          "concurrency": 8,
+          "requests": 32,
+          "successes": 31,
+          "throughput_rps": 62.76443219181755,
+          "p50_ms": 82.35305900007006,
+          "p95_ms": 313.6548830002539,
+          "p99_ms": 377.5483310000709,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        }
+      ],
+      "runs": [
+        {
+          "id": "091739ff46974f72a2d254b688e78e6f",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 18.506867999803944
+        },
+        {
+          "id": "54965d96442f4dc69425e57a9091f512",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 19.40793299991128
+        },
+        {
+          "id": "17d379f7e0cf462b9f76c7a6555ce31e",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 22.89742000039041
+        },
+        {
+          "id": "eed8461a2d8444e19707e8522544b431",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 23.00551700000142
+        },
+        {
+          "id": "38eb8ab9f27a4b7e93bc124dc1e57a75",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 20.85895400023219
+        },
+        {
+          "id": "0afff26d6e7c43fa9b0fcb250a3efa29",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 19.39228900027956
+        },
+        {
+          "id": "c39b0819167c4b95a1d742b30710e82d",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 21.68949099996098
+        },
+        {
+          "id": "04d415d7966c43ee80163efb0e5bc4bf",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 22.522869000113133
+        },
+        {
+          "id": "90a6a33f55bb42f8a9f966edea86bc66",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 19.41593700030353
+        },
+        {
+          "id": "d56426ef61bd4dcab771541a07c825ee",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 18.699196000397933
+        },
+        {
+          "id": "7384d34bd2024bb4bc1954d3ce887866",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 20.998373000111314
+        },
+        {
+          "id": "c75ba4971e8e4235897f7059d172c461",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 22.761458000331913
+        },
+        {
+          "id": "91b2fe5c44914a7392b2d7450fa6c659",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 18.5702870003297
+        },
+        {
+          "id": "436bce5fafc041c5bcde7131fb1d3d82",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 19.002540999736084
+        },
+        {
+          "id": "f71bd6893e3747ecbb0983a80170753a",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 21.781293999993068
+        },
+        {
+          "id": "cbf9a776a6a143ea8dccea22899b7caa",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 20.508790999883786
+        },
+        {
+          "id": "00d40e70947f4cf4b2e738c728fa8ea5",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 18.956786999751785
+        },
+        {
+          "id": "a76415355d1a4e439ef3108d69b2c027",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 18.75458799986518
+        },
+        {
+          "id": "dccd2a6e314b46f9b848611d83ca96e5",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 22.179931000209763
+        },
+        {
+          "id": "f61a4c2c3f734669bf8a50986b75798e",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 23.169114999745943
+        },
+        {
+          "id": "5b6e66b983e24298a05f359b8eb038d2",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 16.990595000152098
+        },
+        {
+          "id": "76020fc96d0848a1a95b279d3ed262f9",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 19.19130199985375
+        },
+        {
+          "id": "cdc071479dd74e1eba91b3e6b8666d84",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 22.19865100005336
+        },
+        {
+          "id": "9f24fff845814ca6b60d2df0e06f15c9",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 24.157975999969494
+        },
+        {
+          "id": "6ef20536e022470681cc6f69360b5836",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 18.56779599984293
+        },
+        {
+          "id": "0c35ed4ffc6f4d82b7421a3059ceb53d",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 19.220445999962976
+        },
+        {
+          "id": "d25544ffeb1e40d2859b6094778837e2",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 21.513596999739093
+        },
+        {
+          "id": "131f008edfb840fb9e75621668daf970",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 22.988909000105195
+        },
+        {
+          "id": "09f3c052bf864471a45c1a3a3127e43e",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 17.19411400017634
+        },
+        {
+          "id": "4019000983fc4839a360d0a736c8bfb1",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 18.509185999846522
+        },
+        {
+          "id": "782431c107df42619e3b877f5f9dfd92",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 20.48428599982799
+        },
+        {
+          "id": "1ff7f655f060413388c230fdf188a1ab",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 22.527472999627207
+        },
+        {
+          "id": "06e9827d3f7b437389381f379d077125",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 26.4358419999553
+        },
+        {
+          "id": "9cca179f7b814c3da3e709d7f272148b",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 44.02003199993487
+        },
+        {
+          "id": "fed879f52067408ab283d2566c14d9da",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 36.55332800008182
+        },
+        {
+          "id": "ec3e2e1a3f2b41d0a708bb0a1407ee8c",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 33.044530999632116
+        },
+        {
+          "id": "55b5e0452a89417692d6d35cf8a7e6c4",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 28.59371399972588
+        },
+        {
+          "id": "daf720d7be1e4a75802ac5a83f5ef717",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 30.742232000193326
+        },
+        {
+          "id": "afd09672f8344cfcac7a743ee743f457",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 33.68526700023722
+        },
+        {
+          "id": "f8646ead49b14b23be22b3018c47b69b",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 32.58624999989479
+        },
+        {
+          "id": "fbeae69ec4bf48e9a5dacf17eb9cb210",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 30.781184999796096
+        },
+        {
+          "id": "275dceb55cba4a6da0163a1a6220fe40",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 31.13157699999647
+        },
+        {
+          "id": "1e9326a5843646b69153e4d489e9b876",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 34.26810399969327
+        },
+        {
+          "id": "0fc9f114d3d5471abd8f8ff754eeefa0",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 33.8023350000185
+        },
+        {
+          "id": "a668cab839ea4ceaaa3295d51b298f05",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 28.759090000221477
+        },
+        {
+          "id": "9318ffb5a6d4461480553e78e967e1f7",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 29.44612600003893
+        },
+        {
+          "id": "01e29ecdab77425cb0ede6b5987f30df",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 32.29262800005017
+        },
+        {
+          "id": "3d54134f36c742d092e29c5a4c329678",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 31.765505999828747
+        },
+        {
+          "id": "dedebbfc741547e5b356bdacb36c5239",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 29.092593000314082
+        },
+        {
+          "id": "5b93b9c7119f4573b6e48e33446d1aa1",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 29.88452999989022
+        },
+        {
+          "id": "32e71d5758c34645a1ed7a5c602c63ef",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 33.231044999865844
+        },
+        {
+          "id": "0b5d6fa91cbe487191ec2e1fedd71022",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 31.08867700029805
+        },
+        {
+          "id": "1be2b5411e084d1fa7b2b713e38dbfbd",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 29.128917999969417
+        },
+        {
+          "id": "87268619290d41609f3b580e426dc15c",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 87.46695399986493
+        },
+        {
+          "id": "154ff92dd3f54e0aa3e80f52ceaaa60f",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 90.9267679999175
+        },
+        {
+          "id": "58550dd1ed434a2b84d3e798cde5e7f3",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 32.72980599967923
+        },
+        {
+          "id": "24a44e756df846ad9f254c5f630baaac",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 29.345200000079785
+        },
+        {
+          "id": "3b6118a54a16427186a6884c6957fc30",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 31.684580000273854
+        },
+        {
+          "id": "463d3c206b974ded9948370cb30d48b7",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 34.742965000077675
+        },
+        {
+          "id": "4a01bfb4ae0747ff9a18f8b469842a5b",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 33.33412799975122
+        },
+        {
+          "id": "780e2aed5ad34cc789d168e45bba0607",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 30.135589000110485
+        },
+        {
+          "id": "6b5534c87b8d483b814ea824dab419dd",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 31.915238000237878
+        },
+        {
+          "id": "3dd6a72ad1a040c6ab4160fa30df7714",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 33.772335999856296
+        },
+        {
+          "id": "0b8033f2da134fe184505d2ce7c464a8",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 24.787269000171364
+        },
+        {
+          "id": "eec6b6ef987e43beaef6852acd6af36c",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 34.02388299991799
+        },
+        {
+          "id": "5d74de96cb89470aa5183321f91b35d1",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 52.20024900017961
+        },
+        {
+          "id": "3216ac8e525249bab0bcae917168f051",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.88527699977931
+        },
+        {
+          "id": "32d362f0264b432db2dad4dff7278492",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 81.0618569998951
+        },
+        {
+          "id": "065b9e1e955347f78661d5a150ba612a",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 54.285623999930976
+        },
+        {
+          "id": "54f9879d57c044f0bad45837d106eede",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 60.13965600004667
+        },
+        {
+          "id": "08370bff0c8d4a6cbdfc03e7e148046a",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.98995500032834
+        },
+        {
+          "id": "c74b7869de2f400db3853f84c9fbd2ca",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.5563259997507
+        },
+        {
+          "id": "701a442f00004639bf5b3bb1868b418f",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 72.76484399972105
+        },
+        {
+          "id": "4bff83cdfc7545bd9f5e29b0ce3eadbd",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.85007900002893
+        },
+        {
+          "id": "b4524cdc71f04fecb37848fd24028abb",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.2947399996956
+        },
+        {
+          "id": "fdecb374a3294a29ba5c284891c210a0",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 62.24445400039258
+        },
+        {
+          "id": "31f4954c419d453992db3550cf82b34f",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 61.34328200005257
+        },
+        {
+          "id": "efeb701d36f6418dad46ccd75a5409f5",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 62.392680999892036
+        },
+        {
+          "id": "829c980da6d74c5988d1730580b5137c",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 62.226352999914525
+        },
+        {
+          "id": "53325704dfcc4458895c436f45dad85a",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 62.720658000216645
+        },
+        {
+          "id": "99746bc9e47b41128b78d9ab65dc6fac",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 63.98224400027175
+        },
+        {
+          "id": "bdf931fd57124f869044a81368320a6d",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.0551870001218
+        },
+        {
+          "id": "1bfb47ec72bc4079bb539c6b2f162bf3",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.0439070000175
+        },
+        {
+          "id": "b377e5c5a2cc4ba69c45c8098385adeb",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.12450700029149
+        },
+        {
+          "id": "4b49d79eefe3470d940e362792f90496",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 57.82262599996102
+        },
+        {
+          "id": "f2af5c239e2b48d793c57b72f6065ef2",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.56751900032032
+        },
+        {
+          "id": "462d828eafd04549acb2a880af3b6b4b",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.14663199984716
+        },
+        {
+          "id": "dfb5b46e202d47ebaa0b9fc51b21cd53",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.90799899984268
+        },
+        {
+          "id": "0a0266c747f14af8aa9a6af2106c537b",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 72.35329400009505
+        },
+        {
+          "id": "6210ce7046ca457e9d9abbd232f772fb",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.74812599981306
+        },
+        {
+          "id": "82b47f6014674403a65a63e9b157f894",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.1297849999537
+        },
+        {
+          "id": "c766cf5f45b14c5885a1287f520af2a0",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.920334999646
+        },
+        {
+          "id": "26518aee950f4f6dae5506dd3f907edd",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 65.73982600002637
+        },
+        {
+          "id": "f0658738338047dcbe5d473eac9ff8eb",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 64.36587300004248
+        },
+        {
+          "id": "2c200ba545004f89a936b727a204a17e",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 63.69261700001516
+        },
+        {
+          "id": "bf4dedd7ad6b44abb49b3a6f538d08e6",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 56.33338500001628
+        },
+        {
+          "id": "5db1eec8ddca4af9aa9e4b58b8ce5343",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 36.50494300018181
+        },
+        {
+          "id": "cff73a0f35b74e7687f6bb4ecb936355",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 50.098310000066704
+        },
+        {
+          "id": "f2e90486c47e4278b072497c788576fa",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 56.67790200004674
+        },
+        {
+          "id": "66506fad29c54eb8b84607118551bdbf",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 81.64552900007038
+        },
+        {
+          "id": "0556e3c6a4c34c2388f2aaef2aa30d50",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 96.42037699995853
+        },
+        {
+          "id": "5ac305c03db647eea7371c89965716b0",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 76.65467600008924
+        },
+        {
+          "id": "969b10f41a0c4836943ece98cccb0305",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 81.00562999970862
+        },
+        {
+          "id": "3096479e13074d11a66813cc2154272b",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 147.883137000008
+        },
+        {
+          "id": "75ee725ca2c94b5ba29b5fe8d5f1fcda",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 80.1380960001552
+        },
+        {
+          "id": "1a0f6a1e7bc74ebea67b7f51f6b6a357",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 81.57514300000912
+        },
+        {
+          "id": "092240ea8d7b483bbcdcd4eee448b7b1",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 84.37829200011038
+        },
+        {
+          "id": "5b121e04834b4d1fad297008bf8abc9d",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 214.07618700004605
+        },
+        {
+          "id": "b9ab9d45a6fc45baa4b12676ccce343c",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 80.84548800025004
+        },
+        {
+          "id": "907d3805dc3c43dcbf8115be767dd26f",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 83.23521100010112
+        },
+        {
+          "id": "6600dbebf425437e86c75ee069cde4e7",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 84.18111599985423
+        },
+        {
+          "id": "fb71e4cf4c934fb3885c779af46a9187",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 82.35305900007006
+        },
+        {
+          "id": "809e1e69b4f844a3a14ef8233b385025",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 241.62081900021803
+        },
+        {
+          "id": "645ad6c51f3b46e48acb44048e543aa9",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 313.6548830002539
+        },
+        {
+          "id": "99846255616540f9bb22bc868e05eb60",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 68.51077300007091
+        },
+        {
+          "id": "e45176faf9734b50a1b4cf1f8fcb5306",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 118.48898100015504
+        },
+        {
+          "id": "38218de8fd2145329c767de00d72f50e",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 77.5423730001421
+        },
+        {
+          "id": "3be52e0baa4d49cea6c2f99fe19c28a8",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 80.16410799973528
+        },
+        {
+          "id": "f069593cfbc243b5b592c2f0539b42f4",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 81.34921600003509
+        },
+        {
+          "id": "4137c5c7165843f4be7f5c5b91850d0a",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 82.78766900002665
+        },
+        {
+          "id": "9333e3222a8840339353ea2a806f6162",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 83.24793200017666
+        },
+        {
+          "id": "5beff62d48664d29af2d09ea34562321",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 229.82143600029303
+        },
+        {
+          "id": "125ce293282c4a1b95f695192249b0c7",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 80.3810299998986
+        },
+        {
+          "id": "994fc86b9440488fabf7940406e8365e",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 78.01715599998715
+        },
+        {
+          "id": "7e14c325b7c64d15b4ef6ec958e0ffe3",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 129.81340800024554
+        },
+        {
+          "id": "0e9c1c94ca694449b89c669835e3ba0c",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 256.1465160001717
+        },
+        {
+          "id": "0e69f97222b542ee867dcada74dbbadc",
+          "version": "v1",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 377.5483310000709
+        },
+        {
+          "id": "6fedf8523b6240588781a7358c6b93c9",
+          "version": "v1",
+          "status_code": 503,
+          "success": false,
+          "error": null,
+          "duration_ms": 95.61126600010539
+        }
+      ]
+    },
+    {
+      "version": "v2",
+      "profiles": [
+        {
+          "concurrency": 1,
+          "requests": 32,
+          "successes": 32,
+          "throughput_rps": 9.881442749422963,
+          "p50_ms": 99.44892700013952,
+          "p95_ms": 103.29835400034426,
+          "p99_ms": 150.6575220000741,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        },
+        {
+          "concurrency": 2,
+          "requests": 32,
+          "successes": 32,
+          "throughput_rps": 17.038142081629648,
+          "p50_ms": 116.39869900000122,
+          "p95_ms": 133.96719100001064,
+          "p99_ms": 144.0763020000304,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        },
+        {
+          "concurrency": 4,
+          "requests": 32,
+          "successes": 32,
+          "throughput_rps": 16.528906034447164,
+          "p50_ms": 231.07960000015737,
+          "p95_ms": 325.55253500004255,
+          "p99_ms": 327.8564570000526,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        },
+        {
+          "concurrency": 8,
+          "requests": 32,
+          "successes": 32,
+          "throughput_rps": 14.097120484241012,
+          "p50_ms": 557.7225729998645,
+          "p95_ms": 627.3916659997667,
+          "p99_ms": 638.1683859999612,
+          "warm": "one-request prewarm; shared local PostgreSQL buffers"
+        }
+      ],
+      "runs": [
+        {
+          "id": "3b12bdeb191941c2ae1eea90ec362d92",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 102.62654699999985
+        },
+        {
+          "id": "d2fe4b55e8e34a6d98ebe2ddab173a26",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 100.58273000004192
+        },
+        {
+          "id": "f9eede5c76bb40bf9f18a4d932f60b24",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.85931600022013
+        },
+        {
+          "id": "7fcab7f9340347fbb2bfda9896ccfa27",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.06268700024157
+        },
+        {
+          "id": "058ecd81ba6a4ea8a2760a3b25efb6a0",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.65244800014261
+        },
+        {
+          "id": "bb9e1160654f4923ae2ca67dba74b6f0",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 100.77021699999023
+        },
+        {
+          "id": "be7917ac986344368e89c8d99268ff75",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 101.10905999999886
+        },
+        {
+          "id": "3f404fb2adcf4f3ca3e5732412f021c2",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.42871800017383
+        },
+        {
+          "id": "b43ce51081524c1499b68909d2b713a8",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 98.777340000197
+        },
+        {
+          "id": "9f3b72263c7b46fab9d180acc879263e",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.22736900034579
+        },
+        {
+          "id": "15df5ca0b5f94e0eb6ed412aeea1e4c5",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 150.6575220000741
+        },
+        {
+          "id": "f3099dfc4fe14be7b59136a1c3e016aa",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 101.38501299979907
+        },
+        {
+          "id": "6c0461c7c97b47c4880253eaf92f4b6c",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.8754900001586
+        },
+        {
+          "id": "47a2d5835b7341a693558321dd99dfc7",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 101.29504199994699
+        },
+        {
+          "id": "0ae4e8f8342f455f9819ceef2b2489d1",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 98.45928699996875
+        },
+        {
+          "id": "40e57b3a2ade4bb0afdade14230f9167",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.10342700009278
+        },
+        {
+          "id": "ca12a51450c8476d9f24a1af33f1d072",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 100.72626500004844
+        },
+        {
+          "id": "14da43966d0046d98072288764ef9dc7",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 101.93029199990633
+        },
+        {
+          "id": "b76c7f58160848bab6d93ead67a60b68",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.09045199992761
+        },
+        {
+          "id": "89f9f9a05da74199b5ae418d9b8e1d12",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.20966299983047
+        },
+        {
+          "id": "04ad4a7d82bf4aed9d7659bc0b80bc0c",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.80738400013433
+        },
+        {
+          "id": "d49405d21c77411fba2f1c794d042e96",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 103.29835400034426
+        },
+        {
+          "id": "733d9ee3ce5f480da5e07573772aa5c5",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 102.80699800023285
+        },
+        {
+          "id": "f1532fcf54cd434dbe684a04b3a3a1ca",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 101.3199590001932
+        },
+        {
+          "id": "abbefcea86c242f7bbd04ea304b7b202",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.70785699993212
+        },
+        {
+          "id": "2b5bcf4202634e72a0127d38ec4ffade",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.66161800007467
+        },
+        {
+          "id": "e36d093f11d64930b5be0402bd0bc44b",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.44892700013952
+        },
+        {
+          "id": "79c0462d69704481bc7ffa32c2df7831",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 98.87833099992349
+        },
+        {
+          "id": "8a7f546829a8456a88a4bb729edf9776",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.30328600016946
+        },
+        {
+          "id": "6dd96fc0ed424effb27c01acb94a9cb4",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.05549799991786
+        },
+        {
+          "id": "7e49494f7adf4c59a9661a6c54ed8c5a",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 99.46684700025799
+        },
+        {
+          "id": "6e017c4c7e354adfbb34a2dcff3be8b7",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 97.45478199965874
+        },
+        {
+          "id": "09b06904e2d64b93986000c8487d2806",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 115.66029899995556
+        },
+        {
+          "id": "f2c818cb50fc4f4db8763869ae50a74e",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 116.91447700013669
+        },
+        {
+          "id": "f6588dacb7d44b9287b6960e737d205f",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 120.5718760002128
+        },
+        {
+          "id": "d1a5e77fa3d64624b52ff1b36657baf0",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 120.47484899994743
+        },
+        {
+          "id": "c2332273b7c34de2816780a85ad78798",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 103.6498590001429
+        },
+        {
+          "id": "5249d88982f44f6d9f35c1a8d965e5ba",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 107.86660599978859
+        },
+        {
+          "id": "b7ad15b464c14cc5b650426b20d0b636",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 116.39869900000122
+        },
+        {
+          "id": "a571ebe1742d4539919b3ed24dcb3925",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 119.96257999999216
+        },
+        {
+          "id": "cbb683104a2949149787658fa4b769f9",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 106.61002599999847
+        },
+        {
+          "id": "4324affb25a64afc932115e94c92c6eb",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 108.0689679997704
+        },
+        {
+          "id": "faaf391f9bcd4f21a50302ca569064c4",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 126.10118299971873
+        },
+        {
+          "id": "e1c548d7e88e46058784bee5756d77f2",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 128.25908800004981
+        },
+        {
+          "id": "c554b76c75f14e67a4c857a9cae96dff",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 113.57549000013023
+        },
+        {
+          "id": "cb4881fdb43949a89a3b7886c315550f",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 114.100315000087
+        },
+        {
+          "id": "9b46838b5d704843ad684f2809c784f6",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 118.7485780001225
+        },
+        {
+          "id": "574fff57df6645ffb76f9c1ced4ddf6e",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 121.27615800000058
+        },
+        {
+          "id": "eeb1fdd9451645d88fa8236e1c658e35",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 105.76130000026751
+        },
+        {
+          "id": "4e2441b2f0e54f66a6fc3662c6cad464",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 108.88068900021608
+        },
+        {
+          "id": "6d77cf81ccb34ab59678c8a8789b0a83",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 124.46728800023266
+        },
+        {
+          "id": "abfe08d82d074a02983ad048cbdc5465",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 123.30524100025286
+        },
+        {
+          "id": "b7dfe6ba2b4d4ef3a910331a436a2d38",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 106.15712600019833
+        },
+        {
+          "id": "4f6757da2dd94dd69b315282a4a4158d",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 106.26639400015847
+        },
+        {
+          "id": "2ab1bcbc910541bfbccc04ba4105b571",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 132.10045100004209
+        },
+        {
+          "id": "843f1c161a0441fe99b863c2c8bc955a",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 132.6585229999182
+        },
+        {
+          "id": "42eda1af99b044b88bb5e68a4b91cb80",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 107.426956999916
+        },
+        {
+          "id": "b78525cc7dba4fa1a90156d96df58ad3",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 108.84610599987354
+        },
+        {
+          "id": "101f2dc744ec471cb4ce33a534cab790",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 119.91217300010248
+        },
+        {
+          "id": "9246aa96bf5a433899f7dc417e9e6508",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 120.98593600012464
+        },
+        {
+          "id": "05efc4b08d884c1686c868885e2a5f3e",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 104.02572200018767
+        },
+        {
+          "id": "214c6436ca2e49f5a2822ba74a0ef577",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 104.35132600014185
+        },
+        {
+          "id": "e33feef7c1a342609fa9ff360079195d",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 133.96719100001064
+        },
+        {
+          "id": "af42fd33cbb141c2938ad456f8695762",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 144.0763020000304
+        },
+        {
+          "id": "5bb906e5684f4c139f8ef56bf6b1d6b2",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 232.12044500041884
+        },
+        {
+          "id": "ce3eef9510af43afb71c7fdd2e079aaf",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 235.10462600006576
+        },
+        {
+          "id": "679741cf3443444d9e883c5813771b1e",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 234.87907000026098
+        },
+        {
+          "id": "3d78615819364fd09e67bb7386e44f50",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 235.04360000015367
+        },
+        {
+          "id": "7d3f3d4434434d3b8f8e170e31e26bba",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 212.90593100002297
+        },
+        {
+          "id": "3ec8cecd1d7e40fda33259e26cec82df",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 236.30702699983885
+        },
+        {
+          "id": "382aa314d2754d1ea456501ec4f33fc0",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 239.82436699998289
+        },
+        {
+          "id": "c2a0e1657b724add94b4df1e1193c3b5",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 242.12969700010945
+        },
+        {
+          "id": "f4ccb8ce73f84383b4af130a09a31b83",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 147.12978599982307
+        },
+        {
+          "id": "1af9e52adc92488697021e41492879e3",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 317.61032299982617
+        },
+        {
+          "id": "e78c06ab2d554b858c38a8015fea3dfa",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 325.55253500004255
+        },
+        {
+          "id": "7836358d2b5d45a78f02078f6966f6b7",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 327.8564570000526
+        },
+        {
+          "id": "a149175e4bda4998a23f2655cdc88c87",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 264.15266899994094
+        },
+        {
+          "id": "037a575a46824d60ac9ab8934cce2f04",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 229.81334700034495
+        },
+        {
+          "id": "f919d440b15540519cdc304b2641b1ed",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 233.73034999985975
+        },
+        {
+          "id": "9e2ce5b7bbd84e6099e7b663d475e7a1",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 226.1368270001185
+        },
+        {
+          "id": "16d85be2884a483fb18d05cb4e4ebbfe",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 240.42634000034013
+        },
+        {
+          "id": "53722c8290634146bbc0cf20b11aad7c",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 215.30757600021388
+        },
+        {
+          "id": "6175a15f432844f88f0387ac12e9bf4b",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 217.9628710000543
+        },
+        {
+          "id": "6227a26c4d5d4e448ffec0cbb3d7b85e",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 217.91497599997456
+        },
+        {
+          "id": "821d4a9540604629a66a97b26fd2bfed",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 221.5717549997862
+        },
+        {
+          "id": "fb825640b930414f8bb8cb8bd6e337fa",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 248.33956499969645
+        },
+        {
+          "id": "c0d8e7f3226842f7b66230e7a5c9ee5d",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 263.87545799980217
+        },
+        {
+          "id": "8185fef3e4ff44cf8a07fafdff0455ac",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 274.2882460001965
+        },
+        {
+          "id": "8fd7a62e786147629ebc3f355796d56c",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 227.42380699992282
+        },
+        {
+          "id": "c86b4601418944269709dba0c3fafc66",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 223.1330650001837
+        },
+        {
+          "id": "6cf7083866f740b09764226b96088895",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 231.07960000015737
+        },
+        {
+          "id": "64dd8ce9811e46e59cb65cf884ff7f70",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 227.69966199984992
+        },
+        {
+          "id": "e7c03da344314b809b40f5af17744c3d",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 227.86643099971116
+        },
+        {
+          "id": "3a52315d006e4316a912b518d4056a9c",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 178.3752619999177
+        },
+        {
+          "id": "df82a35de5244d6480ef72535efc1698",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 171.89340899994932
+        },
+        {
+          "id": "7697a59d6a0f4eb498a5ef712ae5615f",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 193.45456699966235
+        },
+        {
+          "id": "2f6a3175a8484d36854a8597e0efcaaf",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 510.30403599997953
+        },
+        {
+          "id": "69106f40bc144aa0994258fa870a5a53",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 511.89399899976706
+        },
+        {
+          "id": "8cf940f16ef542c6995347b55aef91df",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 518.3754070003488
+        },
+        {
+          "id": "8ce018a484874a8baa4cc234ed1374fa",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 519.8885929999051
+        },
+        {
+          "id": "cb4ba7af2ec34272bed23f5b58c74efa",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 578.8932010000281
+        },
+        {
+          "id": "3292a310dc934d3ea2a8717284aff804",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 585.3915100001359
+        },
+        {
+          "id": "62478074b2ef447e9231d7d18a445b85",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 615.2989850002086
+        },
+        {
+          "id": "73f53aac23b7493e89626aec21ca3aff",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 627.3916659997667
+        },
+        {
+          "id": "4c3d06863324429fa880347d6868a607",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 539.2861440000161
+        },
+        {
+          "id": "579745a301fc4acb9be20a6845acf767",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 557.7225729998645
+        },
+        {
+          "id": "6e9ee77528cb4015baa8129a61dcd41d",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 586.7131210002299
+        },
+        {
+          "id": "1589a1dafdc240a0ab5f68e7ef978873",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 584.1591940002218
+        },
+        {
+          "id": "4945745b98d2451ab482b618c5cbbd1d",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 559.4043070000225
+        },
+        {
+          "id": "617098f7baad40e9aa61e10786a06f80",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 578.3727279999766
+        },
+        {
+          "id": "2d016b6a05ef4b5f924ecb5e07917a43",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 549.6575679999296
+        },
+        {
+          "id": "ca11b055eef2406fb588c4669e87bf15",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 543.7212759998147
+        },
+        {
+          "id": "f8a9722d53d34be7bbf78de57cbc1331",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 578.0482400000437
+        },
+        {
+          "id": "8ddf679076a14c7a9bc2d08806b8e73b",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 602.1790780000629
+        },
+        {
+          "id": "da08049d7d9341ab915fec07e677e28e",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 638.1683859999612
+        },
+        {
+          "id": "42d463de32c440d6b522d8bdf388a309",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 585.3562209999836
+        },
+        {
+          "id": "3cf93bc5bb614f358de9e22186701484",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 570.759511000233
+        },
+        {
+          "id": "dce447be012b456a87e964dad3934d0d",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 582.3785900001894
+        },
+        {
+          "id": "d0cb92b980004fb1a1178a2c70765683",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 607.998951999889
+        },
+        {
+          "id": "2a5c0e37ec9549c180f087ad81dd45cb",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 626.605402000223
+        },
+        {
+          "id": "3ea2011632ed4f878908450ebd42a3bf",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 516.5757119998489
+        },
+        {
+          "id": "4247698bc6d64b2785a29f88dda64857",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 543.964977000087
+        },
+        {
+          "id": "6f5a14cfd41e42348b5487017d64cb83",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 549.1154100000131
+        },
+        {
+          "id": "30ffa27ce93942d4bba1ca378604cda0",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 540.2151909997883
+        },
+        {
+          "id": "52351dc99d274499bcd8df8a6b551a84",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 480.05974999978207
+        },
+        {
+          "id": "a04dcf9212484e5f8424d67e442adb77",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 521.9484189997274
+        },
+        {
+          "id": "ca157209e52c44f7b370a576bed060d0",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 518.9790639997227
+        },
+        {
+          "id": "8de1b5e93fd648569e9dc4d1623e6f98",
+          "version": "v2",
+          "status_code": 200,
+          "success": true,
+          "error": null,
+          "duration_ms": 485.2587410000524
+        }
+      ]
+    }
+  ],
+  "environment": {
+    "cpu_count": 20,
+    "python": "3.12.3",
+    "postgres": "16",
+    "data_version": "v1-seed20261020",
+    "orders": 500
+  },
+  "limitations": [
+    "Single local process per version; no paid model throughput.",
+    "V2 includes durable runtime transactions; overhead is measured, not hidden.",
+    "Warm data, small sample; no production P95/SLA claim."
+  ]
+}

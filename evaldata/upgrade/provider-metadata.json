@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-17T10:21:11.285085+00:00",
+  "endpoint": "https://api.deepseek.com/models",
+  "status": 200,
+  "models": [
+    {
+      "id": "deepseek-flash",
+      "name": "DeepSeek-V4.1-Flash",
+      "max_output_tokens": 393216
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "name": "DeepSeek-V4-Pro",
+      "max_output_tokens": 393216
+    }
+  ],
+  "requested_alias": "deepseek-flash",
+  "official_documented_snapshot": "DeepSeek-V4.1-Flash-1017",
+  "thinking": "enabled",
+  "reasoning_effort": "max",
+  "note": "Vendor alias is not an immutable snapshot pin; private reasoning content is discarded."
+}
