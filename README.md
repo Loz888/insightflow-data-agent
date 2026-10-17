@@ -153,7 +153,7 @@ ReferenceSQL 独立执行，正常验收不重建或改写 Ground Truth。
 
 四模式真实记录：Baseline/RetrievalOnly 各 25/30，ContextOnly/Full 各 30/30，
 10 个失败完整保留。Mock 不读 Schema 文本，不能证明真实 LLM 的 RAG 收益。
-[评测方法](docs/evaluation.md) · [消融原始记录](evaldata/ablation/report.md) ·
+[最终评测记录](evaldata/final/report.md) · [评测方法](docs/evaluation.md) · [消融原始记录](evaldata/ablation/report.md) ·
 [总验收](reports/FINAL_ACCEPTANCE.md)
 
 ## Performance
@@ -161,6 +161,9 @@ ReferenceSQL 独立执行，正常验收不重建或改写 Ground Truth。
 这是 AgentService.run 的本机 Mock 测量，不是 HTTP/真实模型生产性能。
 全局锁使排队增加，吞吐没有随并发线性扩展。P95/P99 小样本不代表 SLA。
 [完整环境、阶段耗时与计划](docs/performance.md) · [原始记录](evaldata/performance/report.md)
+
+## CI
+[GitHub Actions](https://github.com/Loz888/insightflow-data-agent/actions) 使用临时 PostgreSQL 与 Reader，默认不调用真实模型。实际状态以运行记录为准。
 
 ## Tests / Acceptance
 ```bash

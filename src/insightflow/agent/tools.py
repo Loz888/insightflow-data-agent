@@ -51,5 +51,8 @@ class Tools:
         except AgentError as exc:
             error = exc.kind.value
             raise
+        except Exception:
+            error = "INTERNAL_ERROR"
+            raise
         finally:
             emit(event(state, node, (time.perf_counter() - started) * 1000, error, tool))

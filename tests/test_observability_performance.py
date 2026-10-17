@@ -87,3 +87,19 @@ def test_request_trace_retains_actual_retry_count(database_urls, caplog):
         assert final["error_kind"] == "BUDGET_EXHAUSTED"
     finally:
         svc.close()
+
+
+def test_unexpected_tool_failure_is_not_logged_as_success(caplog):
+    from insightflow.agent.tools import Tools
+
+    caplog.set_level("INFO", logger="insightflow.trace")
+
+    def fail():
+        raise RuntimeError("private diagnostic")
+
+    with pytest.raises(RuntimeError):
+        Tools({}, None).measured(
+            {"request_id": "local-test", "session_id": "safe"}, "SelectSchema", "retrieve_schema", fail
+        )
+    item = json.loads(caplog.records[-1].message)
+    assert item["error_kind"] == "INTERNAL_ERROR" and "private diagnostic" not in caplog.text
