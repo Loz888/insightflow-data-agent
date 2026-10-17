@@ -74,8 +74,8 @@ NUMERIC/Decimal、主外键/CHECK/索引，重置式 Seeder 可重复。
 reader 仅五表 SELECT，无未来表默认授权，不使用 superuser/owner 执行 Agent SQL。
 
 ## 测试结果
-**135 PASS / 0 FAIL / 0 SKIP / 0 ERROR**。
-其中单元 55，真实数据库集成 80。
+**138 PASS / 0 FAIL / 0 SKIP / 0 ERROR**。
+其中单元 58，真实数据库集成 80。
 计数为 pytest 参数化条目；业务评测和并发请求另计。
 Ruff 静态/格式、compileall、pip check、Mock Demo 与专用 DB 权限检查均通过。
 没有配置额外 mypy 类型检查器，不虚称执行了它。
@@ -88,7 +88,7 @@ Day11 干净源码/新 venv 重装锁依赖、迁移 Seed 重放、实际 HTTP �
 - 30 独立案例，30 唯一 RunID：10 基础、10 JOIN/聚合、5 复杂指标、5 多轮。
 - SQL Execution 30/30，Result Accuracy 30/30，Answer Groundedness 30/30，E2E 30/30。
 - Exact Match 8/30；不以文本差异否决等价结果。
-- P50 10.384 ms，P95 22.428 ms，平均 SQL 修正 0。
+- P50 10.676 ms，P95 23.021 ms，平均 SQL 修正 0。
 - Mock 策略调用 70（含 5 个前序轮次）；真实 API 未调用，Token 未知/null。
 - Full 本轮无失败，failures.json 如实为空；消融另有 10 个实际失败，
   错误但可执行 SQL 的负向评分测试也保留。
@@ -144,4 +144,5 @@ Executor → Evaluation → Performance → 成功/失败/取消整链路。
 没有持久长期记忆、多租户、向量库、多 Agent、复杂前端或分布式平台。
 真实模型/费用未验证；上下文 Token 为估算。
 当前本地证据满足基础、工程完整与可复现要求；完整工程证据等级待真实 CI 后判定。
+最终审查修复了多月份范围只取首月的真实 Bug，新增三项回归并明确澄清；没有扩大分析能力。
 冻结新增功能，不把 Roadmap 冒充已完成能力。

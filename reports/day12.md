@@ -3,7 +3,7 @@
 保留全部已有测试与 Git 历史，完成最终全量回归与独立 30 案例采集。
 固定官方 Actions 提交，配置独立单元任务与临时 PostgreSQL 全量/安全/E2E/评测任务。
 CI 无真实模型 Key、付费开关为 0；实际内容/历史秘密扫描及负向对照完成。
-修复唯一观测 Bug：未知工具异常不能把 error_kind 记录为 null。
+修复观测 Bug：未知工具异常不能把 error_kind 记录为 null。
 ## Modified Files
 .github/workflows/ci.yml、scripts/ci_init.py、scan_secrets.py、
 测试扫描器/工具异常标记、evaldata/final/*、最终验收与 README 链接。
@@ -11,14 +11,18 @@ CI 无真实模型 Key、付费开关为 0；实际内容/历史秘密扫描及�
 scripts/accept.sh；python -m insightflow.evaluation.runner --output evaldata/final；
 扫描 files/history（提交前再复核 staged），Ruff/compileall/pip check。
 ## Test Results
-135 PASS / 0 FAIL / 0 SKIP / 0 ERROR。
-单元 55，集成 80。
+138 PASS / 0 FAIL / 0 SKIP / 0 ERROR。
+单元 58，集成 80。
 最终 30 案例全部有真实结果且 RunID 唯一；原 Ground Truth 哈希不变。
 错误但可执行 SQL 的负向评分断言和 10 个消融失败均保留。
 ## CI Status
-PENDING：工作流已准备，推送后必须读取真实远程结果，未冒充通过。
+首轮 c4afc04 在运行 39011289195 两任务均通过。
+本次修复多月份范围静默缩窄的真实 Bug，新增三项回归；最新版本 CI 待重新确认。
 ## Real Model
 REAL_MODEL_EVALUATION = NOT_RUN，未发起付费调用。
 ## Known Issues / Unverified Claims
 只读/资源策略不是生产隔离，Session 仅本进程，全局串行；
 模型在途取消受超时约束，真实模型能力与计费未验证。
+
+## 最终输入边界修复
+实际复现“2026年8月到9月订单数”原先只取8月，现对多月份明确澄清，未增加业务功能。

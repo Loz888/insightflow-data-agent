@@ -49,6 +49,11 @@ def parse_question(question: str, previous: dict) -> Plan:
             ErrorKind.CLARIFICATION_REQUIRED,
             "当前演示仅支持固定参考点的 2026 年整月、CNY 及已定义指标；请澄清范围。",
         )
+    month_mentions = re.findall(r"(?:2026年|今年)?\s*(\d{1,2})\s*月", question)
+    if len(month_mentions) > 1 or re.search(r"\d{1,2}[-~至到]\d{1,2}月", question):
+        raise AgentError(
+            ErrorKind.CLARIFICATION_REQUIRED, "当前只支持单个整月，请明确一个月份；不会静默缩小区间。"
+        )
     match = re.search(r"(?:2026年|今年)?\s*(\d{1,2})\s*月", question)
     if match:
         data["month"] = f"2026-{int(match[1]):02}"

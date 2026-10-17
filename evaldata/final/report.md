@@ -12,8 +12,8 @@ Mock 结果不代表真实 DeepSeek 能力。Token 未知保留 null；延迟为
 | sql_result_accuracy | 1.0 |
 | answer_groundedness | 1.0 |
 | success_rate | 1.0 |
-| p50_ms | 10.384 |
-| p95_ms | 22.428 |
+| p50_ms | 10.676 |
+| p95_ms | 23.021 |
 | average_retry_count | 0.0 |
 | model_call_count | 70 |
 | token_usage_known_cases | 0 |

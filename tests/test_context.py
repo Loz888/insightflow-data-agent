@@ -98,3 +98,14 @@ def test_unsupported_time_currency_requests_clarification(question):
     with pytest.raises(AgentError) as exc:
         parse_question(question, {})
     assert exc.value.kind.value == "CLARIFICATION_REQUIRED"
+
+
+@pytest.mark.parametrize(
+    "question", ["2026年8月到9月订单数是多少？", "比较2026年8月和9月订单数", "2026年8-9月订单数是多少？"]
+)
+def test_multiple_months_never_silently_narrow_to_first(question):
+    from insightflow.llm.mock import parse_question
+
+    with pytest.raises(AgentError) as exc:
+        parse_question(question, {})
+    assert exc.value.kind.value == "CLARIFICATION_REQUIRED"
