@@ -1,0 +1,17 @@
+METRICS = {
+    "customer_count": "客户数 COUNT(customers)，不按订单时间或地区筛选。",
+    "product_count": "商品数 COUNT(products)，可按商品类别分组。",
+    "order_count": "所有订单 COUNT(orders)，可按订单时间/客户地区筛选。",
+    "paid_order_count": "status=paid 的订单数。",
+    "pending_order_count": "status=pending 的订单数。",
+    "cancelled_order_count": "status=cancelled 的订单数。",
+    "average_price": "商品标价的 AVG(price)，不是客单价。",
+    "max_price": "商品最高标价 MAX(price)。",
+    "min_price": "商品最低标价 MIN(price)。",
+    "paid_revenue": "已支付订单 quantity*unit_price 的销售金额，CNY，未扣退款。",
+    "gmv": "非 cancelled 订单的销售金额，包含 pending，CNY。",
+    "refunded_order_rate": "有成功退款的已支付订单数/已支付订单数。退款率默认指退款订单率。按订单日期归属；分母零返回 NULL。",
+    "refund_amount": "已支付订单对应的 succeeded 退款金额总和，CNY；按订单日期归属。",
+    "refund_amount_rate": "已支付订单成功退款金额/同批次已支付销售金额。分母零返回 NULL。",
+    "average_order_value": "已支付销售金额/已支付订单数，CNY。分母零返回 NULL。",
+}

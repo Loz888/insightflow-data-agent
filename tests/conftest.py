@@ -4,6 +4,11 @@ import pytest
 from dotenv import dotenv_values
 
 
+class RedactedDSN(str):
+    def __repr__(self):
+        return "<InsightFlow test database DSN redacted>"
+
+
 @pytest.fixture(scope="session")
 def database_urls():
     values = dotenv_values(Path(__file__).resolve().parents[1] / ".env")
@@ -19,4 +24,4 @@ def database_urls():
         pass
     with checked_connection(owner, owner=True, test_only=True):
         pass
-    return reader, owner
+    return RedactedDSN(reader), RedactedDSN(owner)

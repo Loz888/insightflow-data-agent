@@ -16,3 +16,8 @@ class AgentState(TypedDict, total=False):
     retry_count: int
     trace: list[str]
     model_calls: int
+
+    plan: dict[str, Any]
+    retryable: bool
+    feedback: str | None
+    usage: dict[str, Any]
