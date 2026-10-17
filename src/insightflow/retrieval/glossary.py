@@ -15,3 +15,22 @@ METRICS = {
     "refund_amount_rate": "已支付订单成功退款金额/同批次已支付销售金额。分母零返回 NULL。",
     "average_order_value": "已支付销售金额/已支付订单数，CNY。分母零返回 NULL。",
 }
+
+
+METRIC_TABLES = {
+    "customer_count": ["customers"],
+    "product_count": ["products"],
+    "order_count": ["orders"],
+    "paid_order_count": ["orders"],
+    "pending_order_count": ["orders"],
+    "cancelled_order_count": ["orders"],
+    "average_price": ["products"],
+    "max_price": ["products"],
+    "min_price": ["products"],
+    "paid_revenue": ["orders", "order_items"],
+    "gmv": ["orders", "order_items"],
+    "refunded_order_rate": ["orders", "refunds"],
+    "refund_amount": ["orders", "refunds"],
+    "refund_amount_rate": ["orders", "order_items", "refunds"],
+    "average_order_value": ["orders", "order_items"],
+}

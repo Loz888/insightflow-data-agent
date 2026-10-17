@@ -4,47 +4,31 @@ import re
 from insightflow.database.errors import AgentError, ErrorKind
 from insightflow.llm.base import Generation, Plan
 
-METRIC_TABLES = {
-    "customer_count": ["customers"],
-    "product_count": ["products"],
-    "order_count": ["orders"],
-    "paid_order_count": ["orders"],
-    "pending_order_count": ["orders"],
-    "cancelled_order_count": ["orders"],
-    "average_price": ["products"],
-    "max_price": ["products"],
-    "min_price": ["products"],
-    "paid_revenue": ["orders", "order_items"],
-    "gmv": ["orders", "order_items"],
-    "refunded_order_rate": ["orders", "refunds"],
-    "refund_amount": ["orders", "refunds"],
-    "refund_amount_rate": ["orders", "order_items", "refunds"],
-    "average_order_value": ["orders", "order_items"],
-}
-
 
 def parse_question(question: str, previous: dict) -> Plan:
+    question = re.sub(r"\s+", "", question)
     metric = None
     for phrases, name in [
         (["退款金额率"], "refund_amount_rate"),
-        (["退款订单率", "退款率"], "refunded_order_rate"),
+        (["退款订单率", "退款率", "退货率"], "refunded_order_rate"),
         (["退款金额"], "refund_amount"),
         (["客单价"], "average_order_value"),
         (["GMV", "gmv"], "gmv"),
-        (["销售收入"], "paid_revenue"),
+        (["销售收入", "营收", "实收销售额"], "paid_revenue"),
         (["平均价格"], "average_price"),
         (["最高价格"], "max_price"),
         (["最低价格"], "min_price"),
         (["待支付订单"], "pending_order_count"),
         (["已取消订单"], "cancelled_order_count"),
         (["已支付订单"], "paid_order_count"),
-        (["订单总数"], "order_count"),
+        (["订单总数", "订单数", "订单数量"], "order_count"),
         (["客户总数"], "customer_count"),
         (["商品总数", "商品数量"], "product_count"),
     ]:
         if any(word in question for word in phrases):
             metric = name
             break
+    explicit_metric = metric is not None
     followup = any(s in question for s in ("那", "改成", "呢"))
     if metric is None and followup:
         metric = previous.get("metric")
@@ -92,6 +76,18 @@ def parse_question(question: str, previous: dict) -> Plan:
     if "前5" in question:
         data["top"] = 5
         data["group"] = "customer" if "客户" in question else "product"
+    if (
+        followup
+        and not explicit_metric
+        and not (
+            match
+            or regions
+            or any(word in question for word in ("上月", "本月", "全部地区", "所有月份", "各地区", "各月份"))
+        )
+    ):
+        raise AgentError(
+            ErrorKind.CLARIFICATION_REQUIRED, "无法可靠解析指代，请明确要更改的时间、地区或指标。"
+        )
     if metric in ("refunded_order_rate", "refund_amount_rate", "refund_amount") and data.get("group") in (
         "category",
         "product",

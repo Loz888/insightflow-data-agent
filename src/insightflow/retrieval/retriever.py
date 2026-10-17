@@ -1,12 +1,13 @@
 from insightflow.database.errors import AgentError, ErrorKind
-from insightflow.llm.mock import METRIC_TABLES
+from insightflow.retrieval.glossary import METRIC_TABLES
+from insightflow.database.metadata import TABLES
 from insightflow.retrieval.schema_catalog import DESCRIPTIONS
 from insightflow.retrieval.glossary import METRICS
 
 
 class SchemaRetriever:
     def __init__(self, catalog, max_items=5):
-        self.catalog = catalog
+        self.catalog = {name: table for name, table in catalog.items() if name in TABLES}
         self.max_items = max_items
 
     def retrieve(self, question, plan):
@@ -27,7 +28,7 @@ class SchemaRetriever:
                 for fk in table.foreign_keys:
                     graph[name].add(fk["target_table"])
                     graph[fk["target_table"]].add(name)
-            start = next(iter(required))
+            start = sorted(required)[0]
             for target in required:
                 queue = [(start, [start])]
                 seen = set()

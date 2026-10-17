@@ -1,0 +1,540 @@
+[
+  {
+    "case_id": "q26",
+    "run_id": "4e648ee9-a06e-46ab-9923-e2b2b16f885b",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 15.536,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "0.33333333333333333333"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "refunded_order_rate",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "region": "华东",
+        "metric": "refunded_order_rate"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "baseline"
+  },
+  {
+    "case_id": "q27",
+    "run_id": "1423d626-c0bf-42c7-9043-42dfea68d349",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 15.148,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "11881.00"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "paid_revenue",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "region": "华南",
+        "metric": "paid_revenue"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "baseline"
+  },
+  {
+    "case_id": "q28",
+    "run_id": "e3a66e8b-8310-4792-9d1c-3c1ad6673a88",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 11.643,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          22
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "paid_order_count",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-08",
+        "region": "华北",
+        "metric": "paid_order_count"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "baseline"
+  },
+  {
+    "case_id": "q29",
+    "run_id": "dff1207b-19f8-4e40-b68f-7e47702ec30c",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 15.983,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "17673.00"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "gmv",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "region": "西部",
+        "metric": "gmv"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "baseline"
+  },
+  {
+    "case_id": "q30",
+    "run_id": "ffbe2ab4-8054-4e4c-8594-bf2b2c6382d0",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 14.191,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "563.6279069767441860"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "average_order_value",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "metric": "average_order_value"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "baseline"
+  },
+  {
+    "case_id": "q26",
+    "run_id": "7369f45c-3084-4eb7-a176-832ea4d90778",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 12.815,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "0.33333333333333333333"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "refunded_order_rate",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "region": "华东",
+        "metric": "refunded_order_rate"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "retrieval_only"
+  },
+  {
+    "case_id": "q27",
+    "run_id": "09e555ac-fbdd-4a24-9e04-6107c162b713",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 12.352,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "11881.00"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "paid_revenue",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "region": "华南",
+        "metric": "paid_revenue"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "retrieval_only"
+  },
+  {
+    "case_id": "q28",
+    "run_id": "9559a16a-2021-4e80-b2de-22da1b6951e0",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 10.2,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          22
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "paid_order_count",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-08",
+        "region": "华北",
+        "metric": "paid_order_count"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "retrieval_only"
+  },
+  {
+    "case_id": "q29",
+    "run_id": "23be4132-52ce-436d-893a-d1a9d830da71",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 12.674,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "17673.00"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "gmv",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "region": "西部",
+        "metric": "gmv"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "retrieval_only"
+  },
+  {
+    "case_id": "q30",
+    "run_id": "93e9543e-244a-43cc-ba7a-afcb96198800",
+    "model_type": "mock",
+    "sql_valid": false,
+    "sql_executed": false,
+    "sql_exact_match": false,
+    "result_correct": false,
+    "answer_grounded": false,
+    "scenario_success": false,
+    "constraints_correct": false,
+    "retries": 0,
+    "duration_ms": 12.469,
+    "model_calls": 3,
+    "input_tokens": null,
+    "output_tokens": null,
+    "token_usage_known": false,
+    "error_kind": "CLARIFICATION_REQUIRED",
+    "generated_sql": "",
+    "observed_result": null,
+    "expected_result": {
+      "columns": [
+        "value"
+      ],
+      "rows": [
+        [
+          "563.6279069767441860"
+        ]
+      ]
+    },
+    "selected_tables": [],
+    "resolved_plan": {},
+    "context_size_estimate": null,
+    "failure_category": "Context Resolution Error",
+    "failure_evidence": {
+      "stage_trace": [
+        "UnderstandQuestion",
+        "GenerateAnswer"
+      ],
+      "error": {
+        "kind": "CLARIFICATION_REQUIRED",
+        "message": "缺少可支持的业务指标，请明确收入、订单数或退款率等口径。"
+      },
+      "expected_metric": "average_order_value",
+      "observed_metric": null,
+      "expected_constraints": {
+        "month": "2026-09",
+        "metric": "average_order_value"
+      }
+    },
+    "recall_at_k": 0.0,
+    "mode": "retrieval_only"
+  }
+]

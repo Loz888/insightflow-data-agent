@@ -26,6 +26,19 @@ class Nodes:
         from insightflow.retrieval.retriever import SchemaRetriever
 
         def run():
+            if self.settings.experiment_mode in ("baseline", "context_only"):
+                metric = s["plan"]["metric"]
+                fixed = self.tools.get_table_schema("orders")
+                result = {
+                    "retrieved_tables": ["orders"],
+                    "retrieved_columns": ["orders." + c for c in fixed["columns"]],
+                    "retrieved_metrics": {metric: self.tools.get_metric_definition(metric)},
+                    "retrieval_scores": {"orders": 1},
+                    "schemas": [fixed],
+                    "selection": "fixed_minimal",
+                }
+                return {"selected_tables": ["orders"], "retrieved_context": result}
+
             result = self.tools.measured(
                 s,
                 "SelectSchema",

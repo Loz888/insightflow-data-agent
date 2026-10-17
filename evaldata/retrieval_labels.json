@@ -1,0 +1,127 @@
+{
+  "source": "Human-reviewed physical tables in independently authored ReferenceSQL; not Agent tables or answers",
+  "source_sha256": "9e6090d1f7bffae65a7f8f1ede2480429c199f4ee178b9b72c5870f0e8384380",
+  "k": 5,
+  "cases": {
+    "q01": [
+      "customers"
+    ],
+    "q02": [
+      "products"
+    ],
+    "q03": [
+      "orders"
+    ],
+    "q04": [
+      "orders"
+    ],
+    "q05": [
+      "orders"
+    ],
+    "q06": [
+      "orders"
+    ],
+    "q07": [
+      "products"
+    ],
+    "q08": [
+      "products"
+    ],
+    "q09": [
+      "products"
+    ],
+    "q10": [
+      "products"
+    ],
+    "q11": [
+      "order_items",
+      "orders"
+    ],
+    "q12": [
+      "order_items",
+      "orders"
+    ],
+    "q13": [
+      "customers",
+      "order_items",
+      "orders"
+    ],
+    "q14": [
+      "customers",
+      "order_items",
+      "orders"
+    ],
+    "q15": [
+      "order_items",
+      "orders",
+      "products"
+    ],
+    "q16": [
+      "order_items",
+      "orders",
+      "products"
+    ],
+    "q17": [
+      "customers",
+      "order_items",
+      "orders"
+    ],
+    "q18": [
+      "customers",
+      "orders"
+    ],
+    "q19": [
+      "order_items",
+      "orders"
+    ],
+    "q20": [
+      "order_items",
+      "orders"
+    ],
+    "q21": [
+      "orders",
+      "refunds"
+    ],
+    "q22": [
+      "orders",
+      "refunds"
+    ],
+    "q23": [
+      "order_items",
+      "orders",
+      "refunds"
+    ],
+    "q24": [
+      "order_items",
+      "orders"
+    ],
+    "q25": [
+      "customers",
+      "orders",
+      "refunds"
+    ],
+    "q26": [
+      "customers",
+      "orders",
+      "refunds"
+    ],
+    "q27": [
+      "customers",
+      "order_items",
+      "orders"
+    ],
+    "q28": [
+      "customers",
+      "orders"
+    ],
+    "q29": [
+      "customers",
+      "order_items",
+      "orders"
+    ],
+    "q30": [
+      "order_items",
+      "orders"
+    ]
+  }
+}

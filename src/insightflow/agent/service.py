@@ -4,7 +4,7 @@ from insightflow.agent.graph import build_graph
 from insightflow.agent.nodes import Nodes
 from insightflow.agent.tools import Tools
 from insightflow.database.executor import ReadonlyExecutor
-from insightflow.database.metadata import read_catalog
+from insightflow.retrieval.schema_catalog import SchemaCatalog
 from insightflow.llm.mock import MockLLMProvider
 
 
@@ -19,7 +19,8 @@ class AgentService:
             self.provider = DeepSeekLLMProvider()
         else:
             self.provider = MockLLMProvider()
-        self.catalog = read_catalog(settings.database_url.get_secret_value())
+        self.schema_catalog = SchemaCatalog(settings.database_url.get_secret_value())
+        self.catalog = self.schema_catalog.tables
         self.executor = ReadonlyExecutor(settings, self.catalog)
         self.tools = Tools(self.catalog, self.executor)
         self.graph = build_graph(Nodes(self.provider, self.tools, settings))
@@ -32,13 +33,16 @@ class AgentService:
         with self.lock:
             before_usage = self.provider.usage()
             session = self.sessions.get(session_id)
+            use_history = self.settings.experiment_mode in ("context_only", "full")
             result = self.graph.invoke(
                 {
                     "question": question,
                     "session_id": session_id,
                     "request_id": str(uuid4()),
-                    "conversation_context": previous if previous is not None else dict(session.constraints),
-                    "history": list(session.history),
+                    "conversation_context": (previous if previous is not None else dict(session.constraints))
+                    if use_history
+                    else {},
+                    "history": list(session.history) if use_history else [],
                     "retry_count": 0,
                     "trace": [],
                     "error": None,
