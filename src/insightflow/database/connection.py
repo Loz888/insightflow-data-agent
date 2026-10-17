@@ -12,7 +12,13 @@ def checked_connection(dsn: str, *, owner: bool = False, test_only: bool = False
     expected = "insightflow_owner" if owner else "insightflow_reader"
     if params.get("user") != expected:
         raise ValueError("Wrong database role")
-    conn = psycopg.connect(dsn, connect_timeout=3)
+    try:
+        conn = psycopg.connect(dsn, connect_timeout=3)
+    except psycopg.Error as exc:
+        from insightflow.database.errors import classify_db_error
+
+        raise classify_db_error(exc) from None
+    conn.execute("SET search_path=pg_catalog,business")
     with conn.cursor() as cur:
         cur.execute(
             "SELECT current_database(),current_user,r.rolsuper,r.rolcreatedb,r.rolcreaterole FROM pg_roles r WHERE rolname=current_user"

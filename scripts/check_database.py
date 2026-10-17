@@ -19,6 +19,13 @@ with checked_connection(reader, test_only=True) as conn:
         conn.execute("SELECT has_schema_privilege(current_user,'business','CREATE')").fetchone()[0] is False
     )
     assert conn.execute("SHOW default_transaction_read_only").fetchone()[0] == "on"
+    granted = {
+        row[0]
+        for row in conn.execute(
+            "SELECT table_name FROM information_schema.table_privileges WHERE grantee=current_user AND table_schema='business' AND privilege_type='SELECT'"
+        ).fetchall()
+    }
+    assert granted == set(counts), "Reader has unexpected business table access"
 assert counts == {"customers": 100, "products": 30, "orders": 500, "order_items": 1001, "refunds": 165}, (
     "Unexpected deterministic dataset"
 )

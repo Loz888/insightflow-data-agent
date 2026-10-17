@@ -10,9 +10,21 @@ class Nodes:
     def call(self, state, name, function):
         trace = state.get("trace", []) + [name]
         try:
-            return {"trace": trace, "error": None, **function()}
+            from insightflow.agent.cancellation import check_cancelled
+
+            check_cancelled()
+            update = function()
+            check_cancelled()
+            return {"trace": trace, "error": None, **update}
         except AgentError as exc:
             return {"trace": trace, "error": exc.as_dict(), "retryable": exc.retryable}
+        except Exception:
+            kind = ErrorKind.SCHEMA_RETRIEVAL_ERROR if name == "SelectSchema" else ErrorKind.INTERNAL_ERROR
+            return {
+                "trace": trace,
+                "error": {"kind": kind.value, "message": "处理步骤失败；未使用未经验证的业务数据。"},
+                "retryable": False,
+            }
 
     def understand(self, s):
         def run():

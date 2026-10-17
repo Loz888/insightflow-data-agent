@@ -29,11 +29,24 @@ class AgentService:
 
         self.sessions = SessionStore(settings.max_history_turns)
 
-    def run(self, question, session_id="demo", previous=None):
-        with self.lock:
+    def run(self, question, session_id="demo", previous=None, cancellation=None):
+        from insightflow.agent.cancellation import Cancellation, CURRENT_CANCELLATION
+        from insightflow.database.errors import AgentError, ErrorKind
+
+        token = cancellation or Cancellation()
+        while not self.lock.acquire(timeout=0.05):
+            token.check()
+        context = CURRENT_CANCELLATION.set(token)
+        try:
             before_usage = self.provider.usage()
-            session = self.sessions.get(session_id)
+            try:
+                session = self.sessions.get(session_id)
+            except AgentError:
+                raise
+            except Exception:
+                raise AgentError(ErrorKind.SESSION_STATE_ERROR, "本地会话状态不可用。") from None
             use_history = self.settings.experiment_mode in ("context_only", "full")
+            token.check()
             result = self.graph.invoke(
                 {
                     "question": question,
@@ -59,8 +72,17 @@ class AgentService:
             )
             if "api_calls" in result["usage"]:
                 result["model_calls"] = result["usage"]["api_calls"] - before_usage["api_calls"]
-            self.sessions.record(session, question, result)
+            token.check()
+            try:
+                self.sessions.record(session, question, result)
+            except Exception:
+                raise AgentError(
+                    ErrorKind.SESSION_STATE_ERROR, "会话保存失败，未返回本轮业务答案。"
+                ) from None
             return result
+        finally:
+            CURRENT_CANCELLATION.reset(context)
+            self.lock.release()
 
     def close(self):
         self.executor.close()

@@ -96,7 +96,10 @@ class DeepSeekLLMProvider:
             (len(text.encode()) + len(instructions.encode()) + 2048) * self.input_rate
             + self.max_output_tokens * self.output_rate
         ) / Decimal(1000000)
+        from insightflow.agent.cancellation import check_cancelled
+
         for attempt in range(self.transport_retries + 1):
+            check_cancelled()
             self._reserve(reservation)
             try:
                 response = self.client.chat.completions.create(
@@ -109,6 +112,7 @@ class DeepSeekLLMProvider:
                     timeout=self.timeout,
                 )
                 self._usage(response.usage)
+                check_cancelled()
                 if not response.choices:
                     raise AgentError(ErrorKind.MODEL_INVALID_RESPONSE, "模型没有返回候选答案。")
                 choice = response.choices[0]

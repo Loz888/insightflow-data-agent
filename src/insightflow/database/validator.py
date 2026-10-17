@@ -113,4 +113,21 @@ class SQLValidator:
             raise AgentError(
                 ErrorKind.SCHEMA_NOT_FOUND, "字段不存在或引用有歧义，请使用已检索 Schema。", retryable=True
             ) from None
+        # Resolve overloaded ordinary functions explicitly in pg_catalog.
+        # search_path alone is insufficient: an exact business overload could
+        # otherwise beat a built-in requiring implicit numeric conversion.
+        builtin_calls = {
+            "Count",
+            "Sum",
+            "Avg",
+            "Min",
+            "Max",
+            "Round",
+            "DateTrunc",
+            "TimestampTrunc",
+            "TimeToStr",
+        }
+        for function in reversed(list(qualified.find_all(exp.Func))):
+            if type(function).__name__ in builtin_calls:
+                function.replace(exp.Dot(this=exp.to_identifier("pg_catalog"), expression=function.copy()))
         return ValidatedSQL(qualified.sql(dialect="postgres"), tuple(sorted(tables)))

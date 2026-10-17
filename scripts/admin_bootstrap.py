@@ -72,7 +72,7 @@ for name in ("insightflow_dev", "insightflow_test"):
         .as_string()
     )
     admin(
-        sql.SQL("ALTER ROLE insightflow_reader IN DATABASE {} SET search_path = business,pg_catalog")
+        sql.SQL("ALTER ROLE insightflow_reader IN DATABASE {} SET search_path = pg_catalog,business")
         .format(sql.Identifier(name))
         .as_string()
     )

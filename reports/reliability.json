@@ -1,0 +1,37 @@
+{
+  "passed_nodes": [
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[ALTER TABLE business.orders ADD COLUMN injected text]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[TRUNCATE business.orders]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[SELECT * FROM (SELECT * FROM pg_catalog.pg_authid) stolen]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[SELECT * FROM \"pg_catalog\".\"pg_authid\"]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[SELECT * FROM business.\"orders; DROP TABLE orders\"]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[WITH hidden AS (SELECT * FROM other_schema.secrets) SELECT * FROM hidden]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[WITH x AS (SELECT pg_read_file('/etc/passwd') FROM business.orders) SELECT * FROM x]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[SELECT (SELECT pg_sleep(10)) FROM business.orders]",
+    "tests/test_reliability.py::test_nested_quoted_and_malformed_sql_rejected[SELECT FROM WHERE malformed]",
+    "tests/test_reliability.py::test_reader_future_table_and_all_writes_denied",
+    "tests/test_reliability.py::test_actual_connection_failure_sanitized",
+    "tests/test_reliability.py::test_model_fault_route_no_sql_retries_or_fake_evidence[MODEL_TIMEOUT]",
+    "tests/test_reliability.py::test_model_fault_route_no_sql_retries_or_fake_evidence[MODEL_RATE_LIMIT]",
+    "tests/test_reliability.py::test_model_fault_route_no_sql_retries_or_fake_evidence[MODEL_UPSTREAM_ERROR]",
+    "tests/test_reliability.py::test_model_fault_route_no_sql_retries_or_fake_evidence[MODEL_INVALID_RESPONSE]",
+    "tests/test_reliability.py::test_retrieval_context_and_session_failures",
+    "tests/test_reliability.py::test_prompt_injection_cannot_raise_tool_privileges[question]",
+    "tests/test_reliability.py::test_prompt_injection_cannot_raise_tool_privileges[retrieved_description]",
+    "tests/test_reliability.py::test_real_database_cancel_releases_connection_and_no_memory",
+    "tests/test_reliability.py::test_cancel_while_queued_does_not_create_session",
+    "tests/test_reliability.py::test_same_session_is_serialized_without_lost_history",
+    "tests/test_reliability.py::test_asgi_disconnect_signals_cancellation",
+    "tests/test_reliability.py::test_whitelisted_function_cannot_be_shadowed_in_business_schema"
+  ],
+  "total": 23,
+  "engineering": {
+    "passed": 129,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "unit_passed": 52,
+    "integration_passed": 77
+  },
+  "no_paid_calls": true
+}

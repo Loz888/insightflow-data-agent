@@ -1,7 +1,8 @@
 import json
 from decimal import Decimal
 import psycopg
-from psycopg_pool import ConnectionPool
+from psycopg_pool import ConnectionPool, PoolTimeout
+from insightflow.agent.cancellation import Cancellation, CURRENT_CANCELLATION
 from insightflow.database.connection import checked_connection
 from insightflow.database.errors import AgentError, ErrorKind, classify_db_error
 from insightflow.database.validator import SQLValidator
@@ -29,6 +30,7 @@ class ReadonlyExecutor:
 
         def configure(conn):
             conn.read_only = True
+            conn.execute("SET search_path=pg_catalog,business")
 
         self.pool = ConnectionPool(
             dsn,
@@ -40,10 +42,17 @@ class ReadonlyExecutor:
             open=True,
         )
 
-    def execute(self, sql):
+    def execute(self, sql, cancellation=None):
+        token = cancellation or CURRENT_CANCELLATION.get() or Cancellation()
+        token.check()
         validated = self.validator.validate(sql)  # mandatory even when caller already validated
         try:
-            with self.pool.connection() as conn, conn.transaction():
+            with (
+                self.pool.connection() as conn,
+                token.bind(lambda: conn.cancel_safe(timeout=1)),
+                conn.transaction(),
+            ):
+                token.check()
                 conn.execute(
                     "SELECT set_config('statement_timeout',%s,true)",
                     (str(self.settings.statement_timeout_ms),),
@@ -52,12 +61,14 @@ class ReadonlyExecutor:
                     "SELECT set_config('lock_timeout',%s,true)", (str(self.settings.lock_timeout_ms),)
                 )
                 conn.execute("SET LOCAL idle_in_transaction_session_timeout='3000ms'")
-                conn.execute("SET LOCAL search_path=business,pg_catalog")
+                conn.execute("SET LOCAL search_path=pg_catalog,business")
                 conn.execute("SET LOCAL TIME ZONE 'UTC'")
+                token.check()
                 plan = conn.execute("EXPLAIN (FORMAT JSON) " + validated.sql).fetchone()[0][0]["Plan"]
                 if plan["Total Cost"] > 100000 or plan["Plan Rows"] > 100000:
                     raise AgentError(ErrorKind.SQL_VALIDATION_ERROR, "查询计划超出资源预算。")
                 with conn.cursor(name="bounded_result") as cursor:
+                    token.check()
                     cursor.execute(validated.sql)
                     columns = [c.name for c in cursor.description] if cursor.description else None
                     rows = cursor.fetchmany(self.settings.max_rows + 1)
@@ -68,8 +79,10 @@ class ReadonlyExecutor:
                     result = {"columns": columns, "rows": json_value(rows), "row_count": len(rows)}
                     if len(json.dumps(result, ensure_ascii=False).encode()) > self.settings.max_bytes:
                         raise AgentError(ErrorKind.SQL_EXECUTION_ERROR, "查询结果超过字节上限，请缩小范围。")
+                    token.check()
                     return result
-        except psycopg.Error as exc:
+        except (psycopg.Error, PoolTimeout) as exc:
+            token.check()
             raise classify_db_error(exc) from None
 
     def close(self):

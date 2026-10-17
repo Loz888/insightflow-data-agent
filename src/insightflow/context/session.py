@@ -32,6 +32,10 @@ class SessionStore:
 
     def record(self, session, question, result):
         if result.get("error") is None and result.get("query_result"):
-            session.constraints = dict(result["plan"])
-            session.history.append({"question": question, "answer": result["final_answer"]["answer"][:2048]})
-            session.history = session.history[-self.max_turns :] if self.max_turns else []
+            constraints = dict(result["plan"])
+            history = session.history + [
+                {"question": question, "answer": result["final_answer"]["answer"][:2048]}
+            ]
+            history = history[-self.max_turns :] if self.max_turns else []
+            session.constraints = constraints
+            session.history = history
