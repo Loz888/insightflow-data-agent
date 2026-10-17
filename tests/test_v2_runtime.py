@@ -209,8 +209,14 @@ time.sleep(60)
         assert proc.stdout.readline().strip() == "CLAIMED"
         os.kill(proc.pid, signal.SIGKILL)
         assert proc.wait(timeout=3) == -signal.SIGKILL
-        time.sleep(3.1)
-        store.recover()
+        # Recovery uses SKIP LOCKED and server clock; poll the observable terminal
+        # state within a bound instead of assuming one fixed local sleep is enough.
+        until = time.monotonic() + 8
+        while time.monotonic() < until:
+            store.recover()
+            if store.get(rid, "a")["status"] == "interrupted":
+                break
+            time.sleep(0.05)
         assert store.get(rid, "a")["status"] == "interrupted"
         new, _ = store.enqueue("a", body(session=request.session_id), 30, 300)
         owner = uuid4().hex
