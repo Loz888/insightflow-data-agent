@@ -7,8 +7,10 @@
 - Python 3.12.3；LangGraph 1.2.16、FastAPI 0.143.3、psycopg 3.3.6、
   SQLGlot 30.23.0、Pydantic 2.14.1、pytest 9.1.1、OpenAI SDK 3.33.0。
 - 锁定记录 requirements.lock，pip check 与真实导入运行通过。
-- 已提交文档基线：5486d59；Day12 代码快照和真实 CI 结果将在推送后补充。
-- 状态：本地工程 PASS；远程 CI PENDING，不提前宣称远程验收成功。
+- 已验收代码 Commit：8edd35605421d61ab74afb266758a20dde007257。
+- 当前报告为该代码快照的证据更新；最终文档提交 SHA 可用 git rev-parse HEAD 查询。
+- 状态：本地与真实远程 CI 均 PASS。两任务全部成功：https://github.com/Loz888/insightflow-data-agent/actions/runs/39011574972。
+- 后续证据文档提交不改变上述代码快照；最新运行见仓库 Actions。
 
 ```mermaid
 flowchart TD
@@ -82,7 +84,10 @@ Ruff 静态/格式、compileall、pip check、Mock Demo 与专用 DB 权限检�
 原测试未删除，原 30 Ground Truth 文件 SHA-256 完全不变。
 Day11 干净源码/新 venv 重装锁依赖、迁移 Seed 重放、实际 HTTP 多轮通过；
 该本地复现复用专用测试库，不冒称全新操作系统安装。
-远程 CI 尚待实际运行；其 PostgreSQL 由临时 service 从空集群初始化。
+真实远程 CI 两任务全部通过：58 个无数据库测试（80 集成被选择器排除，并非 SKIP），
+全量 138 个测试 0 FAIL / 0 SKIP；临时 PostgreSQL 从空集群初始化。
+此外实际执行独立评测、消融、4 档性能 smoke 与无授权 NOT_RUN 验证。
+机器 CI 证据见 [ci.json](ci.json)，日志已检查未含本机密码或实际 Key。
 
 ## 最终 Agent Evaluation
 - 30 独立案例，30 唯一 RunID：10 基础、10 JOIN/聚合、5 复杂指标、5 多轮。
@@ -143,6 +148,12 @@ Executor → Evaluation → Performance → 成功/失败/取消整链路。
 受控中文指标和合成数据；Schema 启动快照；会话重启丢失、全局串行；
 没有持久长期记忆、多租户、向量库、多 Agent、复杂前端或分布式平台。
 真实模型/费用未验证；上下文 Token 为估算。
-当前本地证据满足基础、工程完整与可复现要求；完整工程证据等级待真实 CI 后判定。
+按任务量表评为 **A（受控原型的工程证据等级）**，依据逐项验证：
+基础图/数据库/安全链路通过；独立 30 案例与指标验证通过；
+故障/取消/Session 隔离通过；消融与性能原始数据完整；
+干净 venv/真实 HTTP 和临时 PostgreSQL CI 可复现；
+真实模型明确 NOT_RUN，错误样本与边界如实披露；
+源码、指南与测试对应，未遗留未披露的关键失败。
+此等级不评价真实 LLM 通用能力，也不代表生产安全认证。
 最终审查修复了多月份范围只取首月的真实 Bug，新增三项回归并明确澄清；没有扩大分析能力。
 冻结新增功能，不把 Roadmap 冒充已完成能力。

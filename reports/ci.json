@@ -1,0 +1,31 @@
+{
+  "accepted_code_commit": "8edd35605421d61ab74afb266758a20dde007257",
+  "run_url": "https://github.com/Loz888/insightflow-data-agent/actions/runs/39011574972",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "PostgreSQL, safety, E2E and evaluation",
+      "conclusion": "success"
+    },
+    {
+      "name": "Static and database-independent tests",
+      "conclusion": "success"
+    }
+  ],
+  "full_suite": {
+    "passed": 138,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "database_independent": {
+    "passed": 58,
+    "deselected_integration_tests": 80,
+    "skipped": 0
+  },
+  "database_environment": "fresh ephemeral PostgreSQL16, non-owner non-superuser reader",
+  "paid_model": "NOT_RUN",
+  "remote_clone_files_matched": 131,
+  "privacy_scan": "PASS",
+  "ground_truth": "UNCHANGED"
+}

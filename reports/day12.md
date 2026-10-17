@@ -16,8 +16,11 @@ scripts/accept.sh；python -m insightflow.evaluation.runner --output evaldata/fi
 最终 30 案例全部有真实结果且 RunID 唯一；原 Ground Truth 哈希不变。
 错误但可执行 SQL 的负向评分断言和 10 个消融失败均保留。
 ## CI Status
-首轮 c4afc04 在运行 39011289195 两任务均通过。
-本次修复多月份范围静默缩窄的真实 Bug，新增三项回归；最新版本 CI 待重新确认。
+PASS：已验收代码 8edd35605421d61ab74afb266758a20dde007257，两任务全部成功。
+https://github.com/Loz888/insightflow-data-agent/actions/runs/39011574972
+58 个独立单元与全量 138 项实际通过，0 FAIL / 0 SKIP。
+临时 PostgreSQL 仅用于本项目，Reader 非 Owner/超级用户；模型不发起付费请求。
+证据文档更新不改变代码，最新工作流结果还会在最终交付时核对。
 ## Real Model
 REAL_MODEL_EVALUATION = NOT_RUN，未发起付费调用。
 ## Known Issues / Unverified Claims

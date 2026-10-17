@@ -22,3 +22,5 @@ Full 与 ContextOnly 均 30/30，Baseline 与 RetrievalOnly 均 25/30；
 差异来自五个追问失去结构化历史，不是检索造成的 LLM 能力变化。
 实际 120 条观测、10 个失败、耗时与上下文估算见 evaldata/ablation/。
 真实模型消融 NOT_RUN。
+
+平均 Context 大小仅统计进入 SQL 生成时的 ContextManager 文本，不含理解阶段短 Prompt；未进入生成不记作零，summary.measured_contexts 给出分母。
