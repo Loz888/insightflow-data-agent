@@ -89,7 +89,13 @@ jobs:
       - name: Initialize V2 runtime and independent snapshots
         run: .venv/bin/python scripts/ci_v2.py
       - name: Full tests, SQL negatives, fault injection and Mock E2E
+        env:
+          INSIGHTFLOW_REPORT_BASE: ${{ runner.temp }}/acceptance
         run: ./scripts/accept.sh
+      - name: Show failed acceptance diagnostics
+        if: failure()
+        run: |
+          find "$RUNNER_TEMP/acceptance" -type f -name pytest.log -exec tail -n 180 {} \; 2>/dev/null || true
       - name: Independent evaluation and experiment smoke
         run: |
           .venv/bin/python -m insightflow.evaluation.runner --output "$RUNNER_TEMP/final-evaluation"
