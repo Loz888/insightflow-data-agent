@@ -1,0 +1,73 @@
+{
+  "engineering": "PASS",
+  "mock_evaluation": "PASS",
+  "deepseek_evaluation": "NOT RUN",
+  "tests": {
+    "passed": 332,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "unit_passed": 149,
+    "integration_passed": 183
+  },
+  "steps": [
+    {
+      "name": "python",
+      "exit_code": 0,
+      "duration_ms": 380.615
+    },
+    {
+      "name": "dependencies",
+      "exit_code": 0,
+      "duration_ms": 478.442
+    },
+    {
+      "name": "database",
+      "exit_code": 0,
+      "duration_ms": 198.78
+    },
+    {
+      "name": "static",
+      "exit_code": 0,
+      "duration_ms": 31.129
+    },
+    {
+      "name": "format",
+      "exit_code": 0,
+      "duration_ms": 29.882
+    },
+    {
+      "name": "compile",
+      "exit_code": 0,
+      "duration_ms": 68.017
+    },
+    {
+      "name": "pytest",
+      "exit_code": 0,
+      "duration_ms": 40994.743
+    },
+    {
+      "name": "demo",
+      "exit_code": 0,
+      "duration_ms": 1091.829
+    }
+  ],
+  "evaluation": {
+    "cases": 30,
+    "model_type": "mock",
+    "sql_exact_match_rate": 0.26666666666666666,
+    "sql_execution_rate": 1.0,
+    "sql_result_accuracy": 1.0,
+    "answer_groundedness": 1.0,
+    "success_rate": 1.0,
+    "p50_ms": 11.431,
+    "p95_ms": 23.576,
+    "average_retry_count": 0.0,
+    "model_call_count": 70,
+    "token_usage_known_cases": 0,
+    "input_tokens": null,
+    "output_tokens": null,
+    "error_distribution": {},
+    "real_deepseek": "NOT RUN"
+  }
+}

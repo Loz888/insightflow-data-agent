@@ -2,9 +2,9 @@
   "date": "2026-10-20",
   "local_verification": "PASS",
   "source_manifest": "../../docs/pilot/source-manifest.json",
-  "source_manifest_sha256": "3c9b3957f60f6d95d91041d82d6b2087185a869b02554396f0a16393197838ff",
+  "source_manifest_sha256": "61e6c3981abcca28d40af31783ff5a72196944cace7ad8693ae4669ccd55663b",
   "source_comparison_to_fresh_snapshot": {
-    "matched_files": 131,
+    "matched_files": 132,
     "mismatches": 0
   },
   "checks": {
@@ -12,18 +12,18 @@
       "status": "PASS",
       "environment": "new Python venv + newly initialized PostgreSQL16 cluster; fresh 4 databases, no original cluster changed",
       "tests": {
-        "passed": 331,
+        "passed": 332,
         "failed": 0,
         "skipped": 0,
         "errors": 0,
         "unit_passed": 149,
-        "integration_passed": 182
+        "integration_passed": 183
       },
       "http": "PASS",
       "migration_replay": "PASS",
       "docker": "BLOCKED_NO_ENGINE",
       "paid_model": "NOT_RUN_IN_FRESH_CI",
-      "source_commit": "a6897259599065a9ebb300df882970bdc61b5e9f"
+      "source_commit": "6071290ff91ea370701e14a356e2145c29b93fa4"
     },
     "ruff_check": "PASS",
     "ruff_format": "PASS",
@@ -32,6 +32,10 @@
       "status": "PASS",
       "evidence": "restore-20261020.json",
       "scope": "fresh isolated fixture; exported snapshot, checkpoint bytes, RLS and restricted role checked; not a production RTO"
+    },
+    "full_ci_acceptance": {
+      "status": "PASS",
+      "evidence": "full-acceptance-20261020.json"
     }
   },
   "completed_historical_live": {
@@ -49,5 +53,6 @@
   "budget": "existing experiment ID, attempts and monetary ledger retained; no reset",
   "privacy": "working files and existing reachable history scanned; no local credentials published",
   "remote_ci": "consult Actions for this publication commit; local checks do not assert a remote result",
-  "deployment": "not publicly deployed; Docker execution blocked without engine"
+  "deployment": "not publicly deployed; Docker execution blocked without engine",
+  "remote_preflight_fix": "ci-preflight-fix-20261020.json"
 }

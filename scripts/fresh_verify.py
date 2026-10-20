@@ -113,7 +113,9 @@ try:
     for line in (audit / "github-env").read_text().splitlines():
         k, v = line.split("=", 1)
         env[k] = v
-    run([python, "-m", "pytest", "-q", "--tb=short", "--evidence-json", str(audit / "tests.json")], env=env)
+    # Exercise the same preflight, tests, demo and strict original evaluation as CI.
+    run([python, "scripts/accept.py", "--output", str(audit / "acceptance")], env=env)
+    shutil.copy2(audit / "acceptance/tests.json", audit / "tests.json")
     # A second additive migration pass must preserve all business counts and runtime records.
     run([python, "scripts/migrate_v2.py", "--seed-empty"], env=env)
     # Real HTTP, actual fresh cluster, no model credential in process environment.

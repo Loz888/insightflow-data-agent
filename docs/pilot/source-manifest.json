@@ -1,5 +1,5 @@
 {
-  "baseline_commit": "a6897259599065a9ebb300df882970bdc61b5e9f",
+  "baseline_commit": "6071290ff91ea370701e14a356e2145c29b93fa4",
   "identity": "SHA-256 file content manifest; the baseline commit alone does not identify the uncommitted upgrade",
   "files": [
     {
@@ -84,7 +84,7 @@
     },
     {
       "path": "scripts/accept.py",
-      "sha256": "380b0b28fa10f4a214f158a5925119520e6ca0241284b908ef2ed6745e44cc9c"
+      "sha256": "325cb7398221cb443e920a063bf4261fcb6f57874c301f3288863a3ab36af358"
     },
     {
       "path": "scripts/accept.sh",
@@ -100,7 +100,7 @@
     },
     {
       "path": "scripts/check_database.py",
-      "sha256": "baa1d13f74602a0d805bd59ea804597541cacdf945036c7fd9a288a627cddba8"
+      "sha256": "bd2c501e842f1d0117e9c33b3332c0a1bd3d98de894c48c887591aaf509d87ea"
     },
     {
       "path": "scripts/ci_init.py",
@@ -132,7 +132,7 @@
     },
     {
       "path": "scripts/fresh_verify.py",
-      "sha256": "44e7cab0588954e94ddb13b872131b34042105d82fd4a9cae2a504839fa5a15f"
+      "sha256": "546d64e4ddcb519d31f09c853afc4f92e6f8f09d26f144753804dbf7f663617f"
     },
     {
       "path": "scripts/init_db.sh",
@@ -485,6 +485,10 @@
     {
       "path": "tests/test_database.py",
       "sha256": "6e08c8afc2056c7e660a2c36eadc729dcc4cbdd3a4d3919b2b81d91bc3467a2b"
+    },
+    {
+      "path": "tests/test_database_preflight.py",
+      "sha256": "752f5116e2661308ffba4e796d272a49c22571a03679a94c603c847bfd6b0512"
     },
     {
       "path": "tests/test_deepseek.py",

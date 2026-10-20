@@ -1,0 +1,19 @@
+{
+  "first_remote_run": "https://github.com/Loz888/insightflow-data-agent/actions/runs/39403257910",
+  "first_remote_commit": "6071290ff91ea370701e14a356e2145c29b93fa4",
+  "first_remote_result": "FAIL",
+  "cause": "V1-only database preflight required exactly five SELECT grants after V2 legitimately added five explicitly authorized tables.",
+  "fix": "Explicit V1/V2 profile; preserve original five-table deterministic counts and read-only/catalog assertions; V2 requires the exact ten-table authorization set.",
+  "regression": "A real temporary unexpected table grant must be rejected; after cleanup the preflight passes.",
+  "fresh_verification": "PASS",
+  "tests": {
+    "passed": 332,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "unit_passed": 149,
+    "integration_passed": 183
+  },
+  "original_mock_evaluation": "PASS",
+  "paid_calls": 0
+}

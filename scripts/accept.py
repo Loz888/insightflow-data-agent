@@ -35,7 +35,7 @@ def main():
             ],
         ),
         ("dependencies", [sys.executable, "-m", "pip", "check"]),
-        ("database", [sys.executable, "scripts/check_database.py"]),
+        ("database", [sys.executable, "scripts/check_database.py", "--profile", "v2"]),
         ("static", [sys.executable, "-m", "ruff", "check", "src", "tests", "scripts"]),
         ("format", [sys.executable, "-m", "ruff", "format", "--check", "src", "tests", "scripts"]),
         ("compile", [sys.executable, "-m", "compileall", "-q", "src"]),

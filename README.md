@@ -12,7 +12,7 @@ PostgreSQL只读查询 → 引用证据的回答。持久会话、幂等、取�
 
 **真实 DeepSeek Max 测验已完成**：代表集两轮 25/30、27/30，定向复验 8/9，最终真实 HTTP 4/4；[原始结果与失败](reports/UPGRADE_ACCEPTANCE.md)全部保留。当前后续配置切回 **Max**，无需重复从零评测。
 
-最新试点代码增加摘要 Token、可信租户与 FORCE RLS、真实 PostgreSQL Checkpointer、共享模型许可、会话删除和请求大小限制；原 V1/V2 与历史实验继续保留。最新源码的新环境验收为 **331 PASS / 0 FAIL / 0 SKIP**，迁移重放及 Mock HTTP 通过；这不替代历史或当前版本的真实模型质量评测。
+最新试点代码增加摘要 Token、可信租户与 FORCE RLS、真实 PostgreSQL Checkpointer、共享模型许可、会话删除和请求大小限制；原 V1/V2 与历史实验继续保留。最新源码的新环境验收为 **332 PASS / 0 FAIL / 0 SKIP**，迁移重放及 Mock HTTP 通过；这不替代历史或当前版本的真实模型质量评测。
 
 ## 快速开始
 本次本机环境已配置：
