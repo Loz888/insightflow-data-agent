@@ -55,7 +55,8 @@ class RequestBudget:
 class AsyncDeepSeek:
     source = "model"
 
-    def __init__(self, settings, store, telemetry, client=None):
+    def __init__(self, settings, store, telemetry, client=None, tenant=None):
+        self.tenant = tenant
         if not settings.live_enabled or not settings.api_key.get_secret_value():
             raise ValueError("explicit local live configuration required")
         self.s = settings
@@ -108,7 +109,11 @@ class AsyncDeepSeek:
                 await self.gate.acquire()
                 self.telemetry.seconds.labels("model_queue").observe(time.perf_counter() - started)
             attempt = None
+            permit = None
+            sent = False
+            confirmed = False
             usage = None
+            retry_after = 0
             try:
                 if (
                     budget.calls >= self.s.max_model_calls
@@ -116,6 +121,26 @@ class AsyncDeepSeek:
                     > self.s.request_token_budget
                 ):
                     raise Fault("REQUEST_BUDGET", "请求模型调用或Token预算耗尽。")
+                if self.tenant is not None:
+                    # One PostgreSQL authority shared by all API/tenant runtimes and processes.
+                    until = time.monotonic() + min(self.s.queue_seconds, budget.remaining())
+                    while True:
+                        try:
+                            permit = await asyncio.to_thread(
+                                self.store.acquire_model_permit,
+                                "deepseek",
+                                self.s.model,
+                                self.tenant,
+                                budget.run_id,
+                                self.s.global_model_concurrency,
+                                self.s.tenant_model_concurrency,
+                                self.s.model_timeout + self.s.uncertain_model_seconds,
+                            )
+                            break
+                        except Fault as exc:
+                            if exc.code != "GLOBAL_MODEL_BUSY" or time.monotonic() >= until:
+                                raise
+                            await asyncio.sleep(0.03)
                 # Reservation is a short DB operation before *every* HTTP attempt and survives restart.
                 attempt = await asyncio.to_thread(
                     self.store.reserve,
@@ -143,11 +168,26 @@ class AsyncDeepSeek:
                 }
                 async with asyncio.timeout(min(self.s.model_timeout, budget.remaining())):
                     with self.telemetry.stage("model", budget.run_id):
+                        sent = True
                         if self.s.stream_model:
                             body["stream_options"] = {"include_usage": True}
                             raw = await self._stream(body)
+                            confirmed = True
                         else:
                             response = await self.client.post(BASE_URL + "/chat/completions", json=body)
+                            confirmed = response.status_code in (200, 400, 401, 403, 429)
+                            header = response.headers.get("Retry-After", "")
+                            try:
+                                retry_after = max(0, float(header))
+                            except ValueError:
+                                try:
+                                    from email.utils import parsedate_to_datetime
+
+                                    retry_after = max(
+                                        0, parsedate_to_datetime(header).timestamp() - time.time()
+                                    )
+                                except (ValueError, TypeError, OverflowError):
+                                    pass
                             self._status(response.status_code)
                             if len(response.content) > 100000:
                                 raise Fault("MODEL_INVALID", "响应过大。")
@@ -220,6 +260,10 @@ class AsyncDeepSeek:
                 raise
             finally:
                 self.gate.release()
+                if permit is not None:
+                    await asyncio.shield(
+                        asyncio.to_thread(self.store.finish_model_permit, permit, confirmed or not sent)
+                    )
                 if attempt and usage is None:
                     budget.unknown_attempts += 1
                     self.telemetry.unknown.inc()
@@ -229,7 +273,10 @@ class AsyncDeepSeek:
                 raise error from None
             budget.retries += 1
             self.telemetry.retries.labels("http").inc()
-            await asyncio.sleep(min(0.15 * (2**retry) + random.uniform(0, 0.1), budget.remaining()))
+            delay = max(retry_after, 0.15 * (2**retry) + random.uniform(0, 0.1))
+            if delay >= budget.remaining():
+                raise error from None
+            await asyncio.sleep(delay)
         raise RuntimeError("exhausted request loop")
 
     def _status(self, status):

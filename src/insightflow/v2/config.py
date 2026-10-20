@@ -9,13 +9,15 @@ class V2Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="INSIGHTFLOW_V2_", env_file=None, extra="ignore", hide_input_in_errors=True
     )
+    profile: Literal["legacy-loopback", "internal-pilot"] = "legacy-loopback"
+    pilot_tenants: list[str] = Field(default_factory=list)
     mode: Literal["mock", "deepseek"] = "mock"
     runtime_url: SecretStr
     reader_url: SecretStr
     # Map opaque local bearer secrets to trusted principal IDs. Never supplied by request bodies.
-    auth_tokens: dict[str, str]
+    auth_tokens: dict[str, str] = Field(default_factory=dict, repr=False)
     model: Literal["deepseek-flash", "deepseek-v4-pro"] = "deepseek-flash"
-    thinking_effort: Literal["max"] = "max"
+    thinking_effort: Literal["high", "max"] = "max"
     live_enabled: bool = False
     api_key: SecretStr = SecretStr("")
     reference_time: datetime = datetime(2026, 10, 1, tzinfo=timezone.utc)
@@ -26,6 +28,9 @@ class V2Settings(BaseSettings):
     request_seconds: float = Field(180, gt=0, le=180)
     queue_seconds: float = Field(3, gt=0, le=30)
     model_timeout: float = Field(30, gt=0, le=30)
+    global_model_concurrency: int = Field(4, ge=1, le=16)
+    tenant_model_concurrency: int = Field(2, ge=1, le=8)
+    uncertain_model_seconds: float = Field(120, ge=60, le=600)
     model_concurrency: int = Field(2, ge=1, le=4)
     db_concurrency: int = Field(4, ge=1, le=8)
     active_limit: int = Field(8, ge=1, le=32)
@@ -44,9 +49,21 @@ class V2Settings(BaseSettings):
     feedback_enabled: bool = True
     stream_model: bool = False
 
+    @classmethod
+    def settings_customise_sources(
+        cls, settings_cls, init_settings, env_settings, dotenv_settings, file_secret_settings
+    ):
+        def environment():
+            data = env_settings()
+            if "auth_tokens" in init_settings.init_kwargs:
+                data.pop("auth_tokens", None)
+            return data
+
+        return init_settings, environment, dotenv_settings, file_secret_settings
+
     def __init__(self, **values):
         explicit = values.get("auth_tokens")
-        if "auth_tokens" in values and not explicit:
+        if "auth_tokens" in values and not explicit and values.get("profile") != "internal-pilot":
             raise ValueError("explicit empty auth_tokens is invalid")
         super().__init__(**values)
         if explicit is not None:
@@ -56,7 +73,18 @@ class V2Settings(BaseSettings):
     def valid(self):
         if self.reference_time.tzinfo is None:
             raise ValueError("reference_time must be timezone-aware")
-        if not self.auth_tokens or any(len(k) < 24 or not v for k, v in self.auth_tokens.items()):
+        if self.profile == "internal-pilot":
+            import re
+
+            if (
+                not 1 <= len(self.pilot_tenants) <= 16
+                or len(set(self.pilot_tenants)) != len(self.pilot_tenants)
+                or any(not re.fullmatch(r"[a-zA-Z0-9_-]{1,64}", x) for x in self.pilot_tenants)
+            ):
+                raise ValueError("1..16 server-registered distinct pilot tenants required")
+            if self.auth_tokens:
+                raise ValueError("pilot refuses plaintext token maps; provision hashed database identities")
+        elif not self.auth_tokens or any(len(k) < 24 or not v for k, v in self.auth_tokens.items()):
             raise ValueError("at least one 24+ character bearer secret and principal required")
         rates = (self.input_price_per_million, self.output_price_per_million, self.project_budget_usd)
         if not all(n.is_finite() for n in rates):

@@ -1,3 +1,4 @@
+from insightflow.v2.checkpoints import CURRENT_BUDGET
 import asyncio
 import hashlib
 import json
@@ -67,7 +68,7 @@ class Registry:
                 value = {"valid": True, "tables": validated.tables, "period": args.period}
             else:
                 token = Cancellation()
-                async with asyncio.timeout(min(self.s.queue_seconds, state["budget"].remaining())):
+                async with asyncio.timeout(min(self.s.queue_seconds, CURRENT_BUDGET.get().remaining())):
                     with self.telemetry.stage("db_queue", state["run_id"]):
                         await self.db_gate.acquire()
                 try:

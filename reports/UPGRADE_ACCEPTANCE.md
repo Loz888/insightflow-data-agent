@@ -1,4 +1,6 @@
-# InsightFlow 升级验收
+# InsightFlow 升级验收（历史 V2 快照）
+
+> 本文保留历史代码快照及当时的验证结论，不覆盖原始真实模型结果。2026-10-20 的试点实现、新环境复验和剩余边界见 [当前状态](../docs/pilot/STATUS.md)。
 
 结论：**PARTIAL_PASS**。实现与工程验收完成；真实模型不是全绿，Docker和真人复核尚未完成。
 实际执行2026-10-17；独立本地分支 `upgrade/deepseek-runtime-v2`。未推送、未公网部署。

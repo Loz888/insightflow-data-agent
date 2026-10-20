@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "environment": "new Python venv + newly initialized PostgreSQL16 cluster; fresh 4 databases, no original cluster changed",
+  "tests": {
+    "passed": 331,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "unit_passed": 149,
+    "integration_passed": 182
+  },
+  "http": "PASS",
+  "migration_replay": "PASS",
+  "docker": "BLOCKED_NO_ENGINE",
+  "paid_model": "NOT_RUN_IN_FRESH_CI",
+  "source_commit": "a6897259599065a9ebb300df882970bdc61b5e9f"
+}

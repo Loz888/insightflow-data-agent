@@ -60,7 +60,9 @@ def run_protocol(handler, **config):
         async def wrapped(request):
             body = json.loads(request.content)
             seen.append(body)
-            assert body["thinking"] == {"type": "enabled"} and body["reasoning_effort"] == "max"
+            assert body["thinking"] == {"type": "enabled"} and body["reasoning_effort"] == config.get(
+                "thinking_effort", "max"
+            )
             assert request.url == httpx.URL("https://api.deepseek.com/chat/completions")
             return handler(request, len(seen))
 
@@ -76,8 +78,11 @@ def run_protocol(handler, **config):
     return asyncio.run(go())
 
 
-def test_max_success_and_scoped_request_budgets():
-    out, budget, ledger, seen = run_protocol(lambda r, n: httpx.Response(200, json=raw()))
+@pytest.mark.parametrize("effort", ["high", "max"])
+def test_thinking_success_and_scoped_request_budgets(effort):
+    out, budget, ledger, seen = run_protocol(
+        lambda r, n: httpx.Response(200, json=raw()), thinking_effort=effort
+    )
     assert out.name == "schema" and budget.calls == 1 and budget.usage()["input_tokens"] == 10
     assert ledger.reservations[0][-2:] == (Decimal(".30"), Decimal("1.20"))
     # A new RequestBudget, not a permanent provider lifecycle cap.

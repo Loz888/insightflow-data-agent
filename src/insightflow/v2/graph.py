@@ -31,7 +31,7 @@ class AgentState(TypedDict, total=False):
     previous: dict
     run_id: str
     source: str
-    budget: object
+    workflow_version: str
     plan: object
     selected: dict
     decision: object
@@ -70,7 +70,9 @@ def verify_answer(answer, evidence, eid):
     return True
 
 
-def build_graph(provider, registry, settings, store, telemetry):
+def build_graph(provider, registry, settings, store, telemetry, checkpointer=None, guard=None):
+    from insightflow.v2.checkpoints import CURRENT_BUDGET, WORKFLOW_VERSION
+
     async def plan(s):
         await_event(s, "understanding")
         previous = s["previous"] if settings.context_enabled else {}
@@ -85,7 +87,7 @@ def build_graph(provider, registry, settings, store, telemetry):
                 "rules": "For customer/product counts or product prices use windows=[] (no order-date attribution). For a new session without explicit dates use windows=[]; coverage is not a requested filter. Use disposition clarify for unavailable data, ambiguity or unsupported business requests; reserve reject for security/authorization violations. Interpret all modifiers; uncertainty -> clarify. Relative N days = N complete UTC days before reference day; do not substitute data max time. Explicit conditions override, omitted conditions inherit. No unseen data counted as zero.",
             },
             Decision,
-            s["budget"],
+            CURRENT_BUDGET.get(),
         )
         if d.disposition != "query":
             return {
@@ -175,7 +177,7 @@ def build_graph(provider, registry, settings, store, telemetry):
                 "instruction": "Use next_call_id as a NEW call_id. If schema not successful choose schema. Else if metric not successful choose metric. Else execute_sql directly (it validates internally), then comparison if required. Never repeat successful tools. Do not invent native tool_call messages.",
             },
             Action,
-            s["budget"],
+            CURRENT_BUDGET.get(),
         )
         return {"action": a}
 
@@ -275,7 +277,7 @@ def build_graph(provider, registry, settings, store, telemetry):
                         "rules": "Explain without any digits or causal assertions. Use citations for exact values; no private reasoning.",
                     },
                     Answer,
-                    s["budget"],
+                    CURRENT_BUDGET.get(),
                 )
                 verify_answer(generated, evidence, eid)
             except Fault as exc:
@@ -306,10 +308,21 @@ def build_graph(provider, registry, settings, store, telemetry):
                 for x in s["tool_results"]
                 if x["name"] == "execute_sql" and x["status"] == "ok"
             ],
+            "execution_observations": {
+                period: {
+                    "observed_at": value.get("observed_at"),
+                    "database_snapshot": value.get("database_snapshot"),
+                    "executed_sql_sha256": hashlib.sha256(value["sql"].encode()).hexdigest(),
+                }
+                for period, value in s["evidence_by_period"].items()
+            },
+            "metric_version": "2026-10-v1",
             "sql_by_period": {k: v["sql"] for k, v in s["evidence_by_period"].items()},
             "limitations": [
                 "合成数据；CNY/UTC；口径2026-10-v1；不推断因果。",
-                "会话隔离不等于业务行级多租户隔离。",
+                "事务内租户RLS；对比区间分别读取快照；不防御数据库管理员。"
+                if settings.profile == "internal-pilot"
+                else "会话隔离不等于业务行级多租户隔离。",
                 "SQL语义检查仅支持文档中的保守契约，不证明任意SQL等价。",
             ],
             "tool_records": [{k: v for k, v in x.items() if k != "value"} for x in s["tool_results"]],
@@ -326,7 +339,15 @@ def build_graph(provider, registry, settings, store, telemetry):
         ("tool", tool),
         ("answer", answer),
     ]:
-        g.add_node(name, node)
+
+        async def guarded(s, operation=node):
+            if s.get("workflow_version") != WORKFLOW_VERSION:
+                raise Fault("WORKFLOW_VERSION", "恢复状态版本不兼容；需要管理员迁移。")
+            if guard is not None:
+                await guard(s["run_id"])
+            return await operation(s)
+
+        g.add_node(name, guarded)
     g.add_edge(START, "plan")
     g.add_conditional_edges("plan", lambda s: END if s.get("done") else "retrieve")
     g.add_edge("retrieve", "action")
@@ -339,4 +360,4 @@ def build_graph(provider, registry, settings, store, telemetry):
 
     g.add_conditional_edges("tool", after_tool)
     g.add_edge("answer", END)
-    return g.compile()
+    return g.compile(checkpointer=checkpointer)

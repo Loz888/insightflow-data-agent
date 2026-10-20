@@ -53,6 +53,8 @@ class ReadonlyExecutor:
                 conn.transaction(),
             ):
                 token.check()
+                if self.settings.tenant_id is not None:
+                    conn.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")
                 conn.execute(
                     "SELECT set_config('statement_timeout',%s,true)",
                     (str(self.settings.statement_timeout_ms),),
@@ -62,6 +64,11 @@ class ReadonlyExecutor:
                 )
                 conn.execute("SET LOCAL idle_in_transaction_session_timeout='3000ms'")
                 conn.execute("SET LOCAL search_path=pg_catalog,business")
+                if self.settings.tenant_id is not None:
+                    # Trusted server identity only; generated SQL cannot call set_config.
+                    conn.execute(
+                        "SELECT set_config('insightflow.tenant_id',%s,true)", (self.settings.tenant_id,)
+                    )
                 conn.execute("SET LOCAL TIME ZONE 'UTC'")
                 token.check()
                 plan = conn.execute("EXPLAIN (FORMAT JSON) " + validated.sql).fetchone()[0][0]["Plan"]
@@ -77,6 +84,12 @@ class ReadonlyExecutor:
                     if len(rows) > self.settings.max_rows:
                         raise AgentError(ErrorKind.SQL_EXECUTION_ERROR, "查询结果超过行数上限，请增加筛选。")
                     result = {"columns": columns, "rows": json_value(rows), "row_count": len(rows)}
+                    if self.settings.tenant_id is not None:
+                        observed, snapshot = conn.execute(
+                            "SELECT transaction_timestamp(),pg_current_snapshot()::text"
+                        ).fetchone()
+                        result["observed_at"] = observed.isoformat()
+                        result["database_snapshot"] = snapshot
                     if len(json.dumps(result, ensure_ascii=False).encode()) > self.settings.max_bytes:
                         raise AgentError(ErrorKind.SQL_EXECUTION_ERROR, "查询结果超过字节上限，请缩小范围。")
                     token.check()

@@ -8,6 +8,7 @@ class Settings(BaseSettings):
         env_prefix="INSIGHTFLOW_", env_file=None, extra="ignore", hide_input_in_errors=True
     )
     database_url: SecretStr = SecretStr("")
+    tenant_id: str | None = None
     mode: Literal["mock", "deepseek"] = "mock"
     experiment_mode: Literal["baseline", "retrieval_only", "context_only", "full"] = "full"
     statement_timeout_ms: int = Field(1500, ge=1, le=10000)

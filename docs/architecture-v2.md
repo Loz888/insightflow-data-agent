@@ -37,7 +37,7 @@ flowchart TD
 ## 状态与一致性
 Run 状态：queued → running → succeeded/failed/cancelled/interrupted；已终结记录不能重新完成。
 澄清和拒绝是成功完成处理的 disposition，不是 SQL 执行成功。
-同会话全局唯一 session_id，绑定 principal；不同主体不能抢占同名会话。
+旧 loopback 模式的 session_id 绑定 principal。internal-pilot 模式使用可信 tenant/principal 派生内部会话作用域，不同主体可使用相同外部会话名称而不共享历史。
 同会话按 runs.sequence 顺序领取，数据库短事务锁住Session行；active_run、lease_owner、lease_until
 控制跨进程独占，完成时核对所有者、有效租约与 base_version。租约判断使用数据库时钟。
 新约束与成功结果在同一事务写入；失败、取消和未经验证的答案不更新可信事实。
@@ -46,7 +46,7 @@ Run 状态：queued → running → succeeded/failed/cancelled/interrupted；已
 
 ## 并发与资源
 默认每进程 active_limit=8、模型并发2、业务DB并发4，均有排队超时。
-运行库池和业务Reader池分别有界。多进程总并发上限会叠加；当前不是分布式全局限流器。
+运行库池和业务Reader池分别有界。本地信号量之外，当前试点使用 PostgreSQL 共享 provider/model/tenant 许可，限制连接到同一控制库的进程；未知请求保留许可一段不确定窗口，不能保证窗口之后的供应商实际在途数量。
 同会话等待不会跨越请求总deadline；过载为429，幂等内容冲突409，越权统一404。
 HTTP端到端实测包含控制表事务，因此明显慢于V1轻量服务；不能称为吞吐优化。
 
@@ -56,7 +56,7 @@ HTTP端到端实测包含控制表事务，因此明显慢于V1轻量服务；�
 回调寿命受保护，不能误取消下一借用者。DB超时是独立兜底。
 幂等作用域 principal+key；请求哈希包含session+question。并发重复只创建一次；内容不同409。
 TTL只释放过期终态的幂等键，历史记录不会被悄悄删除；重放返回原终态，不重新计费。
-进程SIGKILL后，过期运行标 interrupted；不自动重试外部付费调用。Exactly-once 不成立。
+当前试点由 AsyncPostgresSaver 持久化 Graph 状态；Mock 可在权限和版本检查后恢复同一 Run。未启用可恢复路径的过期运行仍中断；不自动重放结果未知的付费请求。Exactly-once 不成立。
 启动及周期reaper处理失联记录；队列失联到deadline后标中断。不会恢复未验证答案。
 关闭先持久化排队/运行取消，再等待清理、关闭客户端及连接池。
 
@@ -65,4 +65,4 @@ OpenTelemetry SDK真实采集有界进程内Span（最多2000），按run关联�
 这不是已部署的外部Collector；进程重启Span丢失，PostgreSQL阶段事件保留。
 Prometheus只用固定阶段/状态/池标签，包含队列、模型、SQL、工具、重试、Token、未知Usage、费用预留和池等待。
 request/run标识只用于Trace与事件，不作指标标签。日志不记录Prompt、Key、密码或业务原始行。
-所有认证用户共享合成业务数据集合；没有业务行级RLS多租户隔离、OIDC或生产运维系统。
+旧 loopback 模式共享合成业务数据。internal-pilot 模式启用可信租户上下文与 FORCE RLS，禁止请求体或模型授予身份；仍没有 OIDC/SSO 或完成验收的生产运维系统。

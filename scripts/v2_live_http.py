@@ -1,4 +1,4 @@
-"""Small real Max HTTP smoke; shares the same durable upgrade budget, no secret output."""
+"""Small real configurable-thinking HTTP smoke; shares the same durable upgrade budget, no secret output."""
 
 import argparse
 import hashlib
@@ -74,6 +74,10 @@ def main():
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
     out = Path(args.output)
+    local = dotenv_values(ROOT / ".env")
+    effort = os.environ.get(
+        "INSIGHTFLOW_V2_THINKING_EFFORT", local.get("INSIGHTFLOW_V2_THINKING_EFFORT", "max")
+    )
     snapshot = {
         "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "source_sha256": hashlib.sha256(
@@ -82,12 +86,13 @@ def main():
         "requested_model": "deepseek-flash",
         "documented_snapshot": "DeepSeek-V4.1-Flash-1017",
         "thinking": "enabled",
-        "reasoning_effort": "max",
+        "reasoning_effort": effort,
     }
     out.mkdir(parents=True, exist_ok=False)
     d = dotenv_values(ROOT / ".env")
     env = dict(os.environ)
     env.update(
+        INSIGHTFLOW_V2_THINKING_EFFORT=effort,
         INSIGHTFLOW_V2_MODE="deepseek",
         INSIGHTFLOW_V2_LIVE_ENABLED="true",
         INSIGHTFLOW_V2_RUNTIME_URL=d["INSIGHTFLOW_V2_TEST_RUNTIME_URL"],

@@ -1,5 +1,7 @@
 # 启动、迁移、开发重建与恢复
 
+当前试点身份、租户 RLS、Checkpoint 及验证边界见 [当前状态](pilot/STATUS.md)。基线部署说明不等于所有试点功能已生产验收。
+
 ## 本机已有项目
 锁定依赖：`python3 -m venv .venv`，`.venv/bin/python -m pip install -r requirements.lock`，
 `.venv/bin/python -m pip install --no-deps -e .`。
@@ -28,13 +30,13 @@ scripts/init_db.sh / scripts/seed_data.py 是显式RESET开发脚本，会清空
 Seed101/202脚本仅对固定两个独立快照库创建数据，已有基表不重置。
 
 备份前停止写入或使用一致性pg_dump：用本机Owner连接配置执行
-`pg_dump --format=custom --schema=business --schema=agent_runtime --file=backup.dump`。
+`pg_dump --format=custom --schema=business --schema=agent_runtime --schema=agent_checkpoints --file=backup.dump`。
 通过PGHOST/PGPORT/PGDATABASE/PGUSER与受保护PGPASSFILE提供凭据，避免密码放命令行。
 备份含会话问题和证据，文件0600且不进Git。`pg_restore --list backup.dump` 可先只读核查。
 恢复应由管理员在新的隔离数据库演练，再核对迁移版本、表计数、独立参考结果和认证所有权；
-不要对正在演示的库直接使用--clean。恢复本身本轮NOT_RUN。
+不要对正在演示的库直接使用--clean。历史 V2 验收时恢复未运行；2026-10-20 已用新建隔离夹具完成实际恢复与 RLS/角色核对，见 [当前记录](../reports/pilot/restore-20261020.json)。
 
 ## CI
 更新后的ci.yml包含原回归、V2、真实PG、双Seed、静态检查和离线评测；付费Key为空。
-本地全新环境已运行等价步骤。按用户要求不推送，因此V2远程Actions为NOT_RUN；
-旧main绿色CI属于旧版本，不能冒充V2结果。Live入口为本地显式脚本，常规CI不付费。
+本地全新环境已运行等价步骤。本次按用户要求同步 GitHub；远端 Actions 只以对应提交的实际结果为准，
+旧 main 绿色 CI 属于旧版本，不能冒充当前版本结果。Live入口为本地显式脚本，常规CI不付费。

@@ -9,6 +9,7 @@ from insightflow.v2.errors import Fault
 
 # Optional V2 experimental tables; no privilege is inferred from a description.
 OPTIONAL = {"campaigns", "campaign_daily", "inventory_snapshots", "shipping_events", "supplier_quotes"}
+OPTIONAL |= {f"pilot_aux_{i:02d}" for i in range(1, 21)}
 SYNONYMS = {
     "销售额": "收入 revenue",
     "营收": "收入 revenue",

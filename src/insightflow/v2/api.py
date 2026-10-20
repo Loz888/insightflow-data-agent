@@ -25,6 +25,8 @@ def load_settings():
     }
     if "auth_tokens" in kwargs and isinstance(kwargs["auth_tokens"], str):
         kwargs["auth_tokens"] = json.loads(kwargs["auth_tokens"])
+    if "pilot_tenants" in kwargs and isinstance(kwargs["pilot_tenants"], str):
+        kwargs["pilot_tenants"] = json.loads(kwargs["pilot_tenants"])
     kwargs.setdefault("reader_url", values.get("INSIGHTFLOW_DATABASE_URL", ""))
     kwargs.setdefault("api_key", values.get("DEEPSEEK_API_KEY", ""))
     return V2Settings(**kwargs)
@@ -34,14 +36,38 @@ def create_app(settings=None, provider=None):
     @asynccontextmanager
     async def lifespan(app):
         s = settings or load_settings()
-        app.state.runtime = await asyncio.to_thread(Runtime, s, provider)
-        await app.state.runtime.start()
+        tenants = s.pilot_tenants if s.profile == "internal-pilot" else [None]
+        app.state.runtimes = {}
         try:
+            for tenant in tenants:
+                rt = await asyncio.to_thread(Runtime, s, provider, tenant)
+                app.state.runtimes[tenant] = rt
+                await rt.start()
+            app.state.runtime = next(iter(app.state.runtimes.values()))
+            if s.profile == "internal-pilot":
+
+                def check_auth():
+                    with app.state.runtime.store.pool.connection() as c:
+                        return c.execute(
+                            "SELECT count(*) AS n FROM agent_runtime.api_tokens WHERE revoked_at IS NULL AND expires_at>clock_timestamp() AND tenant=ANY(%s) AND datasource='business'",
+                            (s.pilot_tenants,),
+                        ).fetchone()["n"]
+
+                if not await asyncio.to_thread(check_auth):
+                    raise ValueError("no valid hashed pilot tokens; refusing startup")
             yield
         finally:
-            await app.state.runtime.close()
+            for rt in app.state.runtimes.values():
+                await rt.close()
+
+    def runtime(request):
+        return getattr(request.state, "runtime", request.app.state.runtime)
 
     app = FastAPI(title="InsightFlow V2", version="0.2.0", lifespan=lifespan)
+
+    from insightflow.v2.http_limits import BodyLimit
+
+    app.add_middleware(BodyLimit)
 
     @app.exception_handler(Fault)
     async def fault_handler(request, exc):
@@ -51,7 +77,7 @@ def create_app(settings=None, provider=None):
             404
             if exc.code == "NOT_FOUND"
             else 409
-            if exc.code == "IDEMPOTENCY_CONFLICT"
+            if exc.code in ("IDEMPOTENCY_CONFLICT", "SESSION_BUSY", "RESUME_DENIED", "VERSION_CONFLICT")
             else 429
             if exc.code in ("OVERLOADED", "QUEUE_TIMEOUT")
             else 503
@@ -63,10 +89,22 @@ def create_app(settings=None, provider=None):
         if not auth.startswith("Bearer "):
             raise HTTPException(401, "Bearer authentication required")
         token = auth[7:]
+        rt = request.app.state.runtime
+        if rt.s.profile == "internal-pilot":
+            from insightflow.v2.identity import authenticate
+
+            try:
+                identity = await asyncio.to_thread(authenticate, rt.store, token, rt.s.pilot_tenants)
+            except Fault as exc:
+                if exc.code == "UNAUTHENTICATED":
+                    raise HTTPException(401, "Invalid credentials") from None
+                raise
+            request.state.runtime = request.app.state.runtimes[identity.tenant]
+            return identity.scope
         found = None
         if len(token) > 512:
             raise HTTPException(401, "Invalid credentials")
-        for secret, name in request.app.state.runtime.s.auth_tokens.items():
+        for secret, name in runtime(request).s.auth_tokens.items():
             if hmac.compare_digest(token, secret):
                 found = name
         if found is None:
@@ -91,7 +129,7 @@ def create_app(settings=None, provider=None):
 
     @app.get("/ready")
     async def ready(request: Request):
-        rt = request.app.state.runtime
+        rt = runtime(request)
         if rt.closing:
             raise HTTPException(503, "Shutting down")
 
@@ -104,21 +142,23 @@ def create_app(settings=None, provider=None):
         try:
             await asyncio.wait_for(asyncio.to_thread(probe), 3)
         except Exception:
+            rt.telemetry.ready.set(0)
             raise HTTPException(503, "Dependencies unavailable") from None
+        rt.telemetry.ready.set(1)
         return {"status": "ready", "mode": rt.s.mode}
 
     @app.get("/metrics")
     async def metrics(request: Request, user=Depends(principal)):
-        return Response(request.app.state.runtime.telemetry.render(), media_type="text/plain; version=0.0.4")
+        return Response(runtime(request).telemetry.render(), media_type="text/plain; version=0.0.4")
 
     @app.post("/v2/runs", status_code=202)
     async def submit(body: ChatInput, request: Request, user=Depends(principal)):
-        row, replayed = await request.app.state.runtime.submit(user, body)
+        row, replayed = await runtime(request).submit(user, body)
         return {**public(row), "replayed": replayed}
 
     @app.post("/v2/chat")
     async def chat(body: ChatInput, request: Request, user=Depends(principal)):
-        rt = request.app.state.runtime
+        rt = runtime(request)
         row, replayed = await rt.submit(user, body)
         run_id = str(row["run_id"])
         try:
@@ -135,11 +175,11 @@ def create_app(settings=None, provider=None):
 
     @app.get("/v2/runs/{run_id}")
     async def get_run(run_id: str, request: Request, user=Depends(principal)):
-        return public(await asyncio.to_thread(request.app.state.runtime.store.get, rid(run_id), user))
+        return public(await asyncio.to_thread(runtime(request).store.get, rid(run_id), user))
 
     @app.get("/v2/runs/{run_id}/trace")
     async def trace_run(run_id: str, request: Request, user=Depends(principal)):
-        rt = request.app.state.runtime
+        rt = runtime(request)
         run_id = rid(run_id)
         await asyncio.to_thread(rt.store.get, run_id, user)
         return {
@@ -150,18 +190,46 @@ def create_app(settings=None, provider=None):
 
     @app.post("/v2/runs/{run_id}/cancel")
     async def cancel(run_id: str, request: Request, user=Depends(principal)):
-        rt = request.app.state.runtime
+        rt = runtime(request)
         run_id = rid(run_id)
         await rt.cancel(run_id, user)
         return public(await asyncio.to_thread(rt.store.get, run_id, user))
 
+    @app.post("/v2/runs/{run_id}/resume")
+    async def resume(run_id: str, request: Request, user=Depends(principal)):
+        return public(await runtime(request).resume(rid(run_id), user))
+
     @app.get("/v2/sessions/{session_id}")
     async def session(session_id: str, request: Request, user=Depends(principal)):
-        return await asyncio.to_thread(request.app.state.runtime.store.session, session_id, user)
+        return await asyncio.to_thread(runtime(request).store.session, session_id, user)
+
+    @app.get("/v2/sessions/{session_id}/export")
+    async def export_session(session_id: str, request: Request, user=Depends(principal)):
+        return await asyncio.to_thread(runtime(request).store.export_session, session_id, user)
+
+    @app.delete("/v2/sessions/{session_id}")
+    async def delete_session(session_id: str, request: Request, user=Depends(principal)):
+        rt = runtime(request)
+        if rt.s.profile != "internal-pilot":
+            raise HTTPException(409, "Pilot lifecycle unavailable in legacy profile")
+        await asyncio.to_thread(rt.store.delete_session, session_id, user)
+        return {
+            "deleted": True,
+            "scope": "sensitive session/run/checkpoint state; accounting/audit metadata retained",
+        }
+
+    @app.get("/v2/schema")
+    async def schema(request: Request, user=Depends(principal)):
+        rt = runtime(request)
+        return {
+            "schema_version": rt.retriever.version,
+            "tables": {name: table.model_dump() for name, table in rt.retriever.tables.items()},
+            "descriptions_are_untrusted": True,
+        }
 
     @app.get("/v2/runs/{run_id}/events")
     async def events(run_id: str, request: Request, after: int = 0, user=Depends(principal)):
-        rt = request.app.state.runtime
+        rt = runtime(request)
         run_id = rid(run_id)
         await asyncio.to_thread(rt.store.get, run_id, user)
 

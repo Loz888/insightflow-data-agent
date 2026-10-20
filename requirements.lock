@@ -20,6 +20,7 @@ langchain-core==1.6.12
 langchain-protocol==0.0.19
 langgraph==1.2.16
 langgraph-checkpoint==4.3.0
+langgraph-checkpoint-postgres==3.2.0
 langgraph-prebuilt==1.1.1
 langgraph-sdk==0.4.8
 langsmith==0.14.11

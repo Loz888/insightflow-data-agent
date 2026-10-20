@@ -6,6 +6,8 @@ from psycopg.conninfo import conninfo_to_dict, make_conninfo
 from insightflow.database.connection import checked_connection
 from migrate_v2 import migrate
 from seed_data import seed
+from migrate_checkpoints import migrate as migrate_checkpoints
+from pilot_fixture import prepare
 
 if os.environ.get("GITHUB_ACTIONS") != "true":
     raise SystemExit("Ephemeral CI only")
@@ -33,6 +35,13 @@ for n in (101, 202):
     reader = conninfo_to_dict(os.environ["INSIGHTFLOW_TEST_DATABASE_URL"])
     reader["dbname"] = "insightflow_v2_seed" + str(n)
     settings["INSIGHTFLOW_V2_SEED" + str(n) + "_URL"] = make_conninfo(**reader)
+
+os.environ["INSIGHTFLOW_PILOT_OWNED_LAB"] = "true"
+prepare(os.environ["INSIGHTFLOW_ADMIN_DATABASE_URL"])
+for label in ("", "TEST_"):
+    migrate_checkpoints(os.environ["INSIGHTFLOW_" + label + "ADMIN_DATABASE_URL"])
+settings["INSIGHTFLOW_PILOT_OWNED_LAB"] = "true"
+settings["INSIGHTFLOW_V2_READER_URL"] = os.environ["INSIGHTFLOW_TEST_DATABASE_URL"]
 settings["INSIGHTFLOW_V2_AUTH_TOKENS"] = '{"ci-ephemeral-long-auth-token-only":"ci"}'
 with open(os.environ["GITHUB_ENV"], "a") as f:
     for key, value in settings.items():

@@ -137,7 +137,7 @@ try:
     try:
         import httpx
 
-        with httpx.Client(base_url="http://127.0.0.1:18538", timeout=15) as c:
+        with httpx.Client(base_url="http://127.0.0.1:18538", timeout=15, trust_env=False) as c:
             for _ in range(100):
                 try:
                     if c.get("/ready").status_code == 200:
@@ -180,7 +180,7 @@ try:
         "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=r, text=True).strip(),
     }
     (audit / "result.json").write_text(json.dumps(evidence, indent=2) + "\n")
-    (r / "reports/upgrade/fresh-environment.json").write_text(json.dumps(evidence, indent=2) + "\n")
+    (r / "reports/pilot/fresh-environment.json").write_text(json.dumps(evidence, indent=2) + "\n")
     print(json.dumps(evidence))
 except Exception as exc:
     print("FRESH_FAILURE", type(exc).__name__, str(exc))

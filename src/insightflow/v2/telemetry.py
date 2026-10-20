@@ -38,6 +38,17 @@ class BoundedExporter(SpanExporter):
 class Telemetry:
     def __init__(self):
         self.registry = CollectorRegistry()
+        self.ready = Gauge(
+            "insightflow_ready",
+            "Last dependency readiness probe; scrape up is separate",
+            registry=self.registry,
+        )
+        self.business = Counter(
+            "insightflow_business_outcomes_total",
+            "Authoritative successful business dispositions",
+            ["disposition"],
+            registry=self.registry,
+        )
         self.requests = Counter(
             "insightflow_requests_total", "Finished requests", ["status"], registry=self.registry
         )

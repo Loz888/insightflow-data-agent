@@ -21,7 +21,7 @@ def checked_connection(dsn: str, *, owner: bool = False, test_only: bool = False
     conn.execute("SET search_path=pg_catalog,business")
     with conn.cursor() as cur:
         cur.execute(
-            "SELECT current_database(),current_user,r.rolsuper,r.rolcreatedb,r.rolcreaterole FROM pg_roles r WHERE rolname=current_user"
+            "SELECT current_database(),current_user,r.rolsuper,r.rolcreatedb,r.rolcreaterole,r.rolbypassrls FROM pg_roles r WHERE rolname=current_user"
         )
         row = cur.fetchone()
         cur.execute("SELECT pg_get_userbyid(datdba) FROM pg_database WHERE datname=current_database()")

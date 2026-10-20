@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-20",
+  "local_verification": "PASS",
+  "source_manifest": "../../docs/pilot/source-manifest.json",
+  "source_manifest_sha256": "3c9b3957f60f6d95d91041d82d6b2087185a869b02554396f0a16393197838ff",
+  "source_comparison_to_fresh_snapshot": {
+    "matched_files": 131,
+    "mismatches": 0
+  },
+  "checks": {
+    "fresh_environment": {
+      "status": "PASS",
+      "environment": "new Python venv + newly initialized PostgreSQL16 cluster; fresh 4 databases, no original cluster changed",
+      "tests": {
+        "passed": 331,
+        "failed": 0,
+        "skipped": 0,
+        "errors": 0,
+        "unit_passed": 149,
+        "integration_passed": 182
+      },
+      "http": "PASS",
+      "migration_replay": "PASS",
+      "docker": "BLOCKED_NO_ENGINE",
+      "paid_model": "NOT_RUN_IN_FRESH_CI",
+      "source_commit": "a6897259599065a9ebb300df882970bdc61b5e9f"
+    },
+    "ruff_check": "PASS",
+    "ruff_format": "PASS",
+    "dependency_check": "PASS",
+    "backup_restore": {
+      "status": "PASS",
+      "evidence": "restore-20261020.json",
+      "scope": "fresh isolated fixture; exported snapshot, checkpoint bytes, RLS and restricted role checked; not a production RTO"
+    }
+  },
+  "completed_historical_live": {
+    "representative_batches": [
+      "25/30",
+      "27/30"
+    ],
+    "targeted_regression": "8/9",
+    "final_http": "4/4",
+    "evidence": "../../reports/UPGRADE_ACCEPTANCE.md",
+    "scope": "historical frozen V2 snapshots, not full live acceptance of newly added pilot features"
+  },
+  "configured_effort": "max",
+  "paid_calls_for_this_publication": 0,
+  "budget": "existing experiment ID, attempts and monetary ledger retained; no reset",
+  "privacy": "working files and existing reachable history scanned; no local credentials published",
+  "remote_ci": "consult Actions for this publication commit; local checks do not assert a remote result",
+  "deployment": "not publicly deployed; Docker execution blocked without engine"
+}

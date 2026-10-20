@@ -1,0 +1,34 @@
+{
+  "time": "2026-10-19T03:00:09.557158+00:00",
+  "source_sha": "a6897259599065a9ebb300df882970bdc61b5e9f",
+  "branch": "upgrade/internal-pilot-v1",
+  "deployment": "WSL2 Linux, PostgreSQL 16, single host; no Docker/Podman executable found",
+  "paid_calls_this_upgrade": 0,
+  "engineering": "PARTIAL",
+  "real_model": "NOT_RUN",
+  "operations": "NOT_RUN",
+  "quality_targets_frozen_before_changes": {
+    "security_negative_tests": "100% deny; no cross-identity disclosure",
+    "existing_regression": "zero failed/skipped tests",
+    "real_cases": ">=90% end-to-end; zero false success claims in frozen scope",
+    "benchmark": ">=99% accounted outcomes; no unbounded resource growth in 30 minutes",
+    "restore": "RPO snapshot boundary; RTO <= 10 minutes on local fixture"
+  },
+  "baseline": {
+    "unit_pass": 148,
+    "unit_fail": 0,
+    "unit_skip": 0,
+    "command": ".venv/bin/pytest -q -m \"not integration\"",
+    "exit_code": 0,
+    "evidence": "/tmp/insightflow-pilot-baseline-unit.log",
+    "full_suite": "RUNNING"
+  },
+  "historical_not_current_acceptance": {
+    "fresh_suite": 325,
+    "live_second_batch": "27/30",
+    "shared_budget_attempts_used": 468,
+    "shared_budget_attempt_limit": 500,
+    "shared_budget_usd": "2.00",
+    "accounted_upper_cost_usd": "0.4856967"
+  }
+}

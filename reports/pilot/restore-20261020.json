@@ -1,0 +1,55 @@
+{
+  "time": "2026-10-20T09:45:17.716271+00:00",
+  "source_database": "owned ephemeral lab / insightflow_dev",
+  "paid_calls": 0,
+  "source_sha": "a6897259599065a9ebb300df882970bdc61b5e9f",
+  "snapshot_time": "2026-10-20T17:45:17.748633+08:00",
+  "dump_seconds": 0.11629164100000366,
+  "status": "PASS",
+  "tables": {
+    "agent_runtime.sessions": {
+      "rows": 6,
+      "sha256": "89562b4b095411f8042e3bc1a67a2f5459d5f819fd431b66a501b358b0788028"
+    },
+    "agent_runtime.runs": {
+      "rows": 6,
+      "sha256": "6e04520fa0beb03473c54cb46b243ff83734763fa231eb76d37437825e41fd54"
+    },
+    "agent_runtime.events": {
+      "rows": 61,
+      "sha256": "b787d3111ea625eb1fe9f5895c3a545fa7ec3157f6ba7e1259d1f310d93a2ea0"
+    },
+    "agent_runtime.graph_threads": {
+      "rows": 4,
+      "sha256": "bc1e64f9e15a8c0f8e32b9ec2629b3f976262f8e8bee3ba749117017d42d83b5"
+    },
+    "agent_checkpoints.checkpoints": {
+      "rows": 33,
+      "sha256": "73ae012aaa7d989ac01498fd398ac17ef128a379dfe24b83a829e98248f8ff41"
+    },
+    "agent_checkpoints.checkpoint_blobs": {
+      "rows": 54,
+      "sha256": "97c6c50a4215a7b6c899479c0424100b83fa94f76ada557d2589df2952c8cc7a"
+    },
+    "agent_checkpoints.checkpoint_writes": {
+      "rows": 111,
+      "sha256": "4faa237fab3eef4dd611944c049c8372574d6130d6682d3c4af315c67ffa834a"
+    }
+  },
+  "reader_flags": [
+    false,
+    false,
+    false
+  ],
+  "tenant_counts": {
+    "a": 40,
+    "b": 60
+  },
+  "restore_seconds": 0.8363706140000033,
+  "total_seconds": 1.835138244999996,
+  "rpo": "consistent exported PostgreSQL snapshot; later writes excluded",
+  "rto_target_seconds": 600,
+  "coverage": "session facts, run results, workflow versions and checkpoint blobs byte-identical; reader/RLS/role separation checked",
+  "archive_sha256": "2825ba155644ea7442ccd7fdb5e26af55ffce2ace5650c26d3a8dc661ab99a52",
+  "scope": "fresh isolated fixture for this publication; not a production RTO guarantee"
+}

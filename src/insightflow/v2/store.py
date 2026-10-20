@@ -14,7 +14,8 @@ TERMINAL = {"succeeded", "failed", "cancelled", "interrupted"}
 
 
 class Store:
-    def __init__(self, dsn, limit=4):
+    def __init__(self, dsn, limit=4, namespace_sessions=False):
+        self.namespace_sessions = namespace_sessions
         self.pool = ConnectionPool(
             dsn,
             min_size=0,
@@ -46,7 +47,13 @@ class Store:
             (rid, stage, Jsonb(payload or {})),
         )
 
+    def _sid(self, sid, principal):
+        if not self.namespace_sessions:
+            return sid
+        return "p-" + hashlib.sha256(json.dumps([principal, sid]).encode()).hexdigest()
+
     def enqueue(self, principal, body, seconds, ttl):
+        sid = self._sid(body.session_id, principal)
         rid = str(uuid4())
         digest = hashlib.sha256(
             json.dumps({"session": body.session_id, "question": body.question}, sort_keys=True).encode()
@@ -67,27 +74,31 @@ class Store:
             if old:
                 if old["request_hash"] != digest:
                     raise Fault("IDEMPOTENCY_CONFLICT", "幂等键对应不同请求内容。")
+                old["session_id"] = body.session_id
                 return old, False
             c.execute(
-                "INSERT INTO agent_runtime.sessions(session_id,principal) VALUES (%s,%s) ON CONFLICT DO NOTHING",
-                (body.session_id, principal),
+                "INSERT INTO agent_runtime.sessions(session_id,principal,public_session_id) VALUES (%s,%s,%s) ON CONFLICT DO NOTHING",
+                (sid, principal, body.session_id),
             )
             session = c.execute(
-                "SELECT principal FROM agent_runtime.sessions WHERE session_id=%s", (body.session_id,)
+                "SELECT principal,deleted_at FROM agent_runtime.sessions WHERE session_id=%s FOR UPDATE",
+                (sid,),
             ).fetchone()
-            if session["principal"] != principal:
+            if session["principal"] != principal or session["deleted_at"] is not None:
                 raise Fault("NOT_FOUND", "会话不可访问。")
             row = c.execute(
                 "INSERT INTO agent_runtime.runs(run_id,principal,session_id,idempotency_key,request_hash,question,status,deadline,expires_at) VALUES (%s,%s,%s,%s,%s,%s,'queued',clock_timestamp()+(%s*interval '1 second'),clock_timestamp()+(%s*interval '1 second')) RETURNING *",
-                (rid, principal, body.session_id, body.idempotency_key, digest, body.question, seconds, ttl),
+                (rid, principal, sid, body.idempotency_key, digest, body.question, seconds, ttl),
             ).fetchone()
             self._event(c, rid, "queued")
+            row["session_id"] = body.session_id
             return row, True
 
     def get(self, rid, principal):
         with self.pool.connection() as c:
             row = c.execute(
-                "SELECT * FROM agent_runtime.runs WHERE run_id=%s AND principal=%s", (rid, principal)
+                "SELECT r.*,COALESCE(s.public_session_id,r.session_id) AS session_id FROM agent_runtime.runs r JOIN agent_runtime.sessions s ON s.session_id=r.session_id WHERE r.run_id=%s AND r.principal=%s AND s.deleted_at IS NULL",
+                (rid, principal),
             ).fetchone()
             if not row:
                 raise Fault("NOT_FOUND", "运行不可访问。")
@@ -96,11 +107,12 @@ class Store:
     def session(self, sid, principal):
         with self.pool.connection() as c:
             row = c.execute(
-                "SELECT session_id,principal,version,constraints,history FROM agent_runtime.sessions WHERE session_id=%s AND principal=%s",
-                (sid, principal),
+                "SELECT session_id,principal,version,constraints,history FROM agent_runtime.sessions WHERE session_id=%s AND principal=%s AND deleted_at IS NULL",
+                (self._sid(sid, principal), principal),
             ).fetchone()
             if not row:
                 raise Fault("NOT_FOUND", "会话不可访问。")
+            row["session_id"] = sid
             return row
 
     def claim(self, rid, principal, owner, lease):
@@ -113,6 +125,8 @@ class Store:
             session = c.execute(
                 "SELECT * FROM agent_runtime.sessions WHERE session_id=%s FOR UPDATE", (run["session_id"],)
             ).fetchone()
+            if session["deleted_at"] is not None:
+                raise Fault("NOT_FOUND")
             if run["status"] != "queued":
                 return None
             if (
@@ -339,6 +353,146 @@ class Store:
             row = c.execute(
                 "SELECT * FROM agent_runtime.experiments WHERE experiment_id=%s", (experiment,)
             ).fetchone()
+            return row
+
+    def export_session(self, sid, principal):
+        session = self.session(sid, principal)
+        with self.pool.connection() as c:
+            rows = c.execute(
+                "SELECT run_id,status,result,error_code,created_at,finished_at FROM agent_runtime.runs WHERE principal=%s AND session_id=%s ORDER BY sequence DESC LIMIT 100",
+                (principal, self._sid(sid, principal)),
+            ).fetchall()
+            return {"session": session, "runs": rows, "limit": 100, "order": "newest first"}
+
+    def delete_session(self, sid, principal):
+        internal = self._sid(sid, principal)
+        with self.pool.connection() as c, c.transaction():
+            row = c.execute(
+                "SELECT * FROM agent_runtime.sessions WHERE session_id=%s AND principal=%s FOR UPDATE",
+                (internal, principal),
+            ).fetchone()
+            if not row:
+                raise Fault("NOT_FOUND")
+            if row["deleted_at"] is not None:
+                return True
+            if c.execute(
+                "SELECT 1 FROM agent_runtime.runs WHERE session_id=%s AND status IN ('queued','running') LIMIT 1",
+                (internal,),
+            ).fetchone():
+                raise Fault("SESSION_BUSY")
+            threads = [
+                x["thread_id"]
+                for x in c.execute(
+                    "SELECT t.thread_id FROM agent_runtime.graph_threads t JOIN agent_runtime.runs r USING(run_id) WHERE r.session_id=%s AND r.principal=%s",
+                    (internal, principal),
+                ).fetchall()
+            ]
+            # Fixed table names only. Identity/tombstone and checkpoint deletion share one transaction.
+            for table in ["checkpoint_writes", "checkpoint_blobs", "checkpoints"]:
+                c.execute("DELETE FROM agent_checkpoints." + table + " WHERE thread_id=ANY(%s)", (threads,))
+            c.execute(
+                "UPDATE agent_runtime.runs SET question='',result=NULL WHERE session_id=%s AND principal=%s",
+                (internal, principal),
+            )
+            c.execute(
+                "UPDATE agent_runtime.events SET payload='{}'::jsonb WHERE run_id IN (SELECT run_id FROM agent_runtime.runs WHERE session_id=%s AND principal=%s)",
+                (internal, principal),
+            )
+            c.execute(
+                "UPDATE agent_runtime.sessions SET history='[]'::jsonb,constraints='{}'::jsonb,deleted_at=clock_timestamp() WHERE session_id=%s",
+                (internal,),
+            )
+            c.execute(
+                "INSERT INTO agent_runtime.lifecycle_audit(principal,session_digest,action) VALUES(%s,%s,'delete_sensitive_session_state')",
+                (principal, hashlib.sha256(sid.encode()).hexdigest()),
+            )
+            return True
+
+    def acquire_model_permit(self, provider, model, tenant, rid, global_limit, tenant_limit, hold_seconds):
+        permit = str(uuid4())
+        with self.pool.connection() as c, c.transaction():
+            c.execute(
+                "SELECT pg_advisory_xact_lock(hashtextextended(%s,0))",
+                ("model-gate:" + provider + ":" + model,),
+            )
+            row = c.execute(
+                "SELECT count(*) AS total,count(*) FILTER(WHERE tenant=%s) AS own FROM agent_runtime.model_permits WHERE provider=%s AND model=%s AND held_until>clock_timestamp()",
+                (tenant, provider, model),
+            ).fetchone()
+            if row["total"] >= global_limit or row["own"] >= tenant_limit:
+                raise Fault("GLOBAL_MODEL_BUSY", retryable=True)
+            c.execute(
+                "INSERT INTO agent_runtime.model_permits(permit_id,provider,model,tenant,run_id,held_until) VALUES(%s,%s,%s,%s,%s,clock_timestamp()+(%s*interval '1 second'))",
+                (permit, provider, model, tenant, rid, hold_seconds),
+            )
+            return permit
+
+    def finish_model_permit(self, permit, confirmed):
+        with self.pool.connection() as c:
+            if confirmed:
+                c.execute(
+                    "UPDATE agent_runtime.model_permits SET held_until=clock_timestamp(),outcome='confirmed_return' WHERE permit_id=%s AND outcome='uncertain'",
+                    (permit,),
+                )
+            # Unconfirmed requests keep the full timeout + uncertainty period, not just local TTL.
+
+    def assert_owner(self, rid, owner):
+        with self.pool.connection() as c:
+            ok = c.execute(
+                "SELECT EXISTS(SELECT 1 FROM agent_runtime.sessions s JOIN agent_runtime.runs r ON r.run_id=s.active_run WHERE r.run_id=%s AND s.lease_owner=%s AND s.lease_until>clock_timestamp() AND s.deleted_at IS NULL AND r.status='running' AND NOT r.cancel_requested AND r.deadline>clock_timestamp()) AS ok",
+                (rid, owner),
+            ).fetchone()["ok"]
+            if not ok:
+                raise Fault("LEASE_LOST")
+
+    def thread(self, rid, principal, base_version):
+        tid = "pilot-v1-" + hashlib.sha256(json.dumps([principal, str(rid)]).encode()).hexdigest()
+        with self.pool.connection() as c, c.transaction():
+            c.execute(
+                "INSERT INTO agent_runtime.graph_threads(run_id,principal,thread_id,workflow_version,base_version) VALUES(%s,%s,%s,'pilot-graph-v1',%s) ON CONFLICT DO NOTHING",
+                (rid, principal, tid, base_version),
+            )
+            row = c.execute(
+                "SELECT * FROM agent_runtime.graph_threads WHERE run_id=%s AND principal=%s", (rid, principal)
+            ).fetchone()
+            if not row or row["workflow_version"] != "pilot-graph-v1" or row["base_version"] != base_version:
+                raise Fault("VERSION_CONFLICT")
+            return row["thread_id"]
+
+    def resume(self, rid, principal, seconds):
+        with self.pool.connection() as c, c.transaction():
+            initial = c.execute(
+                "SELECT session_id FROM agent_runtime.runs WHERE run_id=%s AND principal=%s", (rid, principal)
+            ).fetchone()
+            if not initial:
+                raise Fault("NOT_FOUND")
+            session = c.execute(
+                "SELECT deleted_at FROM agent_runtime.sessions WHERE session_id=%s AND principal=%s FOR UPDATE",
+                (initial["session_id"], principal),
+            ).fetchone()
+            if not session or session["deleted_at"] is not None:
+                raise Fault("NOT_FOUND")
+            run = c.execute(
+                "SELECT * FROM agent_runtime.runs WHERE run_id=%s AND principal=%s FOR UPDATE",
+                (rid, principal),
+            ).fetchone()
+            if not run:
+                raise Fault("NOT_FOUND")
+            if run["status"] != "interrupted":
+                if run["status"] in ("queued", "running", "succeeded"):
+                    return None
+                raise Fault("RESUME_DENIED")
+            if run["cancel_requested"] or run["resume_count"] >= 2:
+                raise Fault("RESUME_DENIED")
+            if c.execute(
+                "SELECT 1 FROM agent_runtime.model_attempts WHERE run_id=%s LIMIT 1", (rid,)
+            ).fetchone():
+                raise Fault("RESUME_UNCERTAIN")
+            row = c.execute(
+                "UPDATE agent_runtime.runs SET status='queued',error_code=NULL,finished_at=NULL,resume_count=resume_count+1,deadline=clock_timestamp()+(%s*interval '1 second') WHERE run_id=%s RETURNING *",
+                (seconds, rid),
+            ).fetchone()
+            self._event(c, rid, "resume_requested", {"count": row["resume_count"]})
             return row
 
     def close(self):

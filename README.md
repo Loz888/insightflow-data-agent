@@ -3,8 +3,16 @@
 中文问题 → DeepSeek Flash Max计划/工具决策 → 授权Schema与指标 → SQL安全+语义校验 →
 PostgreSQL只读查询 → 引用证据的回答。持久会话、幂等、取消、SSE和有界运行治理。
 
-这是受控合成数据原型，真实模型并非全绿。当前升级分支仅本地，未推送或公网部署。
+这是受控合成数据原型，真实模型并非全绿。当前试点源码与验收材料随仓库更新，尚未公网部署。
 历史源码/30题/实验保留，[V1说明](README.v1.md)。
+
+## 当前成果与试点更新 · 2026-10-20
+
+[已完成工作与当前边界](docs/pilot/STATUS.md) · [后续改进](docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md)
+
+**真实 DeepSeek Max 测验已完成**：代表集两轮 25/30、27/30，定向复验 8/9，最终真实 HTTP 4/4；[原始结果与失败](reports/UPGRADE_ACCEPTANCE.md)全部保留。当前后续配置切回 **Max**，无需重复从零评测。
+
+最新试点代码增加摘要 Token、可信租户与 FORCE RLS、真实 PostgreSQL Checkpointer、共享模型许可、会话删除和请求大小限制；原 V1/V2 与历史实验继续保留。最新源码的新环境验收为 **331 PASS / 0 FAIL / 0 SKIP**，迁移重放及 Mock HTTP 通过；这不替代历史或当前版本的真实模型质量评测。
 
 ## 快速开始
 本次本机环境已配置：
@@ -46,5 +54,5 @@ PostgreSQL只读查询 → 引用证据的回答。持久会话、幂等、取�
 Schema规则与全量真实小样本均2/2，没有证明检索提高模型正确率。
 有上下文/错误反馈对照各两样本，不能推广到任意问题。
 HTTP对照显示V2更慢：持久化治理不是本次已实现的吞吐优化。
-会话按主体隔离，业务合成数据共享，没有行级多租户、SSO、Exactly-once或生产SLA。
+旧 loopback 模式使用共享合成业务数据；新 internal-pilot 模式具有可信租户 FORCE RLS，见当前边界说明。没有 SSO、付费 Exactly-once 或生产 SLA。
 [全部原始记录](evaldata/upgrade) · [机器验收与逐项状态](reports/UPGRADE_ACCEPTANCE.md)。
