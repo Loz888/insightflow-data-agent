@@ -62,5 +62,6 @@
       "cause": "new synthetic workflow-version fixture initially cleaned runs before events",
       "resolution": "delete only its own dependent events before its own run; production foreign keys retained"
     }
-  ]
+  ],
+  "remote_ci_evidence": "remote-ci.json"
 }

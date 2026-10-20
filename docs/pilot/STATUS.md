@@ -4,6 +4,10 @@
 
 真实模型测验已经完成。此次保留所有成功、失败、费用记录与原始评测集，不重新调用模型来证明历史成果。
 
+## 后续评审结果入口
+
+后续修复增加到 357 PASS，类型评分重算判定不变，941a64e 两轮 CI 通过；最新结果与一次根因未确认的 CI 失败见[结果页](../review-20261020/RESULTS.md)。本页以下 332 项和既有恢复演练均为前轮试点快照。
+
 ## 已完成的真实 Max 测验
 
 | 实验 | 实际结果 | 证据 |
@@ -30,13 +34,13 @@
 
 默认 `deepseek-flash` / thinking enabled / `reasoning_effort=max`，保留 High 显式配置；Mock 仍是代码/CI 的默认运行模式。模型强度不会打开付费开关。
 
-本次最新源码在新 Python venv、新 PostgreSQL16 集群和四个隔离数据库中完成 **332 PASS / 0 FAIL / 0 SKIP / 0 ERROR**，迁移重放和 Mock 真实 HTTP 均通过。见[新环境记录](../../reports/pilot/fresh-environment.json)、[发布验证](../../reports/pilot/github-update-20261020.json)及[源码内容清单](source-manifest.json)。
+此前试点快照在新 Python venv、新 PostgreSQL16 集群和四个隔离数据库中完成 **332 PASS / 0 FAIL / 0 SKIP / 0 ERROR**，迁移重放和 Mock 真实 HTTP 均通过。见[新环境记录](../../reports/pilot/fresh-environment.json)、[发布验证](../../reports/pilot/github-update-20261020.json)及[源码内容清单](source-manifest.json)。
 
 源码清单绑定内容；报告中的基线提交 SHA 不能单独代表其后的全部本地改动。本次更新不发生新付费调用，不重置原 2 美元/500 HTTP 尝试账本，也不将历史保守记账当成厂商账单。
 
 ## 远端预检兼容修复
 
-首次同步的远端 CI 在旧五表授权预检处失败。当前预检显式区分 V1/V2，原五表行数与权限断言保留，V2 严格检查十表授权，并增加“额外授权必须拒绝”的真实数据库回归。新环境现在直接执行与 CI 相同的 accept.py：332 测试、原 30 题严格评测和 Mock 演示通过。见[完整验收](../../reports/pilot/full-acceptance-20261020.json)及[失败归因](../../reports/pilot/ci-preflight-fix-20261020.json)。
+首次同步的远端 CI 在旧五表授权预检处失败。当前预检显式区分 V1/V2，原五表行数与权限断言保留，V2 严格检查十表授权，并增加“额外授权必须拒绝”的真实数据库回归。此前新环境直接执行与 CI 相同的 accept.py：332 测试、原 30 题严格评测和 Mock 演示通过。见[完整验收](../../reports/pilot/full-acceptance-20261020.json)及[失败归因](../../reports/pilot/ci-preflight-fix-20261020.json)。
 
 ## 备份恢复复验
 

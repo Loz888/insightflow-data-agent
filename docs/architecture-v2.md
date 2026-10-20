@@ -44,6 +44,12 @@ Run 状态：queued → running → succeeded/failed/cancelled/interrupted；已
 会话仅保留4条成功摘要；没有私有思维链。不同会话没有全局串行锁。
 模型网络调用期间不占用数据库事务/连接。
 
+## 计划、记忆与版本守卫 · 2026-10-20
+
+进入工具前核对显式年份、退款口径和日期范围；新会话不得由模型擅加未请求的日期/地区。明确纠正覆盖旧条件，全国范围清除地区条件，主数据查询清除无关订单时间/商品地区。受支持的成功约束仍由原事务保存；这不是完整的来源、确认和撤销生命周期。
+
+versions.py 集中定义 pilot-graph-v2-review20261020 与 insightflow-agent-v4-20261020。Store 在重新排队前拒绝旧工作流恢复，图节点也在模型/工具前拒绝版本不符；不修改旧 Checkpoint 或 resume_count。部署前排空/停止旧 API 实例，尚无按入队版本路由的新旧 Worker 混跑协议。[实现与测试](review-20261020/IMPLEMENTATION.md)。
+
 ## 并发与资源
 默认每进程 active_limit=8、模型并发2、业务DB并发4，均有排队超时。
 运行库池和业务Reader池分别有界。本地信号量之外，当前试点使用 PostgreSQL 共享 provider/model/tenant 许可，限制连接到同一控制库的进程；未知请求保留许可一段不确定窗口，不能保证窗口之后的供应商实际在途数量。

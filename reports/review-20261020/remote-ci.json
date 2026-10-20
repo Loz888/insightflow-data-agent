@@ -1,0 +1,409 @@
+{
+  "date": "2026-10-20",
+  "repository": "Loz888/insightflow-data-agent",
+  "scope": "Observed historical runs at the exact head SHA below; not a guarantee about future commits. Paid model calls disabled.",
+  "runs": [
+    {
+      "databaseId": 39413402256,
+      "headSha": "48732e0b0551d937e7a9c6045c4ae9897e1a4ab8",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Loz888/insightflow-data-agent/actions/runs/39413402256",
+      "createdAt": "2026-10-20T11:13:20Z",
+      "updatedAt": "2026-10-20T11:15:25Z",
+      "jobs": [
+        {
+          "name": "PostgreSQL, safety, E2E and evaluation",
+          "conclusion": "failure",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install locked dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize only temporary test roles and data",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize V2 runtime and independent snapshots",
+              "conclusion": "success"
+            },
+            {
+              "name": "Full tests, SQL negatives, fault injection and Mock E2E",
+              "conclusion": "failure"
+            },
+            {
+              "name": "Independent evaluation and experiment smoke",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Stop containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Static and database-independent tests",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install locked dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Static, compile and dependency checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Unit tests, rejecting SKIP",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "acceptance": {
+        "engineering": "FAIL",
+        "mock_evaluation": "NOT RUN",
+        "deepseek_evaluation": "NOT RUN",
+        "tests": {
+          "passed": 356,
+          "failed": 1,
+          "skipped": 0,
+          "errors": 0,
+          "unit_passed": 172,
+          "integration_passed": 184
+        }
+      }
+    },
+    {
+      "databaseId": 39413974354,
+      "headSha": "941a64e3b1f7dce0b03556a57b3e93f87eb05383",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Loz888/insightflow-data-agent/actions/runs/39413974354",
+      "createdAt": "2026-10-20T11:18:09Z",
+      "updatedAt": "2026-10-20T11:20:35Z",
+      "jobs": [
+        {
+          "name": "PostgreSQL, safety, E2E and evaluation",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install locked dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize only temporary test roles and data",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize V2 runtime and independent snapshots",
+              "conclusion": "success"
+            },
+            {
+              "name": "Full tests, SQL negatives, fault injection and Mock E2E",
+              "conclusion": "success"
+            },
+            {
+              "name": "Show failed acceptance diagnostics",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Independent evaluation and experiment smoke",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Stop containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Static and database-independent tests",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install locked dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Static, compile and dependency checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Unit tests, rejecting SKIP",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "acceptance": {
+        "engineering": "PASS",
+        "mock_evaluation": "PASS",
+        "deepseek_evaluation": "NOT RUN",
+        "tests": {
+          "passed": 357,
+          "failed": 0,
+          "skipped": 0,
+          "errors": 0,
+          "unit_passed": 172,
+          "integration_passed": 185
+        }
+      }
+    },
+    {
+      "databaseId": 39416775158,
+      "headSha": "941a64e3b1f7dce0b03556a57b3e93f87eb05383",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Loz888/insightflow-data-agent/actions/runs/39416775158",
+      "createdAt": "2026-10-20T11:41:42Z",
+      "updatedAt": "2026-10-20T11:44:04Z",
+      "jobs": [
+        {
+          "name": "PostgreSQL, safety, E2E and evaluation",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install locked dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize only temporary test roles and data",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize V2 runtime and independent snapshots",
+              "conclusion": "success"
+            },
+            {
+              "name": "Full tests, SQL negatives, fault injection and Mock E2E",
+              "conclusion": "success"
+            },
+            {
+              "name": "Show failed acceptance diagnostics",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Independent evaluation and experiment smoke",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Stop containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Static and database-independent tests",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install locked dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Static, compile and dependency checks",
+              "conclusion": "success"
+            },
+            {
+              "name": "Unit tests, rejecting SKIP",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "acceptance": {
+        "engineering": "PASS",
+        "mock_evaluation": "PASS",
+        "deepseek_evaluation": "NOT RUN",
+        "tests": {
+          "passed": 357,
+          "failed": 0,
+          "skipped": 0,
+          "errors": 0,
+          "unit_passed": 172,
+          "integration_passed": 185
+        }
+      }
+    }
+  ],
+  "initial_failure": {
+    "run_id": 39413402256,
+    "tests": {
+      "passed": 356,
+      "failed": 1,
+      "skipped": 0,
+      "errors": 0
+    },
+    "cause": "UNCONFIRMED: original workflow did not expose pytest failure details",
+    "follow_up": "Workflow 941a64e adds failed pytest log output. Product code and assertions unchanged between 48732e0 and 941a64e; two subsequent full CI runs passed. Repetition is not proof that the original cause was fixed."
+  },
+  "local_manifest_scope": {
+    "commit_with_tested_product_content": "48732e0b0551d937e7a9c6045c4ae9897e1a4ab8",
+    "follow_up_commit": "941a64e3b1f7dce0b03556a57b3e93f87eb05383",
+    "changed_paths": [
+      ".github/workflows/ci.yml"
+    ],
+    "note": "source-manifest.json is the original local fresh-environment snapshot, not a regenerated fingerprint for the later CI logging workflow."
+  }
+}

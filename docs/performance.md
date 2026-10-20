@@ -1,4 +1,6 @@
 # 性能与可观测性
+> 以下是历史 V1 直接调用测量，保留原值；当前 V2 使用会话级调度，不能用本页的全局串行锁描述现实现。V1/V2 真实 HTTP 对照及治理开销见 [V2 评测](evaluation-v2.md#性能与保留失败)；本轮没有新增吞吐实验。
+
 本次实际执行 2026-10-17，Mock 模式、固定同一合成数据，真实 PostgreSQL。
 环境：Python 3.12.3，PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)，
 CPU AMD Ryzen AI 9 H 365 w/ Radeon 880M，可见逻辑核 20，

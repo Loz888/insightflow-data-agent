@@ -28,6 +28,10 @@
 .venv/bin/python scripts/replay_result_scores.py --output /path/to/NEW-replay.json
 ```
 
+## 实验结果与远端验证
+
+本轮与历史结果的分层、改进映射、源码身份和远端运行见 [RESULTS](RESULTS.md)及[逐次 CI 记录](../../reports/review-20261020/remote-ci.json)。历史原始报告不改写，远端通过只归属于记录中的确切 head SHA。
+
 ## 当前验收
 
 [新环境](../../reports/review-20261020/fresh-environment.json)与[完整验收](../../reports/review-20261020/full-acceptance.json)：**357 PASS / 0 FAIL / 0 SKIP / 0 ERROR**，172 单元、185 集成。原 30 题严格评测、Mock 演示、迁移重放和真实 HTTP 均通过，静态/格式/依赖检查通过。[独立 CI 入口](../../reports/review-20261020/independent-smoke.json)也已执行，V2 离线为 [87/87](../../reports/review-20261020/offline-summary.json)，包含 55 查询、20 澄清拒绝和 12 离线契约；仍是 Mock + 真实 PG，不是新增真实模型成绩。
