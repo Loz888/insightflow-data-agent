@@ -83,7 +83,12 @@ class ReadonlyExecutor:
                         columns = [c.name for c in cursor.description]
                     if len(rows) > self.settings.max_rows:
                         raise AgentError(ErrorKind.SQL_EXECUTION_ERROR, "查询结果超过行数上限，请增加筛选。")
-                    result = {"columns": columns, "rows": json_value(rows), "row_count": len(rows)}
+                    result = {
+                        "columns": columns,
+                        "column_types": [c.type_code for c in cursor.description],
+                        "rows": json_value(rows),
+                        "row_count": len(rows),
+                    }
                     if self.settings.tenant_id is not None:
                         observed, snapshot = conn.execute(
                             "SELECT transaction_timestamp(),pg_current_snapshot()::text"

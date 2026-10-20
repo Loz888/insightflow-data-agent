@@ -1,42 +1,83 @@
 import json
 import math
-from collections import Counter
+from collections import Counter, defaultdict
 from decimal import Decimal, InvalidOperation
 import sqlglot
 
+SCORER_VERSION = "typed-bipartite-v2"
+NUMERIC_OIDS = {20, 21, 23, 26, 700, 701, 1700}
+MAX_MATCH_ROWS = 256
+MAX_MATCH_WORK = 1_000_000
 
-def cell(value):
+
+def column_kind(value):
+    if value in NUMERIC_OIDS or value in ("numeric", "number", "integer", "decimal", "float"):
+        return "number"
+    if value in (16, "boolean", "bool"):
+        return "bool"
+    return "text"
+
+
+def cell(value, kind=None):
     if value is None:
         return ("null", None)
     if isinstance(value, bool):
-        return ("bool", value)
-    try:
-        number = Decimal(str(value))
-        if number.is_finite():
-            return ("number", number)
-    except InvalidOperation:
-        pass
-    return ("text", str(value))
+        return ("bool", value) if kind in (None, "bool") else ("invalid", None)
+    # A string is numeric only when the independent reference declares that column numeric.
+    if kind == "number" or kind is None and isinstance(value, (int, float, Decimal)):
+        try:
+            number = Decimal(str(value))
+            if number.is_finite():
+                return ("number", number)
+        except (InvalidOperation, ValueError):
+            pass
+        return ("invalid", None)
+    if kind == "bool":
+        return ("invalid", None)
+    if isinstance(value, str):
+        return ("text", value)
+    return ("invalid", None)
 
 
 def equivalent(actual, expected, ordered=False):
-    if actual.get("columns") != expected.get("columns"):
+    columns = expected.get("columns")
+    if not isinstance(columns, list) or actual.get("columns") != columns:
         return False
     left, right = actual.get("rows", []), expected.get("rows", [])
-    if len(left) != len(right):
+    if not isinstance(left, list) or not isinstance(right, list) or len(left) != len(right):
         return False
-    if not ordered:
-
-        def key(row):
-            return tuple((c[0], str(c[1])) for c in map(cell, row))
-
-        left = sorted(left, key=key)
-        right = sorted(right, key=key)
-    for row, reference in zip(left, right):
-        if len(row) != len(reference):
+    types = expected.get("column_types")
+    actual_types = actual.get("column_types")
+    if types is not None:
+        if len(types) != len(columns):
             return False
+        kinds = [column_kind(t) for t in types]
+        if actual_types is not None and (
+            len(actual_types) != len(columns) or [column_kind(t) for t in actual_types] != kinds
+        ):
+            return False
+    else:
+        kinds = [None] * len(columns)
+    if len(left) > MAX_MATCH_ROWS or len(left) ** 2 * max(1, len(columns)) > MAX_MATCH_WORK:
+        raise ValueError("Result comparison exceeds the bounded matching budget")
+
+    def normalize(rows):
+        result = []
+        for row in rows:
+            if not isinstance(row, (list, tuple)) or len(row) != len(columns):
+                return None
+            values = tuple(cell(v, k) for v, k in zip(row, kinds))
+            if any(k == "invalid" for k, _ in values):
+                return None
+            result.append(values)
+        return result
+
+    left, right = normalize(left), normalize(right)
+    if left is None or right is None:
+        return False
+
+    def compatible(row, reference):
         for a, b in zip(row, reference):
-            a, b = cell(a), cell(b)
             if a[0] != b[0]:
                 return False
             if a[0] == "number":
@@ -44,6 +85,42 @@ def equivalent(actual, expected, ordered=False):
                     return False
             elif a[1] != b[1]:
                 return False
+        return True
+
+    if ordered:
+        return all(compatible(a, b) for a, b in zip(left, right))
+
+    # Exact fields partition rows; multiplicity is retained. Tolerance is not transitive,
+    # so numeric rows require one-to-one matching rather than sorting or rounding.
+    def grouped(rows):
+        groups = defaultdict(list)
+        for row in rows:
+            key = tuple((k, None if k == "number" else v) for k, v in row)
+            groups[key].append(row)
+        return groups
+
+    lhs, rhs = grouped(left), grouped(right)
+    if lhs.keys() != rhs.keys():
+        return False
+    for key, candidates in lhs.items():
+        references = rhs[key]
+        if len(candidates) != len(references):
+            return False
+        edges = [[j for j, b in enumerate(references) if compatible(a, b)] for a in candidates]
+        matched = {}
+
+        def augment(i, seen):
+            for j in edges[i]:
+                if j in seen:
+                    continue
+                seen.add(j)
+                if j not in matched or augment(matched[j], seen):
+                    matched[j] = i
+                    return True
+            return False
+
+        if not all(augment(i, set()) for i in range(len(candidates))):
+            return False
     return True
 
 
@@ -88,6 +165,7 @@ def summarize(records):
 
     return {
         "cases": n,
+        "scorer_version": SCORER_VERSION,
         "model_type": records[0]["model_type"],
         "sql_exact_match_rate": rate("sql_exact_match"),
         "sql_execution_rate": rate("sql_executed"),

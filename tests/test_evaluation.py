@@ -10,8 +10,8 @@ from insightflow.evaluation.report import save_report
 
 
 def test_comparison_not_exact_sql_or_execution_only():
-    left = {"columns": ["value"], "rows": [["1.00000000001"], ["2"]]}
-    right = {"columns": ["value"], "rows": [[2], [1]]}
+    left = {"columns": ["value"], "column_types": ["numeric"], "rows": [["1.00000000001"], ["2"]]}
+    right = {"columns": ["value"], "column_types": ["numeric"], "rows": [[2], [1]]}
     assert equivalent(left, right)
     assert not equivalent(left, right, ordered=True)
     assert not equivalent({"columns": ["value"], "rows": [[999]]}, {"columns": ["value"], "rows": [[1]]})

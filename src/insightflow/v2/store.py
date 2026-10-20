@@ -9,6 +9,7 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 from psycopg_pool import ConnectionPool
 from insightflow.v2.errors import Fault
+from insightflow.v2.versions import WORKFLOW_VERSION
 
 TERMINAL = {"succeeded", "failed", "cancelled", "interrupted"}
 
@@ -449,13 +450,13 @@ class Store:
         tid = "pilot-v1-" + hashlib.sha256(json.dumps([principal, str(rid)]).encode()).hexdigest()
         with self.pool.connection() as c, c.transaction():
             c.execute(
-                "INSERT INTO agent_runtime.graph_threads(run_id,principal,thread_id,workflow_version,base_version) VALUES(%s,%s,%s,'pilot-graph-v1',%s) ON CONFLICT DO NOTHING",
-                (rid, principal, tid, base_version),
+                "INSERT INTO agent_runtime.graph_threads(run_id,principal,thread_id,workflow_version,base_version) VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
+                (rid, principal, tid, WORKFLOW_VERSION, base_version),
             )
             row = c.execute(
                 "SELECT * FROM agent_runtime.graph_threads WHERE run_id=%s AND principal=%s", (rid, principal)
             ).fetchone()
-            if not row or row["workflow_version"] != "pilot-graph-v1" or row["base_version"] != base_version:
+            if not row or row["workflow_version"] != WORKFLOW_VERSION or row["base_version"] != base_version:
                 raise Fault("VERSION_CONFLICT")
             return row["thread_id"]
 
@@ -484,6 +485,14 @@ class Store:
                 raise Fault("RESUME_DENIED")
             if run["cancel_requested"] or run["resume_count"] >= 2:
                 raise Fault("RESUME_DENIED")
+            thread = c.execute(
+                "SELECT workflow_version FROM agent_runtime.graph_threads WHERE run_id=%s AND principal=%s",
+                (rid, principal),
+            ).fetchone()
+            if not thread:
+                raise Fault("INCOMPLETE_CHECKPOINT")
+            if thread["workflow_version"] != WORKFLOW_VERSION:
+                raise Fault("WORKFLOW_VERSION", "旧版本恢复点不能跳过新语义守卫；保留原记录供迁移核对。")
             if c.execute(
                 "SELECT 1 FROM agent_runtime.model_attempts WHERE run_id=%s LIMIT 1", (rid,)
             ).fetchone():

@@ -12,6 +12,7 @@ from insightflow.v2.tools import Registry
 from insightflow.v2.provider import AsyncDeepSeek, RequestBudget
 from insightflow.v2.mock import OfflineProvider
 from insightflow.v2.graph import build_graph
+from insightflow.v2.versions import WORKFLOW_VERSION
 
 
 class Runtime:
@@ -175,7 +176,7 @@ class Runtime:
                     "previous": session["constraints"],
                     "run_id": rid,
                     "source": self.provider.source,
-                    "workflow_version": "pilot-graph-v1",
+                    "workflow_version": WORKFLOW_VERSION,
                     "tool_results": [],
                     "evidence_by_period": {},
                     "repairs": 0,
@@ -199,7 +200,7 @@ class Runtime:
                         checkpoint = await self.graph.aget_state(config)
                         if (
                             not checkpoint.values
-                            or checkpoint.values.get("workflow_version") != "pilot-graph-v1"
+                            or checkpoint.values.get("workflow_version") != WORKFLOW_VERSION
                         ):
                             raise Fault("WORKFLOW_VERSION")
                         if checkpoint.next:

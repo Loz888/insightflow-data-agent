@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "round": "review round 1 plus deterministic memory guards and workflow version fencing",
+  "source_manifest": "../../docs/review-20261020/source-manifest.json",
+  "source_manifest_sha256": "25d35bd993cf81c3088b5918a098f1ea457e45073c94276078cf045969a9c747",
+  "checks": {
+    "fresh_environment": {
+      "status": "PASS",
+      "environment": "new Python venv + newly initialized PostgreSQL16 cluster; fresh 4 databases, no original cluster changed",
+      "tests": {
+        "passed": 357,
+        "failed": 0,
+        "skipped": 0,
+        "errors": 0,
+        "unit_passed": 172,
+        "integration_passed": 185
+      },
+      "http": "PASS",
+      "migration_replay": "PASS",
+      "docker": "BLOCKED_NO_ENGINE",
+      "paid_model": "NOT_RUN_IN_FRESH_CI",
+      "source_commit": "5d56906b1091b56fc3e928c24af0808f30ac248a"
+    },
+    "full_acceptance": "full-acceptance.json",
+    "ruff_check": "PASS",
+    "ruff_format": "PASS",
+    "dependency_check": "PASS",
+    "scorer_replay": {
+      "result_comparisons": 206,
+      "cross_snapshot_comparisons": 330,
+      "changed_comparisons": 0,
+      "evidence": "scorer-replay.json",
+      "reproduction": "BYTE_IDENTICAL"
+    },
+    "independent_smoke": "independent-smoke.json",
+    "v2_offline": {
+      "correct": 87,
+      "total": 87,
+      "evidence": "offline-summary.json"
+    }
+  },
+  "scorer_version": "typed-bipartite-v2",
+  "workflow_version": "pilot-graph-v2-review20261020",
+  "prompt_version": "insightflow-agent-v4-20261020",
+  "model_effort": "max",
+  "paid_calls": 0,
+  "budget": "existing experiment ID, attempts and monetary ledger retained; no reset",
+  "historical_live_results": "retained; no new current-model quality claim",
+  "remaining": [
+    "per-constraint provenance and user confirmation lifecycle",
+    "full deterministic SQL compiler/metric package comparison",
+    "independent large-schema retrieval and challenge evaluation",
+    "production identity integration, sandbox/container and complete lifecycle acceptance"
+  ],
+  "regressions_detected_and_fixed": [
+    {
+      "cause": "new type metadata was initially absent from strict legacy API Evidence schema",
+      "resolution": "optional bounded PostgreSQL OIDs with length/type validation, extra=forbid retained"
+    },
+    {
+      "cause": "new synthetic workflow-version fixture initially cleaned runs before events",
+      "resolution": "delete only its own dependent events before its own run; production foreign keys retained"
+    }
+  ]
+}

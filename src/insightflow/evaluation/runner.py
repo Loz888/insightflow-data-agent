@@ -7,7 +7,7 @@ from uuid import uuid4
 from pydantic import SecretStr
 from insightflow.agent.service import AgentService
 from insightflow.config import Settings
-from insightflow.evaluation.scorer import equivalent, exact_sql, grounded, summarize
+from insightflow.evaluation.scorer import SCORER_VERSION, equivalent, exact_sql, grounded, summarize
 from insightflow.evaluation.report import save_report
 from insightflow.evaluation.failure import failure_category
 
@@ -26,9 +26,9 @@ def run_evaluation(service, cases):
         turns.append(result)
         elapsed = round((time.perf_counter() - started) * 1000, 3)
         executed = "query_result" in result and result.get("error") is None
-        correct = executed and equivalent(
-            result["query_result"], case["expected_result"], case.get("ordered", False)
-        )
+        reference = service.executor.execute(case["reference_sql"])
+        expected = {**case["expected_result"], "column_types": reference["column_types"]}
+        correct = executed and equivalent(result["query_result"], expected, case.get("ordered", False))
         inherited = all(
             result.get("plan", {}).get(k) == v for k, v in case.get("expected_constraints", {}).items()
         )
@@ -52,6 +52,7 @@ def run_evaluation(service, cases):
         records.append(
             {
                 "case_id": case["case_id"],
+                "scorer_version": SCORER_VERSION,
                 "run_id": result["request_id"],
                 "model_type": service.provider.model_type,
                 "sql_valid": result.get("validation_result", {}).get("valid", False),

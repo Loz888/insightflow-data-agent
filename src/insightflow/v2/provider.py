@@ -12,7 +12,8 @@ import httpx
 from pydantic import ValidationError
 from insightflow.v2.errors import Fault
 
-PROMPT_VERSION = "insightflow-agent-v3-20261017"
+from insightflow.v2.versions import PROMPT_VERSION
+
 BASE_URL = "https://api.deepseek.com"
 
 

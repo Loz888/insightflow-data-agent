@@ -6,7 +6,8 @@ from psycopg_pool import AsyncConnectionPool
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 
-WORKFLOW_VERSION = "pilot-graph-v1"
+from insightflow.v2.versions import WORKFLOW_VERSION as WORKFLOW_VERSION
+
 CURRENT_BUDGET = ContextVar("insightflow_request_budget")
 
 

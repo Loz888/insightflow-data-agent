@@ -15,7 +15,7 @@ from dotenv import dotenv_values
 from insightflow.database.connection import checked_connection
 from insightflow.database.executor import json_value
 from insightflow.database.errors import AgentError, ErrorKind
-from insightflow.evaluation.scorer import equivalent
+from insightflow.evaluation.scorer import SCORER_VERSION, equivalent
 from insightflow.v2.api import load_settings
 from insightflow.v2.contracts import ChatInput, QueryPlan, Action, Answer
 from insightflow.v2.errors import Fault
@@ -37,6 +37,7 @@ def reference_result(sql, dsn):
             rows = cur.fetchall()
             return {
                 "columns": [x.name for x in cur.description],
+                "column_types": [x.type_code for x in cur.description],
                 "rows": json_value(rows),
                 "row_count": len(rows),
             }
@@ -48,7 +49,12 @@ def reference_result(sql, dsn):
             if a is None or b is None or Decimal(str(b)) == 0
             else str((Decimal(str(a)) - Decimal(str(b))) / Decimal(str(b)))
         )
-        return {"columns": ["current", "previous", "change_rate"], "rows": [[a, b, change]], "row_count": 1}
+        return {
+            "columns": ["current", "previous", "change_rate"],
+            "column_types": ["numeric"] * 3,
+            "rows": [[a, b, change]],
+            "row_count": 1,
+        }
     return query(sql)
 
 
@@ -332,6 +338,7 @@ async def run_cases(settings, output, cases, controlled_fault=False, snapshot_ur
             return durations[max(0, math.ceil(len(durations) * q) - 1)] if durations else None
 
         summary = {
+            "scorer_version": SCORER_VERSION,
             "mode": settings.mode,
             "retrieval_mode": settings.retrieval_mode,
             "context_enabled": settings.context_enabled,

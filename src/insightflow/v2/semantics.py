@@ -69,7 +69,7 @@ def explicit_windows(question, clock):
         except ValueError:
             raise Fault("CLARIFICATION", "日期范围无效。") from None
     months = re.findall(r"(?<!\d)(1[0-2]|0?[1-9])月", question)
-    years = re.findall(r"(20\d{2})年", question)
+    years = re.findall(r"(?<!\d)(\d{4})年", question)
     if len(set(years)) > 1:
         raise Fault("CLARIFICATION", "跨年多月请使用明确的ISO半开日期区间。")
     year = int(years[0]) if years else clock.year
@@ -80,6 +80,8 @@ def explicit_windows(question, clock):
                 raise Fault("CLARIFICATION", "跨年范围请使用ISO日期。")
             return [Window(start=month_window(year, values[0]).start, end=month_window(year, values[-1]).end)]
         return [month_window(year, m) for m in sorted(set(values))]
+    if years:
+        raise Fault("CLARIFICATION", "仅年份未定义受支持的查询区间，请给出明确月份或ISO日期范围。")
     if "上月" in question:
         return [shift_month(month_window(clock.year, clock.month), -1)]
     if "本月" in question or "这个月" in question:
@@ -144,9 +146,20 @@ def guard_question(question, plan, previous, clock):
     windows = explicit_windows(question, clock)
     if windows is not None and plan.windows != windows:
         raise Fault("SEMANTIC_MISMATCH", "计划丢失或改变了明确日期范围。", True)
-    if windows is None and previous and not re.search(r"全部|全量|所有时间|不限时间", question):
-        if plan.windows != QueryPlan.model_validate(previous).windows:
-            raise Fault("SEMANTIC_MISMATCH", "多轮日期约束被静默丢弃。", True)
+    if windows is None:
+        master_data = plan.metric in (
+            "customer_count",
+            "product_count",
+            "average_price",
+            "max_price",
+            "min_price",
+        )
+        reset = re.search(r"全部|全量|所有时间|不限时间", question)
+        if previous and not reset and not master_data:
+            if plan.windows != QueryPlan.model_validate(previous).windows:
+                raise Fault("SEMANTIC_MISMATCH", "多轮日期约束被静默丢弃。", True)
+        elif plan.windows:
+            raise Fault("SEMANTIC_MISMATCH", "未指定的日期不能由模型擅自添加并写入会话。", True)
     regions = [n for n in REGIONS if n in question]
     if regions:
         excluded = bool(re.search(r"排除|不含|不包括|除.*以外|除.*之外|不要", question))
@@ -161,7 +174,15 @@ def guard_question(question, plan, previous, clock):
             set(plan.include_regions if excluded else plan.exclude_regions) & set(regions)
         ):
             raise Fault("SEMANTIC_MISMATCH", "地区包含/排除条件不一致。", True)
-    elif previous and "全国" not in question and "全部地区" not in question:
+    elif (
+        "全国" in question
+        or "全部地区" in question
+        or not previous
+        or plan.metric in ("product_count", "average_price", "max_price", "min_price")
+    ):
+        if plan.include_regions or plan.exclude_regions:
+            raise Fault("SEMANTIC_MISMATCH", "未指定或明确清除的地区不能被模型保留。", True)
+    elif previous:
         old = QueryPlan.model_validate(previous)
         if old.include_regions != plan.include_regions or old.exclude_regions != plan.exclude_regions:
             raise Fault("SEMANTIC_MISMATCH", "多轮地区约束被静默丢弃。", True)

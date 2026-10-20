@@ -369,3 +369,47 @@ def test_graceful_shutdown_cancels_queued_and_running(config):
             store.close()
 
     asyncio.run(go())
+
+
+def test_old_workflow_resume_is_rejected_without_requeue_or_data_rewrite(config, database_urls):
+    from insightflow.database.connection import checked_connection
+    from insightflow.v2.versions import WORKFLOW_VERSION
+
+    store = Store(config.runtime_url.get_secret_value())
+    request = body()
+    row, created = store.enqueue("a", request, 30, 3600)
+    rid = str(row["run_id"])
+    try:
+        assert created
+        store.thread(rid, "a", 0)
+        with checked_connection(database_urls[1], owner=True, test_only=True) as connection:
+            version = connection.execute(
+                "SELECT workflow_version FROM agent_runtime.graph_threads WHERE run_id=%s", (rid,)
+            ).fetchone()[0]
+            assert version == WORKFLOW_VERSION
+            connection.execute(
+                "UPDATE agent_runtime.graph_threads SET workflow_version='pilot-graph-v1' WHERE run_id=%s",
+                (rid,),
+            )
+            connection.execute("UPDATE agent_runtime.runs SET status='interrupted' WHERE run_id=%s", (rid,))
+        with pytest.raises(Fault) as exc:
+            store.resume(rid, "a", 30)
+        assert exc.value.code == "WORKFLOW_VERSION"
+        observed = store.get(rid, "a")
+        assert observed["status"] == "interrupted" and observed["resume_count"] == 0
+        with store.pool.connection() as connection:
+            assert (
+                connection.execute(
+                    "SELECT workflow_version FROM agent_runtime.graph_threads WHERE run_id=%s", (rid,)
+                ).fetchone()["workflow_version"]
+                == "pilot-graph-v1"
+            )
+    finally:
+        with checked_connection(database_urls[1], owner=True, test_only=True) as connection:
+            connection.execute("DELETE FROM agent_runtime.graph_threads WHERE run_id=%s", (rid,))
+            connection.execute("DELETE FROM agent_runtime.events WHERE run_id=%s", (rid,))
+            connection.execute("DELETE FROM agent_runtime.runs WHERE run_id=%s", (rid,))
+            connection.execute(
+                "DELETE FROM agent_runtime.sessions WHERE session_id=%s", (request.session_id,)
+            )
+        store.close()

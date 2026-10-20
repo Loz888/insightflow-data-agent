@@ -1,0 +1,165 @@
+{
+  "scorer_version": "typed-bipartite-v2",
+  "mode": "recorded-result-replay; no model or database calls",
+  "paid_calls": 0,
+  "golden_sha256": "9e6090d1f7bffae65a7f8f1ede2480429c199f4ee178b9b72c5870f0e8384380",
+  "type_contracts": {
+    "value": [
+      "numeric"
+    ],
+    "dimension|value": [
+      "text",
+      "numeric"
+    ],
+    "current|previous|change_rate": [
+      "numeric",
+      "numeric",
+      "numeric"
+    ]
+  },
+  "datasets": [
+    {
+      "source": "evaldata/upgrade/live-max-001/runs.jsonl",
+      "source_sha256": "55783109abeae370994e7088b82652a1b2746bae3ea2efa7c6d6bb3242522c86",
+      "records": 30,
+      "comparisons": 26,
+      "old_correct": 22,
+      "new_correct": 22,
+      "snapshot_comparisons": 44,
+      "not_a_recorded_query_comparison": 4,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-max-002/runs.jsonl",
+      "source_sha256": "0094049ca31bc895437fe9d60ffeafd96be79d39e250fa0b75f7be3b1f6d147d",
+      "records": 30,
+      "comparisons": 26,
+      "old_correct": 23,
+      "new_correct": 23,
+      "snapshot_comparisons": 46,
+      "not_a_recorded_query_comparison": 4,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-max-regression-001/runs.jsonl",
+      "source_sha256": "d214d2f2aa436161ee2218d0a06f5488ba6d42d7492aeb7b4f6004aabdf7e3fa",
+      "records": 9,
+      "comparisons": 7,
+      "old_correct": 6,
+      "new_correct": 6,
+      "snapshot_comparisons": 12,
+      "not_a_recorded_query_comparison": 2,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-paired-001/context-with_context/runs.jsonl",
+      "source_sha256": "08531bf99ff9db15f231fd89e5f84a234a2173679af34bf737b9b32e37f072f7",
+      "records": 2,
+      "comparisons": 2,
+      "old_correct": 2,
+      "new_correct": 2,
+      "snapshot_comparisons": 4,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-paired-001/context-without_context/runs.jsonl",
+      "source_sha256": "81c5478d93baee934e16377fe7d376e5c181339ba5ee60626bbf8f0895593bdc",
+      "records": 2,
+      "comparisons": 2,
+      "old_correct": 0,
+      "new_correct": 0,
+      "snapshot_comparisons": 2,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-paired-001/feedback-with_feedback/runs.jsonl",
+      "source_sha256": "809d4941f66a3a16d3fbd3296569d26685de17ffa7b94fb535d1ed3cf4391ea7",
+      "records": 2,
+      "comparisons": 2,
+      "old_correct": 2,
+      "new_correct": 2,
+      "snapshot_comparisons": 4,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-paired-001/feedback-without_feedback/runs.jsonl",
+      "source_sha256": "f25371bb8f391cf4209c06e5dc7ff2dbe8074ec88f88773eae9de65eb92913d7",
+      "records": 2,
+      "comparisons": 2,
+      "old_correct": 0,
+      "new_correct": 0,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-paired-001/schema-full/runs.jsonl",
+      "source_sha256": "6df2a84f2c8c5a61d67dbcb5d55fe28aabc5413d302c9f87660e3a1567b445a3",
+      "records": 2,
+      "comparisons": 2,
+      "old_correct": 2,
+      "new_correct": 2,
+      "snapshot_comparisons": 4,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/live-paired-001/schema-selected/runs.jsonl",
+      "source_sha256": "5406049beb9b10cefb6baad23148f71c0d080312b9f4de31632b5e6b3d1becda",
+      "records": 2,
+      "comparisons": 2,
+      "old_correct": 2,
+      "new_correct": 2,
+      "snapshot_comparisons": 4,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/offline-002/runs.jsonl",
+      "source_sha256": "fd437f1dcf9ec71039535a3ec4d4d878702baa140c478d04ae9f32299c6c60f8",
+      "records": 82,
+      "comparisons": 50,
+      "old_correct": 50,
+      "new_correct": 50,
+      "snapshot_comparisons": 100,
+      "not_a_recorded_query_comparison": 32,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/offline-final-001/runs.jsonl",
+      "source_sha256": "f5f2e66ffc3f970a28756e560a4d773d3473668f9f05b1bb24f6f48f881730c5",
+      "records": 87,
+      "comparisons": 55,
+      "old_correct": 55,
+      "new_correct": 55,
+      "snapshot_comparisons": 110,
+      "not_a_recorded_query_comparison": 32,
+      "changed": 0,
+      "changes": []
+    },
+    {
+      "source": "evaldata/upgrade/original30-final/runs.jsonl",
+      "source_sha256": "c0cc45569486ced6cb7ddc0f1dc1ce9259b438cc784c7b5cb1bbb4f3a8156c6f",
+      "records": 30,
+      "comparisons": 30,
+      "old_correct": 30,
+      "new_correct": 30,
+      "changed": 0,
+      "changes": []
+    }
+  ],
+  "total_result_comparisons": 206,
+  "total_snapshot_comparisons": 330,
+  "changed_comparisons": 0,
+  "limits": [
+    "Only result comparison flags are recomputed; historical E2E/warmup/grounding claims are not reconstructed from incomplete traces.",
+    "Frozen metric layouts provide reference types for old artifacts without PostgreSQL OIDs.",
+    "This replay does not measure current-model quality or latency."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "original30": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "ablation": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "performance": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "paid_disabled": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "v2_offline": {
+    "status": "PASS",
+    "exit_code": 0,
+    "local_harness_note": "TEST_RUNTIME_URL explicitly supplied; original failed harness log retained; production CI already sets it"
+  }
+}

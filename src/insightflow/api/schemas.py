@@ -25,11 +25,17 @@ class ChatRequest(BaseModel):
 class Evidence(BaseModel):
     model_config = ConfigDict(extra="forbid")
     columns: list[str] = Field(max_length=30)
+    column_types: list[StrictInt] | None = Field(default=None, max_length=30)
     rows: list[list[Scalar]] = Field(max_length=1000)
     row_count: int = Field(ge=0, le=1000)
 
     @model_validator(mode="after")
     def shape(self):
+        if self.column_types is not None and (
+            len(self.column_types) != len(self.columns)
+            or any(t <= 0 or t > 4294967295 for t in self.column_types)
+        ):
+            raise ValueError("Evidence column type contract mismatch")
         if len(self.rows) != self.row_count or any(len(row) != len(self.columns) for row in self.rows):
             raise ValueError("Evidence shape mismatch")
         return self

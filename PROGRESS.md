@@ -1,10 +1,7 @@
-# 当前进度（2026-10-20）
+# 当前进度（2026-10-20 · 系统评审修复）
 
-原阶段 A 基线保留在 BASELINE_AUDIT.md / reports/pilot/baseline.json，不能代表当前实现。
+本轮完成有类型评分/一对一容差匹配、原始记录离线重算、错误计划在工具前拒绝、未请求条件与用户修正的会话守卫、正常/优化解释器预算回归，以及集中版本与旧 Checkpoint 拒绝策略。原 V1/V2、近期身份/RLS/预算/Checkpointer 继续复用。
 
-已完成历史真实 Max 代表集（25/30、27/30）、定向复验（8/9）、最终真实 HTTP（4/4）、87 项离线评测；原成功、失败、费用记录均保留。
-当前试点新增摘要身份、租户 FORCE RLS、AsyncPostgresSaver、跨进程模型许可、会话删除与请求大小限制。最新新环境完整复验 332 PASS / 0 FAIL / 0 SKIP / 0 ERROR，迁移重放和 Mock HTTP 通过。
+最终新环境 357 PASS / 0 FAIL / 0 SKIP / 0 ERROR；原 30 题严格评测、Mock 演示、迁移重放和 HTTP 通过。206 次历史结果比较与 330 次跨快照比较变化 0。见 docs/review-20261020/IMPLEMENTATION.md 和 reports/review-20261020/verification.json。
 
-后续配置为 deepseek-flash / thinking enabled / Max；High 保留显式支持。既有实验 ID、预算账本及调用计数不重置；此次同步不新发付费请求。Agent Runtime 设置不受影响。
-
-当前实现与历史真实模型验收范围分开，Docker 实际运行仍 BLOCKED。机器证据、源码清单及剩余缺口见 docs/pilot/STATUS.md。远端 CI 以本次提交为准，尚未公网部署。
+模型继续 Max；本轮付费调用 0，既有实验 ID、预算与尝试计数不重置。旧恢复点保留原记录并拒绝自动迁移。完整约束来源、SQL 编译对照、大 Schema 挑战评测和实际容器验收仍属后续工作，未宣布全路线完成。
